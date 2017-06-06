@@ -1,0 +1,22 @@
+$button-color: #ccc;
+$active-button-color: #4b802d;
+
+
+.period {
+  text-align: right;
+}
+.period--selector {
+  display: none;
+}
+.period--label {
+  border: solid 1px $button-color;
+  background-color: rgba($button-color, 0.75);
+  margin-right: 10px;
+  padding: 2px 10px;
+  border-radius: 5px;
+}
+
+.period--selector:checked + .period--label {
+  border: solid 1px $active-button-color;
+  background-color: rgba($active-button-color, 0.75);
+}

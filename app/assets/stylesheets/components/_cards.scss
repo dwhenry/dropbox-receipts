@@ -1,0 +1,46 @@
+.currency-card {
+  padding: 10px;
+  border: solid 1px black;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.currency-card__title {
+  font-size: 1.5rem;
+}
+
+.currency-card__title--inline {
+  display: inline-block;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 500;
+}
+
+.account-card--row__inline {
+  display: inline-block;
+}
+
+.account-card {
+  padding: 10px;
+  border: solid 1px black;
+  border-radius: 5px;
+  background: white;
+}
+
+.account-card--label {
+  display: block;
+  font-size: 0.8em;
+  color: #969696;
+}
+
+.account-card--value {
+  display: inline-block;
+  font-size: 1.2em;
+}
+
+.account-card--small-link {
+  font-size: 0.8em;
+}
+
+.account-card--read-only-code.form-control[readonly] {
+  background-color: #eeeeee;
+}

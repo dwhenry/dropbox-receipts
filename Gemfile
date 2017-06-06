@@ -6,18 +6,24 @@ git_source(:github) do |repo_name|
 end
 
 
-gem 'rails', '~> 5.0.2'
+gem 'coffee-rails', '~> 4.2'
+gem 'dropbox-sdk'
+gem 'jbuilder', '~> 2.5'
+gem 'jquery-rails'
+gem 'omniauth'
+gem 'omniauth-dropbox-oauth2'
 gem 'pg'
 gem 'puma', '~> 3.0'
+gem 'rails', '~> 5.0.2'
 gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.2'
-gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
-gem 'jbuilder', '~> 2.5'
+gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
   gem 'pry-byebug', platform: :mri
+  gem 'rspec'
+  gem 'rubocop'
 end
 
 group :development do

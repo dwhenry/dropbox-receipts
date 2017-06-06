@@ -1,0 +1,19 @@
+.form__currency {
+}
+
+input[type=number] {
+  text-align: right;
+}
+.field_with_errors input,
+.field_with_errors select {
+  border-color: red;
+}
+
+.form_group {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.col-with-no-height { // useful for holding items that overflow and would otherwise break the flow of the elements
+  height: 0;
+}

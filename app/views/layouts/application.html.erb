@@ -1,14 +1,116 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>DropboxReceipts</title>
-    <%= csrf_meta_tags %>
+<!doctype html>
+<html class="no-js" lang="en">
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-  <body>
-    <%= yield %>
-  </body>
-</html>
+  <title>Receipts</title>
+  <%= csrf_meta_tags %>
+
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+<div class="main-wrapper">
+  <div class="app" id="app">
+    <header class="header">
+      <div class="header-block header-block-collapse hidden-lg-up"> <button class="collapse-btn" id="sidebar-collapse-btn">
+        <i class="fa fa-bars"></i>
+      </button> </div>
+      <!--<div class="header-block header-block-search hidden-sm-down">-->
+        <!--<form role="search">-->
+          <!--<div class="input-container"> <i class="fa fa-search"></i> <input type="search" placeholder="Search">-->
+            <!--<div class="underline"></div>-->
+          <!--</div>-->
+        <!--</form>-->
+      <!--</div>-->
+      <div class="header-block header-block-nav">
+        <ul class="nav-profile">
+
+          <% if current_user %>
+            <li class="profile dropdown">
+              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <span class="name">
+                  <%= current_user.name %>
+                </span>
+              </a>
+              <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">
+                <!--<a class="dropdown-item" href="#"> <i class="fa fa-user icon"></i> Profile </a>-->
+                <a class="dropdown-item" href="/about"> <i class="fa fa-bell icon"></i> About </a>
+                <!--<a class="dropdown-item" href="#"> <i class="fa fa-gear icon"></i> Settings </a>-->
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="<%= signout_path %>"> <i class="fa fa-power-off icon"></i> Logout </a>
+              </div>
+            </li>
+          <% else %>
+            <li class="profile">
+              <a class="nav-link" href="/auth/google_oauth2" role="button">
+                <span class="name">
+                  Login
+                </span>
+              </a>
+          <% end %>
+        </ul>
+      </div>
+    </header>
+    <aside class="sidebar">
+      <div class="sidebar-container">
+        <div class="sidebar-header">
+          <div class="brand">
+            <div class="logo"> <span class="l l1"></span> <span class="l l2"></span> <span class="l l3"></span> <span class="l l4"></span> <span class="l l5"></span> </div> Receipts </div>
+        </div>
+        <%#= render 'layouts/nav' if current_user %>
+      </div>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <article class="content dashboard-page">
+      <% if flash.any? %>
+        <section id="flash">
+          <div class="row sameheight-container">
+            <% flash.each do |level, msg| %>
+              <div class="alert alert-<%= level %>">
+                <%= msg %>
+              </div>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+
+      <section class="section">
+        <div class="row sameheight-container">
+          <%= yield %>
+        </div>
+      </section>
+    </article>
+    <footer class="footer">
+      <!--<div class="footer-block buttons"> <iframe class="footer-github-btn" src="https://ghbtns.com/github-btn.html?user=modularcode&repo=modular-admin-html&type=star&count=true" frameborder="0" scrolling="0" width="140px" height="20px"></iframe> </div>-->
+      <div class="footer-block author">
+        <ul>
+          <li>
+            created by <a href="https://github.com/dwhenry">David Henry</a> </li>
+          <li>Copyright &copy; Dropbox receipts 2016</li>
+        </ul>
+      </div>
+    </footer>
+
+  </div>
+</div>
+<%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+<% unless Rails.env.test? || Rails.env.development? %>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-91768561-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+<% end %>
+</body>
+

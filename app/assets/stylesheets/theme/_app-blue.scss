@@ -2292,18 +2292,14 @@ pre {
         content: "|"; }
       .footer .author > ul li:last-child:after {
         content: ""; }
-      @media (max-width: 991px) {
+      @media (max-width: 767px) {
         .footer .author > ul li {
-          display: block;
-          text-align: right; }
+          display: block; }
           .footer .author > ul li:after {
             content: ""; } }
-    @media (max-width: 991px) {
-      .footer .author > ul {
-        display: block; } }
     @media (max-width: 767px) {
       .footer .author > ul {
-        display: none; } }
+        display: block; } }
 
 .header {
   background-color: #d7dde4;

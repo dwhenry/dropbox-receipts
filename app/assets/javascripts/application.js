@@ -17,3 +17,4 @@
 //= require bootstrap
 
 //= require_tree ./theme
+//= require_tree ./components

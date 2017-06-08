@@ -1,0 +1,67 @@
+//= require components/jpeg_camera/swfobject
+//= require components/jpeg_camera/canvas-to-blob
+// require jpeg_camera/jpeg_camera
+//= require components/jpeg_camera/jpeg_camera_no_flash
+
+(function() {
+  if($('#camera')) {
+    var devices = [];
+    var front = false;
+
+    function loadDevices(deviceInfos) {
+      for (var i = 0; i !== deviceInfos.length; ++i) {
+        var deviceInfo = deviceInfos[i];
+        if (deviceInfo.kind === 'videoinput') {
+          devices.push(deviceInfo);
+        }
+      }
+
+      if(devices.length > 1) {
+        $('.next-stream').show();
+      }
+      start()
+    }
+
+    function start() {
+      if(window.JpegCamera) {
+        JpegCamera.DefaultOptions.swf_url = "<%= asset_path 'jpeg_camera/jpeg_camera.swf' %>";
+        JpegCamera.DefaultOptions.shutter_mp3_url = "<%= asset_path 'jpeg_camera/shutter.mp3' %>";
+        JpegCamera.DefaultOptions.shutter_ogg_url = "<%= asset_path 'jpeg_camera/shutter.ogg' %>";
+        JpegCamera.DefaultOptions.csrf_token = $("meta[name=\"csrf-token\"]").attr("content");
+      }
+      camera = new JpegCamera("#camera", { front: front });
+    }
+
+    function handleError(error) {
+      console.log('navigator.getUserMedia error: ', error);
+    }
+
+    navigator.mediaDevices.enumerateDevices().then(loadDevices).catch(handleError);
+    var camera;
+    var snapshot;
+
+    $('.camera-capture').on('click', function(event) {
+      event.stopPropagation();
+      snapshot = camera.capture().show();
+      $('.camera-capture').hide();
+      $('.camera-redo').show();
+      return false;
+    });
+
+    $('.camera-redo').on('click', function(event) {
+      event.stopPropagation();
+      camera.show_stream();
+      $('.camera-capture').show();
+      $('.camera-redo').hide();
+      return false;
+    });
+
+    $('.next-stream').on('click', function(event) {
+      event.stopPropagation();
+      front = !front;
+
+      camera = new JpegCamera("#camera", { front: front });
+      return false;
+    });
+  }
+})($);

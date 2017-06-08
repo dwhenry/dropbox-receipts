@@ -1,5 +1,15 @@
-<h1>New receipt</h1>
+<div class="camera-wrap col-lg-4 col-md-6 col-sm-12">
+  <div id="camera" class="camera-container"></div>
+  <br>
+</div>
 
-<input type="file" accept="image/*" capture="camera" />
+<div class="col-md-6 camera-actions">
+  <%= link_to 'Next', '', onclick: 'return false', class: 'next-stream btn btn-primary', style: 'display: none;' %>
+  <%= link_to 'Capture', '', onclick: 'return false', class: 'camera-capture btn btn-primary' %>
+  <%= link_to 'retry', '', onclick: 'return false', class: 'camera-redo btn btn-primary', style: 'display: none;' %>
 
-<div id="camera" style="width: 100%; height: 300px"></div>
+  <div class="form_group">
+    <%= label_tag :type, 'Expense type' %>
+    <%= select_tag :type, @types %>
+  </div>
+</div>

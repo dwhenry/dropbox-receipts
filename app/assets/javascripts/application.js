@@ -17,4 +17,4 @@
 //= require bootstrap
 
 //= require_tree ./theme
-//= require_tree ./components
+//= require ./components/jpeg_camera.js

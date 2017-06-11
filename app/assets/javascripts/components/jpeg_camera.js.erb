@@ -43,16 +43,16 @@
     $('.camera-capture').on('click', function(event) {
       event.stopPropagation();
       snapshot = camera.capture().show();
-      $('.camera-capture').hide();
-      $('.camera-redo').show();
+      $('.camera--capture').hide();
+      $('.camera--submit').show();
       return false;
     });
 
     $('.camera-redo').on('click', function(event) {
       event.stopPropagation();
       camera.show_stream();
-      $('.camera-capture').show();
-      $('.camera-redo').hide();
+      $('.camera--capture').show();
+      $('.camera--submit').hide();
       return false;
     });
 
@@ -62,6 +62,15 @@
 
       camera = new JpegCamera("#camera", { front: front });
       return false;
+    });
+
+    $('.camera-save').click(function() {
+      snapshot.upload({api_url: "/receipts"}).done(function(response) {
+        $('.camera-actions').innerHTML = response;
+//        this.discard(); // discard snapshot and show video stream again
+      }).fail(function(status_code, error_message, response) {
+        alert("Upload failed with status " + status_code);
+      });
     });
   }
 })($);

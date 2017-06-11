@@ -4,12 +4,12 @@
 </div>
 
 <div class="col-md-6 camera-actions">
-  <%= link_to 'Next', '', onclick: 'return false', class: 'next-stream btn btn-primary', style: 'display: none;' %>
-  <%= link_to 'Capture', '', onclick: 'return false', class: 'camera-capture btn btn-primary' %>
-  <%= link_to 'retry', '', onclick: 'return false', class: 'camera-redo btn btn-primary', style: 'display: none;' %>
-
-  <div class="form_group">
-    <%= label_tag :type, 'Expense type' %>
-    <%= select_tag :type, @types %>
+  <div class="camera--capture">
+    <%= link_to 'Next', '', onclick: 'return false', class: 'next-stream btn btn-primary', style: 'display: none;' %>
+    <%= link_to 'Capture', '', onclick: 'return false', class: 'camera-capture btn btn-primary' %>
+  </div>
+  <div class="camera--submit" style="display: none;">
+    <%= link_to 'Retry', '', onclick: 'return false', class: 'camera-redo btn btn-primary' %>
+    <%= link_to 'Submit', '', onclick: 'return false', class: 'camera-save btn btn-primary' %>
   </div>
 </div>

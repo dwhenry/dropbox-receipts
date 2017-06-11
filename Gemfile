@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "2.3.3"
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -22,6 +23,7 @@ source 'https://rubygems.org' do
   gem 'puma', '~> 3.0'
   gem 'rails', '~> 5.0.2'
   gem 'sass-rails', '~> 5.0'
+  gem 'sidekiq'
   gem 'turbolinks', '~> 5'
   gem 'uglifier', '>= 1.3.0'
   gem 'jpeg_camera'

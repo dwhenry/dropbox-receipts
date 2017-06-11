@@ -466,17 +466,32 @@
               return snapshot._upload_fail();
             }
           };
-          xhr = new XMLHttpRequest();
-          xhr.open('POST', api_url);
-          xhr.timeout = timeout;
+
+          var canvasData = snapshot._canvas.toDataURL("image/jpeg");
+          ajax = new XMLHttpRequest();
+          ajax.open('POST', '/receipts');
+          ajax.timeout = timeout;
           if (csrf_token) {
-            xhr.setRequestHeader("X-CSRF-Token", csrf_token);
+            ajax.setRequestHeader("X-CSRF-Token", csrf_token);
           }
-          xhr.onload = handler;
-          xhr.onerror = handler;
-          xhr.onabort = handler;
-          xhr.send(blob);
-          return snapshot._xhr = xhr;
+          ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          ajax.onload = handler;
+          ajax.onerror = handler;
+          ajax.onabort = handler;
+          ajax.send("img_data="+canvasData);
+
+
+          // xhr = new XMLHttpRequest();
+          // xhr.open('POST', api_url);
+          // xhr.timeout = timeout;
+          // if (csrf_token) {
+          //   xhr.setRequestHeader("X-CSRF-Token", csrf_token);
+          // }
+          // xhr.onload = handler;
+          // xhr.onerror = handler;
+          // xhr.onabort = handler;
+          // xhr.send(blob);
+          // return snapshot._xhr = xhr;
         }, "image/jpeg");
       };
 

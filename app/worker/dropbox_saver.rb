@@ -3,13 +3,15 @@ require 'dropbox_sdk'
 class DropboxSaver
   include Sidekiq::Worker
 
-  def perform(data, receipt)
+  def perform(data, receipt_id)
+    receipt = Receipt.find_by(id: receipt_id) || Receipt.first
     path = [
       'receipts',
       receipt.created_at.strftime('%Y-%m'),
       name = [
         receipt.created_at.strftime('%d %b-%H:%M:%S'),
         receipt.code,
+        receipt.id,
         'jpeg'
       ].compact.join('.')
     ].compact.join('/')

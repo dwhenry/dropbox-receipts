@@ -4,7 +4,7 @@ class ReceiptsController < ApplicationController
 
   def create
     receipt = Receipt.create!(user: current_user)
-    DropboxSaver.perform_async(params['img_data'], receipt)
+    DropboxSaver.perform_async(params['img_data'], receipt.id)
     redirect_to edit_receipt_path(receipt)
   end
 

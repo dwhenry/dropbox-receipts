@@ -18,7 +18,7 @@ class DropboxSaver
 
     client = DropboxClient.new(receipt.user.token)
 
-    file = Base64.decode64(receipt.image,split(',', 2)[1])
+    file = Base64.decode64(receipt.image.split(',', 2)[1])
     client.put_file(path, file) # should hopefully raise an error if it fails..
 
     receipt.update!(path: path)

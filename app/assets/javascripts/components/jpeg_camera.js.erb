@@ -6,7 +6,7 @@
 (function() {
   if($('#camera')) {
     var devices = [];
-    var front = false;
+    var front = null;
 
     function loadDevices(deviceInfos) {
       for (var i = 0; i !== deviceInfos.length; ++i) {
@@ -18,6 +18,7 @@
 
       if(devices.length > 1) {
         $('.next-stream').show();
+        front = 'environment'
       }
       start()
     }
@@ -58,7 +59,7 @@
 
     $('.next-stream').on('click', function(event) {
       event.stopPropagation();
-      front = !front;
+      front = (front === 'environment') ? 'user' : 'environment';
 
       camera = new JpegCamera("#camera", { front: front });
       return false;

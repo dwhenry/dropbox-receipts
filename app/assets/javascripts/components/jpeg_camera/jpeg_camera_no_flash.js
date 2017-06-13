@@ -327,9 +327,7 @@
           }
         }
         get_user_media_options = {
-          video: {
-            facingMode: { exact: (this.options.front ? "user" : "environment") }
-          }
+          video: this.options.front ? { facingMode: { exact: this.options.front } } : {}
         };
 
         that = this;

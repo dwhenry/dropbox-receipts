@@ -20,6 +20,7 @@
         $('.next-stream').show();
         front = 'environment'
       }
+      $('.camera-container').data('camera', front);
       start()
     }
 
@@ -30,7 +31,8 @@
         JpegCamera.DefaultOptions.shutter_ogg_url = "<%= asset_path 'jpeg_camera/shutter.ogg' %>";
         JpegCamera.DefaultOptions.csrf_token = $("meta[name=\"csrf-token\"]").attr("content");
       }
-      camera = new JpegCamera("#camera", { front: front });
+      camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
+//      camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: true });
     }
 
     function handleError(error) {
@@ -60,17 +62,18 @@
     $('.next-stream').on('click', function(event) {
       event.stopPropagation();
       front = (front === 'environment') ? 'user' : 'environment';
-
-      camera = new JpegCamera("#camera", { front: front });
+      $('.camera-container').data('camera', front);
+      camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
       return false;
     });
 
     $('.camera-save').click(function() {
-      snapshot.upload({api_url: "/receipts"}).done(function(response) {
-        $('.camera-actions').innerHTML = response;
-//        this.discard(); // discard snapshot and show video stream again
+      $('.camera--capture').hide();
+      snapshot.upload({api_url: "/receipts.js"}).done(function(response) {
+        $('.camera-actions').html(response);
       }).fail(function(status_code, error_message, response) {
         alert("Upload failed with status " + status_code);
+        $('.camera-redo').click();
       });
     });
   }

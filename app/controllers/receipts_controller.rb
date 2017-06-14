@@ -3,16 +3,22 @@ class ReceiptsController < ApplicationController
   end
 
   def create
-    receipt = Receipt.create!(user: current_user, image: params['img_data'])
-    DropboxSaver.perform_async(receipt.id)
-    redirect_to edit_receipt_path(receipt)
+    @receipt = Receipt.create!(user: current_user, image: params['img_data'])
+    DropboxSaver.perform_async(@receipt.id)
+
+    respond_to do |format|
+      format.js { render :edit, layout: false }
+      format.html_safe? { redirect_to edit_path(@receipt) }
+    end
   end
 
   def edit
     @receipt = Receipt.find(params[:id])
     @types = []
-    if request.xhr?
-      render :edit, layout: false
+
+    respond_to do |format|
+      format.js { render :edit, layout: false }
+      format.html_safe? { render text: 'Broken' }
     end
   end
 

@@ -8,7 +8,7 @@
     var devices = [];
     var front = null;
     navigator.mediaDevices.enumerateDevices().then(loadDevices).catch(handleError);
-    var camera, localStream;
+    var camera;
     var snapshot;
 
     function loadDevices(deviceInfos) {
@@ -36,17 +36,26 @@
       }
       camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
 //      camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: true });
-      localStream = camera.stream;
     }
 
     function handleError(error) {
       console.log('navigator.getUserMedia error: ', error);
     }
 
+    function stopStream() {
+      var stream = camera.stream;
+      if (stream.stop) {
+        stream.stop(); // idk what this does, left here for legacy reasons..?
+      } else {
+        stream.getTracks().forEach(function(track) { track.stop() })
+      }
+    }
 
     $('.camera-capture').on('click', function(event) {
       event.stopPropagation();
       snapshot = camera.capture().show();
+      stopStream();
+
       $('.camera--capture').hide();
       $('.camera--submit').show();
       return false;
@@ -54,7 +63,7 @@
 
     $('.camera-redo').on('click', function(event) {
       event.stopPropagation();
-      camera.show_stream();
+      camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
       $('.camera--capture').show();
       $('.camera--submit').hide();
       return false;
@@ -65,7 +74,6 @@
       front = (front === 'environment') ? 'user' : 'environment';
       $('.camera-container').data('camera', front);
       camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
-      localStream = camera.stream;
       return false;
     });
 
@@ -74,12 +82,6 @@
       snapshot.upload({api_url: "/receipts.js"}).done(function(response) {
         $('.camera-actions').html(response);
 
-        var stream = snapshot.camera.stream;
-        if (stream.stop) {
-          stream.stop(); // idk what this does, left here for legacy reasons..?
-        } else {
-          stream.getTracks().forEach(function(track) { track.stop() })
-        }
         $('video').parent().html('');
 
         $('canvas').width($('canvas').width() / 4);

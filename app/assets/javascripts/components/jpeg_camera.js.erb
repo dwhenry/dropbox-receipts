@@ -7,6 +7,9 @@
   if($('#camera')) {
     var devices = [];
     var front = null;
+    navigator.mediaDevices.enumerateDevices().then(loadDevices).catch(handleError);
+    var camera, localStream;
+    var snapshot;
 
     function loadDevices(deviceInfos) {
       for (var i = 0; i !== deviceInfos.length; ++i) {
@@ -33,15 +36,13 @@
       }
       camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
 //      camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: true });
+      localStream = camera.stream;
     }
 
     function handleError(error) {
       console.log('navigator.getUserMedia error: ', error);
     }
 
-    navigator.mediaDevices.enumerateDevices().then(loadDevices).catch(handleError);
-    var camera;
-    var snapshot;
 
     $('.camera-capture').on('click', function(event) {
       event.stopPropagation();
@@ -64,16 +65,26 @@
       front = (front === 'environment') ? 'user' : 'environment';
       $('.camera-container').data('camera', front);
       camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
+      localStream = camera.stream;
       return false;
     });
 
     $('.camera-save').click(function() {
-      // TODO: need to fully stop camera after this point..
-      // $('video').parent().html('');
-
       $('.camera--capture').hide();
       snapshot.upload({api_url: "/receipts.js"}).done(function(response) {
         $('.camera-actions').html(response);
+
+        var stream = snapshot.camera.stream;
+        if (stream.stop) {
+          stream.stop(); // idk what this does, left here for legacy reasons..?
+        } else {
+          stream.getTracks().forEach(function(track) { track.stop() })
+        }
+        $('video').parent().html('');
+
+        $('canvas').width($('canvas').width() / 4);
+        $('canvas').height($('canvas').height() / 4);
+        $('.camera-wrap').html($('canvas')).css({'padding-bottom': 'inherit'})
       }).fail(function(status_code, error_message, response) {
         alert("Upload failed with status " + status_code);
         $('.camera-redo').click();

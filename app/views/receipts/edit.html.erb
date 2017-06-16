@@ -1,4 +1,4 @@
-<%= form_for @receipt  do |f| %>
+<%= form_for @receipt, style: 'display: inline;'  do |f| %>
   <div class="form_group">
     <%= f.label :purchase_date, 'Purchase date' %>
     <%= f.date_field :purchase_date, class: 'form-control' %>
@@ -6,7 +6,13 @@
 
   <div class="form_group">
     <%= f.label :code, 'Expense type' %>
-    <%= f.grouped_collection_select :code, @types, :children, :name, :code, :name, {}, class: 'form-control enhanced-select'  %>
+    <%= f.grouped_collection_select(
+        :code,
+        @types,
+        :children, :name,
+          :code, :name,
+          { include_blank: true },
+          class: 'form-control enhanced-select', prompt: 'Please select one')  %>
   </div>
 
   <div class="form_group">
@@ -19,7 +25,15 @@
     <%= f.text_field :company, class: 'form-control' %>
   </div>
 
+  <div class="form_group" style="display: inline-block;">
+    <%= f.submit 'Update', class: 'btn btn-primary' %>
+  </div>
+
 <% end %>
+
+<div class="form_group" style="display: inline-block;">
+  <%= button_to 'Cancel', receipt_path(@receipt), method: :delete, data: { confirm: 'Delete receipt?' }, class: 'btn btn-warning' %>
+</div>
 
 
 <script>

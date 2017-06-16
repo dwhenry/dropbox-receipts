@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170615210242) do
+ActiveRecord::Schema.define(version: 20170616081236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,10 +21,11 @@ ActiveRecord::Schema.define(version: 20170615210242) do
     t.date     "purchase_date"
     t.string   "code"
     t.decimal  "amount",                    precision: 8, scale: 2
-    t.datetime "created_at",                                        null: false
-    t.datetime "updated_at",                                        null: false
+    t.datetime "created_at",                                                        null: false
+    t.datetime "updated_at",                                                        null: false
     t.string   "path",          limit: 511
     t.string   "company"
+    t.boolean  "deleted",                                           default: false
     t.index ["user_id"], name: "index_receipts_on_user_id", using: :btree
   end
 

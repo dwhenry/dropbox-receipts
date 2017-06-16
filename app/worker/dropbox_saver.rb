@@ -5,16 +5,7 @@ class DropboxSaver
 
   def perform(receipt_id)
     receipt = Receipt.find_by(id: receipt_id) || Receipt.first
-    path = [
-      'receipts',
-      receipt.created_at.strftime('%Y-%m'),
-      name = [
-        receipt.created_at.strftime('%d%b %H%M%S'),
-        receipt.code,
-        receipt.id,
-        'jpeg'
-      ].compact.join('.')
-    ].compact.join('/')
+    path = receipt.build_path
 
     client = DropboxClient.new(receipt.user.token)
 

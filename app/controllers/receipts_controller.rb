@@ -26,6 +26,7 @@ class ReceiptsController < ApplicationController
   def update
     receipt = Receipt.find(params[:id])
     receipt.update(receipt_params)
+    DropboxMover.perform_async(@receipt.id)
 
     session[:flash] = "Receipt succcessfully uploaded!"
     redirect_to receipts_path
@@ -33,6 +34,13 @@ class ReceiptsController < ApplicationController
 
   def index
     render json: Receipt.order(created_at: :desc)
+  end
+
+  def destroy
+    receipt = Receipt.find(params[:id])
+    receipt.update!(deleted: true)
+
+    redirect_to receipts_path
   end
 
   private

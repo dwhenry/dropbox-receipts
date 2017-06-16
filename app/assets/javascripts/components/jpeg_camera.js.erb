@@ -68,6 +68,9 @@
     });
 
     $('.camera-save').click(function() {
+      // TODO: need to fully stop camera after this point..
+      // $('video').parent().html('');
+
       $('.camera--capture').hide();
       snapshot.upload({api_url: "/receipts.js"}).done(function(response) {
         $('.camera-actions').html(response);

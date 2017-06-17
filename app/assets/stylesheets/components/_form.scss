@@ -21,3 +21,17 @@ label {
 .form_control {
   width: 100%;
 }
+
+.multi-colums {
+  @include media-breakpoint-up(md) {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 2;
+  }
+
+  .form_group {
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid
+  }
+}

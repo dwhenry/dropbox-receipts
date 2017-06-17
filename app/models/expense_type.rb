@@ -80,6 +80,12 @@ class ExpenseType
     ]
   end
 
+  def self.lookup(code)
+    return nil if code.blank?
+
+    all.flat_map(&:children).detect { |c| c.code == code }.name
+  end
+
   attr_reader :name, :code, :children
 
   def initialize(name:, code: nil, children: [])

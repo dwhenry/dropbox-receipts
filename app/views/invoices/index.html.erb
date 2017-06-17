@@ -1,0 +1,28 @@
+<div class="col-md-12">
+  <h1>Invoices</h1>
+</div>
+<div class="col-md-12">
+  <table class="table-responsive table">
+    <thead>
+      <tr>
+        <th>Invoice number</th>
+        <th>PO number</th>
+        <th>Client</th>
+        <th>Issue date</th>
+        <th>Gross</th>
+      </tr>
+    </thead>
+    <tobody>
+      <% @invoices.each do |invoice| %>
+        <tr>
+          <td><%= link_to(invoice.number, invoice_path(invoice)) %></td>
+          <td><%= invoice.po_number %></td>
+          <td><%= invoice.to_address.split("\n").first %></td>
+          <td><%= invoice.tax_date %></td>
+          <td><%= invoice.gross %></td>
+        </tr>
+      <% end %>
+    </tobody>
+  </table>
+</div>
+

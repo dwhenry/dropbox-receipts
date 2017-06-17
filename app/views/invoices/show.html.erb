@@ -1,0 +1,87 @@
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-8">
+      <h1>Invoice</h1>
+      <h2>To:</h2>
+      <% @invoice.address_lines(:to_address) do |line| %>
+        <%= line %><br>
+      <% end %>
+    </div>
+    <div class="col-md-4">
+      <h2><%= @invoice.company_name %></h2>
+      <% @invoice.address_lines(:company_address) do |line| %>
+        <%= line %><br>
+      <% end %>
+      <br>
+      <b>Company Registration No:</b> <%= @invoice.company_reg %><br>
+      VAT Registration No: <%= @invoice.company_vat %>
+    </div>
+  </div>
+
+    <div class="col-md-12">
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th colspan="4">Invoice Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Invoice Number</th>
+            <td><%= @invoice.number %></td>
+            <th>Tax Date</th>
+            <td><%= @invoice.tax_date %></td>
+          </tr>
+          <tr>
+            <th>PO Number</th>
+            <td><%= @invoice.po_number %></td>
+            <th>Terms</th>
+            <td><%= @invoice.terms %></td>
+          </tr>
+          <tr>
+            <th>Reference</th>
+            <td><%= @invoice.ref %></td>
+            <th>Payment due by</th>
+            <td><%= @invoice.payment_due %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th class="text-right">Rate</th>
+            <th class="text-right">Qty</th>
+            <th class="text-right">Gross</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= @invoice.rows.each do |row| %>
+            <tr>
+              <td><%= row.description %></td>
+              <td class="text-right"><%= number_to_currency(row.rate, unit: '£') %></td>
+              <th class="text-right"><%= number_with_precision(row.quantity, precision: 2) %></th>
+              <td class="text-right"><%= number_to_currency(row.gross, unit: '£') %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+    </div>
+    <div class="col-md-2">
+      Gross Total
+    </div>
+    <div class="col-md-2 text-right">
+      <%= number_to_currency(@invoice.gross, unit: '£') %>
+    </div>
+  </div>
+</div>

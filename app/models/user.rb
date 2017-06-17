@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  has_many :receipts
+  has_many :invoices
+
   def self.from_oauth(args)
     uid = args['info']['uid']
     name = args['info']['name']

@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170616081236) do
+ActiveRecord::Schema.define(version: 20170616131824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer  "user_id"
+    t.text     "to_address"
+    t.string   "company_name"
+    t.text     "company_address"
+    t.string   "company_reg"
+    t.string   "company_vat"
+    t.string   "number"
+    t.date     "tax_date"
+    t.string   "po_number"
+    t.string   "terms"
+    t.date     "due_date"
+    t.datetime "generated_at"
+    t.boolean  "deleted",         default: false
+    t.jsonb    "data_rows"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.index ["user_id"], name: "index_invoices_on_user_id", using: :btree
+  end
 
   create_table "receipts", force: :cascade do |t|
     t.integer  "user_id"
@@ -39,5 +59,6 @@ ActiveRecord::Schema.define(version: 20170616081236) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "invoices", "users"
   add_foreign_key "receipts", "users"
 end

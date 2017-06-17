@@ -1,0 +1,27 @@
+<div class="col-md-12">
+  <h1>Receipts</h1>
+</div>
+
+<div class="col-md-12">
+  <table class="table-responsive table">
+    <thead>
+      <tr>
+        <th>Purchase Date</th>
+        <th>Company</th>
+        <th>Expence type</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tobody>
+      <% @receipts.each do |receipt| %>
+        <tr>
+          <td><%= link_to(receipt.purchase_date, receipt_path(receipt)) %></td>
+          <td><%= receipt.company || '-' %></td>
+          <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
+          <td><%= receipt.amount || '-' %></td>
+        </tr>
+      <% end %>
+    </tobody>
+  </table>
+</div>
+

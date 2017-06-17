@@ -33,7 +33,7 @@ class ReceiptsController < ApplicationController
   end
 
   def index
-    render json: Receipt.order(created_at: :desc)
+    @receipts = current_user.receipts.order(created_at: :desc)
   end
 
   def destroy

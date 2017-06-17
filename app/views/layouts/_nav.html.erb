@@ -1,0 +1,34 @@
+<nav class="menu">
+  <ul class="nav metismenu" id="sidebar-menu">
+    <li class="<%= 'active' if current_page?(new_receipt_path) %>">
+      <a href="<%= new_receipt_path %>">
+        <i class="<%= "fa fa-arrow" %>"></i>
+        Add receipt (camera)
+      </a>
+    </li>
+    <!--<li class="<%= 'active' if current_page?(new_receipt_path) %>">-->
+      <!--<a href="<%= new_receipt_path %>">-->
+        <!--<i class="<%= "fa fa-arrow" %>"></i>-->
+        <!--Add receipt from gallery-->
+      <!--</a>-->
+    <!--</li>-->
+    <li class="<%= 'active' if current_page?(receipts_path) %>">
+      <a href="<%= receipts_path %>">
+        <i class="<%= "fa fa-arrow" %>"></i>
+        Receipts
+      </a>
+    </li>
+    <li class="<%= 'active' if current_page?(new_invoice_path) %>">
+      <a href="<%= new_invoice_path %>">
+        <i class="<%= "fa fa-arrow" %>"></i>
+        Create invoice
+      </a>
+    </li>
+    <li class="<%= 'active' if current_page?(invoices_path) %>">
+      <a href="<%= invoices_path %>">
+        <i class="<%= "fa fa-arrow" %>"></i>
+        Invoices
+      </a>
+    </li>
+  </ul>
+</nav>

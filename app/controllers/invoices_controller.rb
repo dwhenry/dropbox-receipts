@@ -1,10 +1,10 @@
 class InvoicesController < ApplicationController
   def new
-    @invoice = Invoice.new(tax_date: Date.today)
+    @invoice = Invoice.new_for(current_user)
   end
 
   def create
-    @invoice = Invoice.new(invoice_params)
+    @invoice = Invoice.new(invoice_params.merge(user: current_user))
     if @invoice.save
       redirect_to invoices_path
     else

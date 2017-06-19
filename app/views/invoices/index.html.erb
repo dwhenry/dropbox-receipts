@@ -3,6 +3,7 @@
 </div>
 
 <div class="col-md-12">
+  <%= link_to('New', new_invoice_path, class: 'btn btn-success') %>
   <%= paginate @invoices %>
 </div>
 
@@ -12,9 +13,11 @@
       <tr>
         <th>Invoice number</th>
         <th>PO number</th>
+        <th>Reference</th>
         <th>Client</th>
         <th>Issue date</th>
         <th>Gross</th>
+        <th></th>
       </tr>
     </thead>
     <tobody>
@@ -22,9 +25,14 @@
         <tr>
           <td><%= link_to(invoice.number, invoice_path(invoice)) %></td>
           <td><%= invoice.po_number %></td>
-          <td><%= invoice.to_address.split("\n").first %></td>
-          <td><%= invoice.tax_date %></td>
-          <td><%= invoice.gross %></td>
+          <td><%= invoice.reference %></td>
+          <td title="<%= invoice.to_address %>"><%= truncate(invoice.to_address.split("\n").join(', ')) %></td>
+          <td><%= invoice.tax_date.strftime('%d %b %Y') %></td>
+          <td class="text-right"><%= number_to_currency(invoice.gross, unit: '£') %></td>
+          <td style="padding: 2px">
+            <%= link_to('Preview', invoice_path(invoice), class: 'btn btn-primary') %>
+            <%= link_to('Edit', edit_invoice_path(invoice), class: 'btn btn-secondary') unless invoice.generated_at %>
+          </td>
         </tr>
       <% end %>
     </tobody>

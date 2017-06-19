@@ -1,5 +1,7 @@
 class Receipt < ApplicationRecord
   belongs_to :user
+  validates_presence_of :user
+
   default_scope { where(deleted: false) }
 
   def build_path

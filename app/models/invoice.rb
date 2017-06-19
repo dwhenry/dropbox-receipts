@@ -1,20 +1,50 @@
 class Invoice < ApplicationRecord
   belongs_to :user
-
+  validates_presence_of :user
   validates_presence_of :company_name
   validates_presence_of :tax_date
   validates_presence_of :terms
   validate :locked_after_generation
 
+  default_scope { where(deleted: false) }
+
+  CLONE_ATTR = [
+    'to_address',
+    'company_name',
+    'company_address',
+    'company_reg',
+    'company_vat',
+    'number',
+    'terms',
+    'data_rows',
+    'reference',
+  ]
+
+  def self.new_for(user)
+    last_invoice = user.invoices.order(created_at: :desc).first
+    if last_invoice
+      new(last_invoice.attributes.slice(*CLONE_ATTR).merge(tax_date: Date.today))
+    else
+      new(tax_date: Date.today)
+    end
+  end
 
   def address_lines(field)
-    (self[field] || 'N/A').split('\n').each do |line|
+    (self[field] || 'N/A').split("\n").each do |line|
       yield line
     end
   end
 
   def rows
     @rows ||= (data_rows || []).map { |row| Row.new(row) }
+  end
+
+  def net
+    rows.sum(&:net)
+  end
+
+  def vat
+    rows.sum(&:vat)
   end
 
   def gross
@@ -29,14 +59,30 @@ class Invoice < ApplicationRecord
     end
   end
 
-  class Row
-    attr_reader :description, :rate, :quantity, :gross
+  def due_date
+    super || (terms && tax_date && tax_date.advance(days: terms.to_i))
+  end
 
-    def initialize(description:, rate:, quantity:, gross:)
+  class Row
+    attr_reader :description, :rate, :quantity, :vat_percentage
+
+    def initialize(description:, rate:, quantity:, vat_percentage:)
       @description = description
       @rate = rate
       @quantity = quantity
-      @gross = gross
+      @vat_percentage = vat_percentage
+    end
+
+    def net
+      ((rate || 0) * (quantity || 0)).round(2)
+    end
+
+    def vat
+      (net * (vat_percentage || 0)).round(2)
+    end
+
+    def gross
+      net + vat
     end
   end
 end

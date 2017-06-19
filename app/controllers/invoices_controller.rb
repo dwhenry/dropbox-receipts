@@ -1,6 +1,4 @@
 class InvoicesController < ApplicationController
-  PAGESIZE = 20
-
   def new
     @invoice = Invoice.new(tax_date: Date.today)
   end
@@ -19,7 +17,7 @@ class InvoicesController < ApplicationController
   end
 
   def index
-    @invoices = current_user.invoices.order(created_at: :desc).limit(PAGESIZE).offset(params[:page] || 0 * PAGESIZE)
+    @invoices = current_user.invoices.order(created_at: :desc).page(params[:page])
   end
 
   private

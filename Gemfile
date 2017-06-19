@@ -17,6 +17,7 @@ source 'https://rubygems.org' do
   gem 'dropbox-sdk'
   gem 'jbuilder', '~> 2.5'
   gem 'jquery-rails'
+  gem 'kaminari'
   gem 'omniauth'
   gem 'omniauth-dropbox-oauth2'
   gem 'pg'

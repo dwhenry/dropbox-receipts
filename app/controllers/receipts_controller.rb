@@ -33,7 +33,7 @@ class ReceiptsController < ApplicationController
   end
 
   def index
-    @receipts = current_user.receipts.order(created_at: :desc)
+    @receipts = current_user.receipts.order(created_at: :desc).page(params[:page])
   end
 
   def destroy

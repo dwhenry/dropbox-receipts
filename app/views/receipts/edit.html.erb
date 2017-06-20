@@ -1,40 +1,54 @@
 <%= form_for @receipt, style: 'display: inline;'  do |f| %>
-  <div class="form_group">
-    <%= f.label :purchase_date, 'Purchase date' %>
-    <%= f.date_field :purchase_date, class: 'form-control' %>
-  </div>
+  <% if @show_image %>
+    <div class="col-md-6">
+      <img width="100%" src="<%= @receipt.image.gsub(' ', '+') %>"/>
+    </div>
+  <% end %>
 
-  <div class="form_group">
-    <%= f.label :code, 'Expense type' %>
-    <%= f.grouped_collection_select(
-        :code,
-        @types,
-        :children, :name,
-          :code, :name,
-          { include_blank: true },
-          class: 'form-control enhanced-select', prompt: 'Please select one')  %>
-  </div>
+  <div class="<%= @show_image ? 'col-md-6' : 'col-md-12' %>">
+    <div class="form_group">
+      <%= f.label :purchase_date, 'Purchase date' %>
+      <%= f.date_field :purchase_date, class: 'form-control' %>
+    </div>
 
-  <div class="form_group">
-    <%= f.label :amount %>
-    <%= f.number_field :amount, min: 0, step: 0.01, onchange: '$(this).val(parseFloat($(this).val()).toFixed(2))', class: 'form-control' %>
-  </div>
+    <div class="form_group">
+      <%= f.label :code, 'Expense type' %>
+      <%= f.grouped_collection_select(
+          :code,
+          @types,
+          :children, :name,
+            :code, :name,
+            { include_blank: true },
+            class: 'form-control enhanced-select', prompt: 'Please select one')  %>
+    </div>
 
-  <div class="form_group">
-    <%= f.label :company %>
-    <%= f.text_field :company, class: 'form-control' %>
-  </div>
+    <div class="form_group">
+      <%= f.label :amount %>
+      <%= f.number_field :amount, min: 0, step: 0.01, onchange: '$(this).val(parseFloat($(this).val()).toFixed(2))', class: 'form-control' %>
+    </div>
 
-  <div class="form_group" style="display: inline-block;">
-    <%= f.submit 'Update', class: 'btn btn-primary' %>
-  </div>
+    <div class="form_group">
+      <%= f.label :company %>
+      <%= f.text_field :company, class: 'form-control' %>
+    </div>
 
-<% end %>
+    <div class="form_group">
+      <%= f.label :payer %>
+      <%= f.select :payer, %w(company individual), { include_blank: true }, class: 'form-control' %>
+    </div>
 
-<div class="form_group" style="display: inline-block;">
-  <%= button_to 'Cancel', receipt_path(@receipt), method: :delete, data: { confirm: 'Delete receipt?' }, class: 'btn btn-warning' %>
+    <div class="form_group" style="display: inline-block;">
+      <%= f.submit 'Update', class: 'btn btn-primary' %>
+    </div>
+
+  <% end %>
 </div>
 
+<div class="col-md-12">
+  <div class="form_group" style="display: inline-block;">
+    <%= button_to 'Cancel', receipt_path(@receipt), method: :delete, data: { confirm: 'Delete receipt?' }, class: 'btn btn-warning' %>
+  </div>
+</div>
 
 <script>
   $(".enhanced-select").select2({

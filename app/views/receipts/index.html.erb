@@ -12,17 +12,23 @@
       <tr>
         <th>Purchase Date</th>
         <th>Company</th>
+        <th>Payer</th>
         <th>Expence type</th>
         <th>Amount</th>
+        <th></th>
       </tr>
     </thead>
     <tobody>
       <% @receipts.each do |receipt| %>
         <tr>
-          <td><%= link_to(receipt.purchase_date, receipt_path(receipt)) %></td>
+          <td><%= receipt.purchase_date&.strftime('%d %b %Y') || '-' %></td>
           <td><%= receipt.company || '-' %></td>
+          <td><%= receipt.payer || '-' %></td>
           <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
           <td><%= receipt.amount || '-' %></td>
+          <td>
+            <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-secondary') %>
+          </td>
         </tr>
       <% end %>
     </tobody>

@@ -25,7 +25,10 @@ class ReceiptsController < ApplicationController
 
     respond_to do |format|
       format.js { render :edit, layout: false }
-      format.html_safe? { render text: 'Broken' }
+      format.html do
+        @show_image = true
+        render :edit, show_image: true
+      end
     end
   end
 
@@ -52,6 +55,6 @@ class ReceiptsController < ApplicationController
   private
 
   def receipt_params
-    params.require(:receipt).permit(:company, :code, :amount, :purchase_date)
+    params.require(:receipt).permit(:company, :code, :amount, :purchase_date, :payer)
   end
 end

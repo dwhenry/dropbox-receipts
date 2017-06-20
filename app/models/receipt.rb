@@ -10,11 +10,11 @@ class Receipt < ApplicationRecord
       created_at.strftime('%Y-%m'),
       [
         created_at.strftime('%d%b %H%M%S'),
-        code,
+        code || 'PEN',
         purchase_date.strftime('%Y-%m-%d'),
         id,
         'jpeg'
-      ].compact.join('.')
-    ].compact.join('/')
+      ].join('.')
+    ].join('/')
   end
 end

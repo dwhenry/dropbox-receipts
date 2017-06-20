@@ -65,7 +65,7 @@ class ExpenseType
           new(name: 'Fixed Asset', code: 'FA'),
           new(name: 'Personal / Non-allowable', code: 'PER'),
           new(name: 'Other / Miscellaneous', code: 'OTH'),
-          new(name: 'VAT /SA / CT Payments', code: 'TAX'),
+          new(name: 'VAT / SA / CT Payments', code: 'TAX'),
         ]
       ),
 

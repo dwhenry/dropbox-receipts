@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   get '/auth/logout' => 'auth#logout', as: :signout
 
-  resources :receipts
+  resources :receipts do
+    collection { get :gallery }
+  end
   resources :invoices
 
   root 'receipts#new'

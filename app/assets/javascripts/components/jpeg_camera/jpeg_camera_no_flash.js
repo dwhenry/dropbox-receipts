@@ -471,7 +471,7 @@
           };
 
           var canvasData = snapshot._canvas.toDataURL("image/jpeg");
-          ajax = new XMLHttpRequest();
+          var ajax = new XMLHttpRequest();
           ajax.open('POST', '/receipts');
           ajax.timeout = timeout;
           if (csrf_token) {

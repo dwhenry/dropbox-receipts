@@ -18,4 +18,5 @@
 
 //= require_tree ./theme
 //= require ./components/jpeg_camera.js
+//= require ./components/file_uploader
 //= require select2

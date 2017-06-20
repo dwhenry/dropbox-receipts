@@ -4,7 +4,7 @@
 //= require components/jpeg_camera/jpeg_camera_no_flash
 
 (function() {
-  if($('#camera')) {
+  if($('#camera').length > 0) {
     var devices = [];
     var front = null;
     navigator.mediaDevices.enumerateDevices().then(loadDevices).catch(handleError);
@@ -35,8 +35,12 @@
         JpegCamera.DefaultOptions.csrf_token = $("meta[name=\"csrf-token\"]").attr("content");
       }
       camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: (front === 'environment') });
+
+      $('.camera-start').show();
 //      camera = new JpegCamera("#camera", { front: front, shutter: false, mirror: true });
     }
+
+    window.myVideo = { start: start };
 
     function handleError(error) {
       console.log('navigator.getUserMedia error: ', error);

@@ -14,7 +14,12 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
 </head>
 
-<body>
+<body id="main-body">
+<script>
+  if( navigator.userAgent.match(/iP(hone|od|ad)/i) ) {
+    document.getElementById("main-body").classList.add("browser-ios");
+  }
+</script>
 <div class="main-wrapper">
   <div class="app" id="app">
     <header class="header">

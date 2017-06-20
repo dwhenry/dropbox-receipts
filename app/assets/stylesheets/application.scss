@@ -10,3 +10,21 @@
 .right-align {
   text-align: right;
 }
+
+// some custom functionality for iphones.. :(
+.on-iphone {
+  display: none;
+}
+
+.browser-ios .on-iphone {
+  display: block;
+}
+
+.browser-ios .no-iphone {
+  display: none;
+}
+
+//
+.custom-file-control.selected::after {
+  content: "" !important;
+}

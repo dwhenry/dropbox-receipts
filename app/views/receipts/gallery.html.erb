@@ -1,0 +1,15 @@
+<div class="col-md-3">
+  <img class="image-preview" alt="Image preview" />
+</div>
+
+<div class="col-md-6 camera-actions">
+  <div class="camera--capture">
+    <label class="custom-file">
+      <input type="file" id="file" class="custom-file-input image-input" accept="image/*">
+      <span class="custom-file-control"></span>
+    </label>
+  </div>
+  <div class="camera--submit">
+    <%= link_to 'Submit', '', onclick: 'return false', class: 'image-save btn btn-primary' %>
+  </div>
+</div>

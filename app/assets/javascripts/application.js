@@ -20,3 +20,8 @@
 //= require ./components/jpeg_camera.js
 //= require ./components/file_uploader
 //= require select2
+
+
+$(".enhanced-select").select2({
+  theme: "bootstrap"
+});

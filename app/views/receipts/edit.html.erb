@@ -51,7 +51,9 @@
 </div>
 
 <script>
-  $(".enhanced-select").select2({
-    theme: "bootstrap"
-  });
+  if(window.$) {
+    $(".enhanced-select").select2({
+      theme: "bootstrap"
+    });
+  }
 </script>

@@ -24,7 +24,7 @@
 
     <div class="form_group">
       <%= f.label :amount %>
-      <%= f.number_field :amount, min: 0, step: 0.01, onchange: '$(this).val(parseFloat($(this).val()).toFixed(2))', class: 'form-control' %>
+      <%= f.number_field :amount, min: 0, step: 0.01, class: 'form-control currency' %>
     </div>
 
     <div class="form_group">

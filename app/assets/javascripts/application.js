@@ -17,8 +17,9 @@
 //= require bootstrap
 
 //= require_tree ./theme
-//= require ./components/jpeg_camera.js
+//= require ./components/currency
 //= require ./components/file_uploader
+//= require ./components/jpeg_camera.js
 //= require select2
 
 

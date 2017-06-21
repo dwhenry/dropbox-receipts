@@ -36,7 +36,7 @@ class Invoice < ApplicationRecord
   end
 
   def rows
-    @rows ||= (data_rows || []).map { |row| Row.new(row) }
+    @rows ||= (data_rows || [{}]).map { |row| Row.new(row.symbolize_keys) }
   end
 
   def net
@@ -66,19 +66,19 @@ class Invoice < ApplicationRecord
   class Row
     attr_reader :description, :rate, :quantity, :vat_percentage
 
-    def initialize(description:, rate:, quantity:, vat_percentage:)
+    def initialize(description: nil, rate: nil, quantity: 1, vat_percentage: 0.2)
       @description = description
-      @rate = rate
-      @quantity = quantity
-      @vat_percentage = vat_percentage
+      @rate = rate.to_f
+      @quantity = quantity.to_f
+      @vat_percentage = vat_percentage.to_f * 100
     end
 
     def net
-      ((rate || 0) * (quantity || 0)).round(2)
+      ((rate || 0) * quantity).round(2)
     end
 
     def vat
-      (net * (vat_percentage || 0)).round(2)
+      (net * vat_percentage / 100).round(2)
     end
 
     def gross

@@ -26,6 +26,26 @@
   </div>
 
   <div class="form_group">
+    <%= f.label :account_name do %>
+      Account name
+      <%= link_to('(toggle details)', '#', onclick: '$(".account-details").toggle(); return false', style: 'font-size: 10px; vertical-align: top;') %>
+    <% end %>
+    <%= f.text_field :account_name, class: 'form-control' %>
+  </div>
+
+  <div class="account-details" style="display: <%= @invoice.account_name ? 'none' : 'block' %>;">
+    <div class="form_group">
+      <%= f.label :account_number %>
+      <%= f.text_field :account_number, class: 'form-control' %>
+    </div>
+
+    <div class="form_group">
+      <%= f.label :account_sort, 'Account sort code' %>
+      <%= f.text_field :account_sort, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form_group">
     <%= f.label :to_address, 'Client name and address' %>
     <%= f.text_area :to_address, class: 'form-control' %>
   </div>
@@ -59,5 +79,54 @@
     <%= f.label :due_date %>
     <%= f.date_field :due_date, class: 'form-control' %>
   </div>
+</div>
 
+<div class="col-md-12" >
+  <table class="table table-bordered table-responsive invoice-table">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Rate</th>
+        <th>Quantity</th>
+        <th>Vat %</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% f.object.rows.each_with_index do |row, i| %>
+        <%= f.fields_for :data_rows, row, index: nil do |r| %>
+          <tr>
+            <td style="padding: 0"><%= r.text_field :description, class: 'form-control' %></td>
+            <td style="padding: 0"><%= r.number_field :rate, class: 'form-control currency', step: 0.01 %></td>
+            <td style="padding: 0"><%= r.number_field :quantity, class: 'form-control currency', step: 0.01 %></td>
+            <td style="padding: 0"><%= r.number_field :vat_percentage, class: 'form-control currency', step: 0.01 %></td>
+            <td style="padding: 0;">
+              <%= link_to 'Remove', '#', class: 'btn btn-warning', onclick: 'return removeRow(this)', style: 'margin-bottom: 0;' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5" style="padding: 0;">
+            <%= link_to 'Add', '#', class: 'btn btn-success', onclick: 'return addRow()' %>
+          </td>
+        </tr>
+      <% end %>
+      </tfoot>
+  </table>
+
+  <script>
+    function addRow(event) {
+      var row = $('table tbody tr');
+      var table = $('table tbody');
+      table.append(row[0].outerHTML);
+      return false;
+    }
+
+    function removeRow(row) {
+      $(row).parents('tr').remove();
+      return false;
+    }
+  </script>
 </div>

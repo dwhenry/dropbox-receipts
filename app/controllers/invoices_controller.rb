@@ -34,7 +34,7 @@ class InvoicesController < ApplicationController
       :po_number,
       :terms,
       :due_date,
-      # data_rows: ,
+      data_rows: [:description, :net, :quantity, :vat_percentage],
     )
   end
 end

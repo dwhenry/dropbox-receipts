@@ -66,11 +66,11 @@ class Invoice < ApplicationRecord
   class Row
     attr_reader :description, :rate, :quantity, :vat_percentage
 
-    def initialize(description: nil, rate: nil, quantity: 1, vat_percentage: 0.2)
+    def initialize(description: nil, rate: nil, quantity: 1.0, vat_percentage: 20.0)
       @description = description
       @rate = rate.to_f
       @quantity = quantity.to_f
-      @vat_percentage = vat_percentage.to_f * 100
+      @vat_percentage = vat_percentage.to_f
     end
 
     def net

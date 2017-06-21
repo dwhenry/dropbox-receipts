@@ -95,4 +95,13 @@
       <%= number_to_currency(@invoice.gross, unit: '£') %>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <p>Please make payment using the following account details:</p>
+      <b>Account name:</b> <%= @invoice.account_name %><br />
+      <b>Account number:</b> <%= @invoice.account_number %><br />
+      <b>Sort code:</b> <%= @invoice.account_sort %><br />
+    </div>
+  </div>
 </div>

@@ -12,6 +12,20 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def edit
+    @invoice = current_user.invoices.find(params[:id])
+  end
+
+  def update
+    @invoice = current_user.invoices.find(params[:id])
+    if @invoice.update(invoice_params)
+      redirect_to invoices_path
+    else
+      render :new
+    end
+  end
+
+
   def show
     @invoice = Invoice.find(params[:id])
   end
@@ -34,7 +48,7 @@ class InvoicesController < ApplicationController
       :po_number,
       :terms,
       :due_date,
-      data_rows: [:description, :net, :quantity, :vat_percentage],
+      data_rows: [:description, :rate, :quantity, :vat_percentage],
     )
   end
 end

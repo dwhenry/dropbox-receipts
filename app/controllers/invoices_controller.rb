@@ -48,6 +48,9 @@ class InvoicesController < ApplicationController
       :po_number,
       :terms,
       :due_date,
+      :account_name,
+      :account_number,
+      :account_sort,
       data_rows: [:description, :rate, :quantity, :vat_percentage],
     )
   end

@@ -70,9 +70,9 @@
               <td><%= row.description %></td>
               <td class="text-right"><%= number_to_currency(row.rate, unit: '£') %></td>
               <th class="text-right"><%= number_with_precision(row.quantity, precision: 2) %></th>
-              <th class="text-right"><%= number_with_precision(row.net, precision: 2) %></th>
+              <th class="text-right"><%= number_to_currency(row.net, unit: '£') %></th>
               <th class="text-right"><%= number_with_precision(row.vat_percentage, precision: 2) %></th>
-              <th class="text-right"><%= number_with_precision(row.vat, precision: 2) %></th>
+              <th class="text-right"><%= number_to_currency(row.vat, unit: '£') %></th>
               <td class="text-right"><%= number_to_currency(row.gross, unit: '£') %></td>
             </tr>
           <% end %>

@@ -1,8 +1,12 @@
-.invoice-table {
+.table.invoice-table {
   width: 100%;
 
-  thead, thead th {
-    background: black; color: white;
+  tr.table--header {
+    th {
+      background-color: #000000 !important;
+    }
+    background-color: #000000 !important;
+    color: white;
   }
 
   tbody th {

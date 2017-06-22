@@ -1,12 +1,12 @@
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-xs-6">
     <h1>Invoice</h1>
     <h2>To:</h2>
     <% @invoice.split_lines(:to_address) do |line| %>
       <%= line %><br>
     <% end %>
   </div>
-  <div class="col-sm-6">
+  <div class="col-xs-6">
     <h2><%= @invoice.company_name %></h2>
     <% @invoice.split_lines(:company_address) do |line| %>
       <%= line %><br>
@@ -18,11 +18,11 @@
 </div>
 <br/>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-xs-12">
     <table class="table table-bordered invoice-table">
       <thead>
-      <tr>
-        <th colspan="4">Invoice Details</th>
+      <tr class="table--header">
+        <th colspan="4" class="table--header">Invoice Details</th>
       </tr>
       </thead>
       <tbody>
@@ -49,11 +49,11 @@
   </div>
 </div>
 <br/>
+
 <div class="row">
-  <div class="col-md-12">
-    <table class="table table-bordered invoice-table">
-      <thead>
-      <tr>
+  <div class="col-xs-12">
+    <table class="table table-bordered invoice-table" >
+      <tr class="table--header">
         <th>Description</th>
         <th class="text-right">Rate</th>
         <th class="text-right">Qty</th>
@@ -62,16 +62,15 @@
         <th class="text-right">VAT</th>
         <th class="text-right">Gross</th>
       </tr>
-      </thead>
       <tbody>
       <% @invoice.rows.each do |row| %>
         <tr>
           <td><%= row.description %></td>
           <td class="text-right"><%= number_to_currency(row.rate, unit: '£') %></td>
-          <th class="text-right"><%= number_with_precision(row.quantity, precision: 2) %></th>
-          <th class="text-right"><%= number_to_currency(row.net, unit: '£') %></th>
-          <th class="text-right"><%= number_with_precision(row.vat_percentage, precision: 2) %></th>
-          <th class="text-right"><%= number_to_currency(row.vat, unit: '£') %></th>
+          <td class="text-right"><%= number_with_precision(row.quantity, precision: 2) %></td>
+          <td class="text-right"><%= number_to_currency(row.net, unit: '£') %></td>
+          <td class="text-right"><%= number_with_precision(row.vat_percentage, precision: 2) %>%</td>
+          <td class="text-right"><%= number_to_currency(row.vat, unit: '£') %></td>
           <td class="text-right"><%= number_to_currency(row.gross, unit: '£') %></td>
         </tr>
       <% end %>
@@ -81,22 +80,40 @@
 </div>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-xs-7">
   </div>
-  <div class="col-md-2" style="font-weight: bold;">
-    Net Total<br>
-    Vat Total<br>
+  <div class="col-xs-2" style="font-weight: bold;">
+    Net Total
+  </div>
+  <div class="col-xs-3 text-right" style="font-weight: bold;">
+    <%= number_to_currency(@invoice.net, unit: '£') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-7">
+  </div>
+  <div class="col-xs-2" style="font-weight: bold;">
+    Vat Total
+  </div>
+  <div class="col-xs-3 text-right" style="font-weight: bold;">
+    <%= number_to_currency(@invoice.vat, unit: '£') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-7">
+  </div>
+  <div class="col-xs-2" style="font-weight: bold;">
     Gross Total
   </div>
-  <div class="col-md-2 text-right" style="font-weight: bold; text-align: right;">
-    <%= number_to_currency(@invoice.net, unit: '£') %><br>
-    <%= number_to_currency(@invoice.vat, unit: '£') %><br>
+  <div class="col-xs-3 text-right" style="font-weight: bold;">
     <%= number_to_currency(@invoice.gross, unit: '£') %>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-xs-12">
     <% @invoice.split_lines(:notes) do |line| %>
       <%= line %><br>
     <% end %>
@@ -104,7 +121,7 @@
 </div>
 <br>
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-xs-12">
     <p>Please make payment using the following account details:</p>
     <b>Account name:</b> <%= @invoice.account_name %><br />
     <b>Account number:</b> <%= @invoice.account_number %><br />

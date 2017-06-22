@@ -1,7 +1,7 @@
 
 <div class="col-md-12">
-  <%= link_to 'Generate and send', '', class: 'btn btn-primary' %>
-  <%= link_to 'PDF preview', '', class: 'btn btn-secondary' %>
+  <%= link_to 'Generate and send', '#', onclick: "alert('not yet implemented');retrun false;", class: 'btn btn-primary' %>
+  <%= link_to 'PDF preview', invoice_path(@invoice, format: :pdf), class: 'btn btn-secondary' %>
   <%= link_to 'Edit', edit_invoice_path(@invoice), class: 'btn btn-secondary' %>
 </div>
 

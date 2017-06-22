@@ -28,6 +28,21 @@ class InvoicesController < ApplicationController
 
   def show
     @invoice = Invoice.find(params[:id])
+
+    respond_to do |format|
+      format.html { render 'show', layout: 'pdf' }
+      format.pdf do
+        render :pdf => "invoice_#{@invoice.tax_date.strftime('%Y%m%d')}",
+          :template => 'invoices/preview',
+          :handlers => %w[erb],
+          :formats => %w[html],
+          # :stylesheets => %w[application],
+          :layout => 'pdf',
+          # :locals => { :foo => 'bar' },
+          :disposition => 'inline', # PDF will be sent inline, means you can load it inside an iFrame or Embed
+          :relative_paths => true # Modify asset paths to make them relative. See [the AssetSupport module](/lib/princely/asset_support.rb)
+      end
+    end
   end
 
   def index

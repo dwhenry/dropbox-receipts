@@ -21,6 +21,7 @@ source 'https://rubygems.org' do
   gem 'omniauth'
   gem 'omniauth-dropbox-oauth2'
   gem 'pg'
+  gem 'princely'
   gem 'puma', '~> 3.0'
   gem 'rails', '~> 5.0.2'
   gem 'sass-rails', '~> 5.0'

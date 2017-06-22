@@ -29,7 +29,7 @@ class Invoice < ApplicationRecord
     end
   end
 
-  def address_lines(field)
+  def split_lines(field)
     (self[field] || 'N/A').split("\n").each do |line|
       yield line
     end

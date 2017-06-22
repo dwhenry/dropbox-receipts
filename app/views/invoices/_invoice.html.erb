@@ -1,0 +1,113 @@
+<div class="row">
+  <div class="col-md-6">
+    <h1>Invoice</h1>
+    <h2>To:</h2>
+    <% @invoice.split_lines(:to_address) do |line| %>
+      <%= line %><br>
+    <% end %>
+  </div>
+  <div class="col-md-6">
+    <h2><%= @invoice.company_name %></h2>
+    <% @invoice.split_lines(:company_address) do |line| %>
+      <%= line %><br>
+    <% end %>
+    <br>
+    <b>Company Registration No:</b> <%= @invoice.company_reg %><br>
+    <b>VAT Registration No:</b> <%= @invoice.company_vat %>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-bordered invoice-table">
+      <thead>
+      <tr>
+        <th colspan="4">Invoice Details</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Invoice Number</th>
+        <td><%= @invoice.number %></td>
+        <th>Tax Date</th>
+        <td><%= @invoice.tax_date&.strftime('%d %b %Y') %></td>
+      </tr>
+      <tr>
+        <th>PO Number</th>
+        <td><%= @invoice.po_number %></td>
+        <th>Terms</th>
+        <td><%= @invoice.terms %></td>
+      </tr>
+      <tr>
+        <th>Reference</th>
+        <td><%= @invoice.reference %></td>
+        <th>Payment due by</th>
+        <td><%= @invoice.due_date&.strftime('%d %b %Y') %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-bordered invoice-table">
+      <thead>
+      <tr>
+        <th>Description</th>
+        <th class="text-right">Rate</th>
+        <th class="text-right">Qty</th>
+        <th class="text-right">Net</th>
+        <th class="text-right">VAT %</th>
+        <th class="text-right">VAT</th>
+        <th class="text-right">Gross</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @invoice.rows.each do |row| %>
+        <tr>
+          <td><%= row.description %></td>
+          <td class="text-right"><%= number_to_currency(row.rate, unit: '£') %></td>
+          <th class="text-right"><%= number_with_precision(row.quantity, precision: 2) %></th>
+          <th class="text-right"><%= number_to_currency(row.net, unit: '£') %></th>
+          <th class="text-right"><%= number_with_precision(row.vat_percentage, precision: 2) %></th>
+          <th class="text-right"><%= number_to_currency(row.vat, unit: '£') %></th>
+          <td class="text-right"><%= number_to_currency(row.gross, unit: '£') %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+  </div>
+  <div class="col-md-2" style="font-weight: bold;">
+    Net Total<br>
+    Vat Total<br>
+    Gross Total
+  </div>
+  <div class="col-md-2 text-right" style="font-weight: bold; text-align: right;">
+    <%= number_to_currency(@invoice.net, unit: '£') %><br>
+    <%= number_to_currency(@invoice.vat, unit: '£') %><br>
+    <%= number_to_currency(@invoice.gross, unit: '£') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <% @invoice.split_lines(:notes) do |line| %>
+      <%= line %><br>
+    <% end %>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-12">
+    <p>Please make payment using the following account details:</p>
+    <b>Account name:</b> <%= @invoice.account_name %><br />
+    <b>Account number:</b> <%= @invoice.account_number %><br />
+    <b>Sort code:</b> <%= @invoice.account_sort %><br />
+  </div>
+</div>

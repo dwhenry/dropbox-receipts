@@ -11,7 +11,7 @@
   <div class="company-details" style="display: <%= @invoice.company_name ? 'none' : 'block' %>;">
     <div class="form_group">
       <%= f.label :company_address %>
-      <%= f.text_area :company_address, class: 'form-control' %>
+      <%= f.text_area :company_address, class: 'form-control', rows: 5 %>
     </div>
 
     <div class="form_group">
@@ -47,7 +47,7 @@
 
   <div class="form_group">
     <%= f.label :to_address, 'Client name and address' %>
-    <%= f.text_area :to_address, class: 'form-control' %>
+    <%= f.text_area :to_address, class: 'form-control', rows: 5 %>
   </div>
 
   <div class="form_group">
@@ -67,7 +67,10 @@
 
   <div class="form_group">
     <%= f.label :reference %>
-    <%= f.text_field :reference, class: 'form-control' %>
+    <%= f.text_field :reference, class: 'form-control', 'aria-describedby': 'reference_help'  %>
+    <small id="reference_help" class="text-muted">
+      One email address per line
+    </small>
   </div>
 
   <div class="form_group">
@@ -78,6 +81,19 @@
   <div class="form_group">
     <%= f.label :due_date %>
     <%= f.date_field :due_date, class: 'form-control' %>
+  </div>
+
+  <div class="form_group">
+    <%= f.label :notes %>
+    <%= f.text_area :notes, class: 'form-control', rows: 5 %>
+  </div>
+
+  <div class="form_group">
+    <%= f.label :recipients %>
+    <%= f.text_area :recipients, class: 'form-control', rows: 5, 'aria-describedby': 'recipient_help' %>
+    <small id="recipient_help" class="text-muted">
+      One email address per line
+    </small>
   </div>
 </div>
 

@@ -24,7 +24,10 @@
   display: none;
 }
 
-//
 .custom-file-control.selected::after {
   content: "" !important;
+}
+
+.text-right {
+  text-align: right;
 }

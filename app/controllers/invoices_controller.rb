@@ -21,7 +21,7 @@ class InvoicesController < ApplicationController
     if @invoice.update(invoice_params)
       redirect_to invoices_path
     else
-      render :new
+      render :edit
     end
   end
 
@@ -51,6 +51,8 @@ class InvoicesController < ApplicationController
       :account_name,
       :account_number,
       :account_sort,
+      :notes,
+      :recipients,
       data_rows: [:description, :rate, :quantity, :vat_percentage],
     )
   end

@@ -30,7 +30,7 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.find(params[:id])
 
     respond_to do |format|
-      format.html { render 'show', layout: 'pdf' }
+      format.html
       format.pdf do
         render :pdf => "invoice_#{@invoice.tax_date.strftime('%Y%m%d')}",
           :template => 'invoices/preview',

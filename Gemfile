@@ -30,7 +30,7 @@ source 'https://rubygems.org' do
   gem 'uglifier', '>= 1.3.0'
   gem 'jpeg_camera'
   gem 'wicked_pdf'
-  gem 'wkhtmltopdf-heroku'
+  #gem 'wkhtmltopdf-heroku'
 
   group :development, :test do
     gem 'dotenv-rails', require: 'dotenv/rails-now'

@@ -126,7 +126,6 @@ GEM
       ast (~> 2.2)
     pg (0.19.0)
     powerpack (0.1.1)
-    princely (2.0.2)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -232,6 +231,8 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
+    wicked_pdf (1.1.0)
+    wkhtmltopdf-heroku (2.12.4.0)
 
 PLATFORMS
   ruby
@@ -249,7 +250,6 @@ DEPENDENCIES
   omniauth!
   omniauth-dropbox-oauth2!
   pg!
-  princely!
   pry-byebug!
   puma (~> 3.0)!
   rails (~> 5.0.2)!
@@ -263,6 +263,8 @@ DEPENDENCIES
   tzinfo-data!
   uglifier (>= 1.3.0)!
   web-console (>= 3.3.0)!
+  wicked_pdf!
+  wkhtmltopdf-heroku!
 
 RUBY VERSION
    ruby 2.3.3p222

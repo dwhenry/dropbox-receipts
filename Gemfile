@@ -21,7 +21,6 @@ source 'https://rubygems.org' do
   gem 'omniauth'
   gem 'omniauth-dropbox-oauth2'
   gem 'pg'
-  gem 'princely'
   gem 'puma', '~> 3.0'
   gem 'rails', '~> 5.0.2'
   gem 'sass-rails', '~> 5.0'
@@ -30,6 +29,8 @@ source 'https://rubygems.org' do
   gem 'turbolinks', '~> 5'
   gem 'uglifier', '>= 1.3.0'
   gem 'jpeg_camera'
+  gem 'wicked_pdf'
+  gem 'wkhtmltopdf-heroku'
 
   group :development, :test do
     gem 'dotenv-rails', require: 'dotenv/rails-now'

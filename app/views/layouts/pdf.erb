@@ -13,13 +13,11 @@
 
   <style type="text/css">
     <%= Rails.application.assets_manifest.find_sources('application.css').first.to_s.html_safe %>
-
-    @page {margin:15mm;}
   </style>
 </head>
 
 <body id="main-body">
-  <div class="row sameheight-container">
+  <div class="sameheight-container">
     <%= yield %>
   </div>
 </body>

@@ -36,6 +36,7 @@ class InvoicesController < ApplicationController
           pdf: "invoice_#{@invoice.tax_date.strftime('%Y%m%d')}",
           template: 'invoices/preview',
           layout: 'pdf',
+          zoom: 3
         )
       end
     end

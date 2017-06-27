@@ -35,7 +35,7 @@ class ReceiptsController < ApplicationController
   def update
     receipt = receipts.find(params[:id])
     receipt.update(receipt_params)
-    DropboxMover.perform_async(@receipt.id)
+    DropboxMover.perform_async(receipt.id)
 
     session[:flash] = "Receipt succcessfully uploaded!"
     redirect_to receipts_path

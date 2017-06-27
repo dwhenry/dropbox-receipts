@@ -20,7 +20,7 @@ class ReceiptsController < ApplicationController
   end
 
   def edit
-    @receipt = current_user.receipts.find(params[:id])
+    @receipt = receipts.find(params[:id])
     @types = ExpenseType.all
 
     respond_to do |format|
@@ -33,7 +33,7 @@ class ReceiptsController < ApplicationController
   end
 
   def update
-    receipt = current_user.receipts.find(params[:id])
+    receipt = receipts.find(params[:id])
     receipt.update(receipt_params)
     DropboxMover.perform_async(@receipt.id)
 
@@ -42,11 +42,11 @@ class ReceiptsController < ApplicationController
   end
 
   def index
-    @receipts = current_user.receipts.order(created_at: :desc).page(params[:page])
+    @receipts = receipts.order(created_at: :desc).page(params[:page])
   end
 
   def destroy
-    receipt = current_user.receipts.find(params[:id])
+    receipt = receipts.find(params[:id])
     receipt.update!(deleted: true)
 
     redirect_to receipts_path
@@ -56,5 +56,9 @@ class ReceiptsController < ApplicationController
 
   def receipt_params
     params.require(:receipt).permit(:company, :code, :amount, :purchase_date, :payer)
+  end
+
+  def receipts
+    current_user.is_accountant? ? Receipt : current_user.receipts
   end
 end

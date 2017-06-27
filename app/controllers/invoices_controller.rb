@@ -13,11 +13,11 @@ class InvoicesController < ApplicationController
   end
 
   def edit
-    @invoice = current_user.invoices.find(params[:id])
+    @invoice = invoices.find(params[:id])
   end
 
   def update
-    @invoice = current_user.invoices.find(params[:id])
+    @invoice = invoices.find(params[:id])
     if @invoice.update(invoice_params)
       redirect_to invoices_path
     else
@@ -27,7 +27,7 @@ class InvoicesController < ApplicationController
 
 
   def show
-    @invoice = Invoice.find(params[:id])
+    @invoice = invoices.find(params[:id])
 
     respond_to do |format|
       format.html
@@ -43,7 +43,7 @@ class InvoicesController < ApplicationController
   end
 
   def index
-    @invoices = current_user.invoices.order(created_at: :desc).page(params[:page])
+    @invoices = invoices.order(created_at: :desc).page(params[:page])
   end
 
   private
@@ -67,5 +67,9 @@ class InvoicesController < ApplicationController
       :recipients,
       data_rows: [:description, :rate, :quantity, :vat_percentage],
     )
+  end
+
+  def invoices
+    current_user.is_accountant? ? Invoice : current_user.invoices
   end
 end

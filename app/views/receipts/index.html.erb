@@ -6,32 +6,39 @@
   <%= paginate @receipts %>
 </div>
 
-<div class="col-md-12">
-  <table class="table-responsive table">
-    <thead>
-      <tr>
-        <th>Purchase Date</th>
-        <th>Company</th>
-        <th>Payer</th>
-        <th>Expence type</th>
-        <th>Amount</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tobody>
-      <% @receipts.each do |receipt| %>
-        <tr>
-          <td><%= receipt.purchase_date&.strftime('%d %b %Y') || '-' %></td>
-          <td><%= receipt.company || '-' %></td>
-          <td><%= receipt.payer || '-' %></td>
-          <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
-          <td><%= receipt.amount || '-' %></td>
-          <td>
-            <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-secondary') %>
-          </td>
-        </tr>
-      <% end %>
-    </tobody>
-  </table>
-</div>
+<% @receipts.group_by(&:user).each do |user, receipts| %>
+  <% if current_user.is_accountant? %>
+    <div class="col-md-12">
+      <h2><%= user.company_name || user.name %></h2>
+    </div>
+  <% end %>
 
+  <div class="col-md-12">
+    <table class="table-responsive table">
+      <thead>
+        <tr>
+          <th>Purchase Date</th>
+          <th>Company</th>
+          <th>Payer</th>
+          <th>Expence type</th>
+          <th>Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tobody>
+        <% receipts.each do |receipt| %>
+          <tr>
+            <td><%= receipt.purchase_date&.strftime('%d %b %Y') || '-' %></td>
+            <td><%= receipt.company || '-' %></td>
+            <td><%= receipt.payer || '-' %></td>
+            <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
+            <td><%= receipt.amount || '-' %></td>
+            <td>
+              <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-secondary') %>
+            </td>
+          </tr>
+        <% end %>
+      </tobody>
+    </table>
+  </div>
+<% end %>

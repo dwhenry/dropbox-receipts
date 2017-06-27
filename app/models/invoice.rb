@@ -53,7 +53,7 @@ class Invoice < ApplicationRecord
 
   def locked_after_generation
     if generated_at
-      if changed - [:updated_at, :deleted]
+      if (changed - %w{updated_at deleted generated_at sent_at}).any?
         errors.add(:base, 'Can not modify generated invoice')
       end
     end
@@ -61,6 +61,22 @@ class Invoice < ApplicationRecord
 
   def due_date
     super || (terms && tax_date && tax_date.advance(days: terms.to_i))
+  end
+
+  def build_path
+    [
+      Rails.env.production? ? nil : Rails.env,
+      'invoices',
+      filename
+    ].compact.join('/')
+  end
+
+  def filename
+    [
+      'invoice',
+      tax_date.strftime('%Y%m%d'),
+      'jpeg'
+    ].join('.')
   end
 
   class Row

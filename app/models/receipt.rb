@@ -6,6 +6,7 @@ class Receipt < ApplicationRecord
 
   def build_path
     [
+      Rails.env.production? ? nil : Rails.env,
       'receipts',
       created_at.strftime('%Y-%m'),
       [
@@ -15,6 +16,6 @@ class Receipt < ApplicationRecord
         id,
         'jpeg'
       ].join('.')
-    ].join('/')
+    ].compact.join('/')
   end
 end

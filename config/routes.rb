@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   resources :receipts do
     collection { get :gallery }
   end
-  resources :invoices
+  resources :invoices do
+    member { post :generate }
+  end
   resources :users, only: [:index, :update]
   root 'home#page'
 end

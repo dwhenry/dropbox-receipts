@@ -31,5 +31,13 @@
         Invoices
       </a>
     </li>
+    <% if current_user.is_accountant? %>
+      <li class="<%= 'active' if current_page?(users_path) %>">
+        <a href="<%= users_path %>">
+          <i class="<%= "fa fa-arrow" %>"></i>
+          Users
+        </a>
+      </li>
+    <% end %>
   </ul>
 </nav>

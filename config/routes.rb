@@ -13,6 +13,6 @@ Rails.application.routes.draw do
     collection { get :gallery }
   end
   resources :invoices
-
-  root 'receipts#new'
+  resources :users, only: [:index, :update]
+  root 'home#page'
 end

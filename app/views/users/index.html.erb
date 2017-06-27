@@ -1,0 +1,33 @@
+<div class="col-md-12">
+  <h1>Users</h1>
+</div>
+
+<div class="col-md-12">
+  <%= paginate @users %>
+</div>
+
+<div class="col-md-12">
+  <table class="table-responsive table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Company</th>
+        <th>Accountant</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tobody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.name %></td>
+          <td><%= user.company_name || user.invoices.last.company_name %></td>
+          <td><%= user.is_accountant? ? 'YES' : '' %></td>
+          <td style="padding: 2px">
+            <%= button_to("Make #{user.is_accountant? ? 'user' : 'accoutant'}", user_path(user), method: 'put', class: 'btn btn-secondary')  %>
+          </td>
+        </tr>
+      <% end %>
+    </tobody>
+  </table>
+</div>
+

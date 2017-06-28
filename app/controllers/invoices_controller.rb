@@ -46,6 +46,12 @@ class InvoicesController < ApplicationController
     @invoices = invoices.order(created_at: :desc).page(params[:page])
   end
 
+  def generate
+    invoice = invoices.find(params[:id])
+    InvoiceProcessor.perform_async(invoice, invoice_url(invoice, format: 'pdf', skip_overlay: true))
+    redirect_to invoices_path
+  end
+
   private
 
   def invoice_params

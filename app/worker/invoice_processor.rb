@@ -5,7 +5,7 @@ class InvoiceProcessor
   class GetFailed < StandardError; end
 
   def perform(invoice_id, path_to_pdf)
-    invoice = Invoice.find(invoice_id)
+    invoice = Invoice.find_by(id: invoice_id) || invoice
 
     path = invoice.build_path
     client = DropboxClient.new(invoice.user.token)

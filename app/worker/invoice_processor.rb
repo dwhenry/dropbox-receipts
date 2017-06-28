@@ -6,7 +6,7 @@ class InvoiceProcessor
 
   def perform(invoice_id, path_to_pdf)
     invoice = Invoice.find(invoice_id)
-routes
+
     path = invoice.build_path
     client = DropboxClient.new(invoice.user.token)
 

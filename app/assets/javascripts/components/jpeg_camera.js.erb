@@ -88,8 +88,9 @@
 
         $('video').parent().html('');
 
-        $('canvas').width($('canvas').width() / 4);
-        $('canvas').height($('canvas').height() / 4);
+        $('canvas').width($('canvas').width() / 2)
+          .height($('canvas').height() / 2)
+          .css({'position': 'static'});
         $('.camera-wrap').html($('canvas')).css({'padding-bottom': 'inherit'})
       }).fail(function(status_code, error_message, response) {
         alert("Upload failed with status " + status_code);

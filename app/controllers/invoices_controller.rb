@@ -66,6 +66,7 @@ class InvoicesController < ApplicationController
       :po_number,
       :terms,
       :due_date,
+      :reference,
       :account_name,
       :account_number,
       :account_sort,

@@ -49,6 +49,7 @@ class InvoiceProcessor
     WickedPdf.new.pdf_from_string(
       html,
       pdf: "invoice_#{invoice.tax_date.strftime('%Y%m%d')}",
+      zoom: 0.75
     )
   end
 end

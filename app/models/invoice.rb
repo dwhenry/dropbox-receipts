@@ -8,17 +8,22 @@ class Invoice < ApplicationRecord
 
   default_scope { where(deleted: false) }
 
-  CLONE_ATTR = [
-    'to_address',
-    'company_name',
-    'company_address',
-    'company_reg',
-    'company_vat',
-    'number',
-    'terms',
-    'data_rows',
-    'reference',
-  ]
+  CLONE_ATTR = %w{
+    to_address
+    company_name
+    company_address
+    company_reg
+    company_vat
+    number
+    terms
+    data_rows
+    reference
+    account_name
+    account_number
+    account_sort
+    recipients
+    notes
+  }.freeze
 
   def self.new_for(user)
     last_invoice = user.invoices.order(created_at: :desc).first

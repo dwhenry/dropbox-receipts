@@ -47,9 +47,8 @@ class InvoiceProcessor
     )
 
     WickedPdf.new.pdf_from_string(
-      html.force_encoding('UTF-8'),
+      html,
       pdf: "invoice_#{invoice.tax_date.strftime('%Y%m%d')}",
-      zoom: 3,
     )
   end
 end

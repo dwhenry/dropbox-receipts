@@ -37,11 +37,7 @@ class InvoiceProcessor
   end
 
   def get_pdf(invoice)
-    renderer = InvoicesController.renderer.new(
-      "action_dispatch.request.parameters" => { format: 'pdf' },
-    )
-
-    html = renderer.render(
+    html = InvoicesController.render(
       template: 'invoices/preview',
       layout: 'pdf',
       assigns: {

@@ -75,7 +75,7 @@ class Invoice < ApplicationRecord
     [
       'invoice',
       tax_date.strftime('%Y%m%d'),
-      'jpeg'
+      'pdf'
     ].join('.')
   end
 

@@ -1,4 +1,5 @@
 require 'dropbox_sdk'
+require 'open-uri'
 
 class InvoiceProcessor
   include Sidekiq::Worker
@@ -36,13 +37,6 @@ class InvoiceProcessor
   end
 
   def get_pdf(path_to_pdf)
-    uri = URI.parse(path_to_pdf)
-    Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-      request = Net::HTTP::Get.new uri
-
-      response = http.request request
-      raise GetFailed unless (200..399).cover?(response.code.to_i)
-      response.body
-    end
+    open(path_to_pdf).read
   end
 end

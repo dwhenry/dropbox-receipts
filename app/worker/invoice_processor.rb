@@ -5,7 +5,7 @@ class InvoiceProcessor
   include Sidekiq::Worker
   class GetFailed < StandardError; end
 
-  def perform(invoice_id, path_to_pdf)
+  def perform(invoice_id, _ = nil)
     invoice = Invoice.find(invoice_id)
 
     path = invoice.build_path
@@ -14,7 +14,7 @@ class InvoiceProcessor
     unless invoice.generated_at
       invoice.update!(generated_at: Time.now)
       begin
-        pdf = get_pdf(path_to_pdf)
+        pdf = get_pdf(invoice)
 
         client.put_file(path, pdf)
       rescue
@@ -36,7 +36,24 @@ class InvoiceProcessor
     end
   end
 
-  def get_pdf(path_to_pdf)
-    open(path_to_pdf).read
+  def get_pdf(invoice)
+    renderer = InvoicesController.renderer.new(
+      "action_dispatch.request.parameters" => { format: 'pdf' },
+    )
+
+    html = renderer.render(
+      template: 'invoices/preview',
+      layout: 'pdf',
+      assigns: {
+        invoice: invoice,
+        skip_overlay: true,
+      },
+    )
+
+    WickedPdf.new.pdf_from_string(
+      html,
+      pdf: "invoice_#{invoice.tax_date.strftime('%Y%m%d')}",
+      zoom: 3,
+    )
   end
 end

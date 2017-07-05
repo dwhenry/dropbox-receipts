@@ -20,7 +20,7 @@
       <% @users.each do |user| %>
         <tr>
           <td><%= user.name %></td>
-          <td><%= user.company_name || user.invoices.last.company_name %></td>
+          <td><%= user.company_name || user.invoices.last&.company_name %></td>
           <td><%= user.is_accountant? ? 'YES' : '' %></td>
           <td style="padding: 2px">
             <%= button_to("Make #{user.is_accountant? ? 'user' : 'accoutant'}", user_path(user), method: 'put', class: 'btn btn-secondary')  %>

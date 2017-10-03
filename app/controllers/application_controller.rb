@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    (session[:last_access] || 0) >= 7.days.ago.to_i
+    (session[:last_access] || 0) >= 30.days.ago.to_i
     if Rails.env.development?
       User.first
     else

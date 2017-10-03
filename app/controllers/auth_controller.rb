@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  skip_before_action :authenticate, only: [:success, :failure]
+  skip_before_action :authenticate, only: [:success, :failure, :logout]
 
   def success
     user = User.from_oauth(env['omniauth.auth'])

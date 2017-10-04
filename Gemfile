@@ -19,7 +19,7 @@ source 'https://rubygems.org' do
   gem 'jquery-rails'
   gem 'kaminari'
   gem 'omniauth'
-  gem 'omniauth-dropbox-oauth2'
+  gem 'omniauth-dropbox-oauth2', github: 'bamorim/omniauth-dropbox-oauth2'
   gem 'pg'
   gem 'puma', '~> 3.0'
   gem 'rails', '~> 5.0.2'

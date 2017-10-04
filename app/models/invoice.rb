@@ -69,7 +69,7 @@ class Invoice < ApplicationRecord
   end
 
   def build_path
-    [
+    '/' + [
       Rails.env.production? ? nil : Rails.env,
       'invoices',
       filename

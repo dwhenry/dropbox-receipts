@@ -1,4 +1,4 @@
-require 'dropbox_sdk'
+require 'dropbox'
 require 'open-uri'
 
 class InvoiceProcessor
@@ -9,14 +9,14 @@ class InvoiceProcessor
     invoice = Invoice.find(invoice_id)
 
     path = invoice.build_path
-    client = DropboxClient.new(invoice.user.token)
+    client = Dropbox::Client.new(invoice.user.token)
 
     unless invoice.generated_at
       invoice.update!(generated_at: Time.now)
       begin
         pdf = get_pdf(invoice)
 
-        client.put_file(path, pdf)
+        client.upload(path, pdf)
       rescue
         invoice.update!(generated_at: nil)
         raise
@@ -26,7 +26,7 @@ class InvoiceProcessor
     unless invoice.sent_at
       invoice.update!(sent_at: Time.now)
       begin
-        pdf ||= client.get_file(path)
+        pdf ||= client.download(path)
 
         InvoiceMailer.invoice_email(invoice, pdf).deliver
       rescue

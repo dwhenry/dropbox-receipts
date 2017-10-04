@@ -15,6 +15,7 @@ source 'https://rubygems.org' do
   gem 'bootstrap', '~> 4.0.0.alpha5'
   gem 'coffee-rails', '~> 4.2'
   gem 'dropbox-sdk'
+  gem 'dropbox-sdk-v2'
   gem 'jbuilder', '~> 2.5'
   gem 'jquery-rails'
   gem 'kaminari'

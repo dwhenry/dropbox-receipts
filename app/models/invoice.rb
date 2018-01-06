@@ -56,6 +56,14 @@ class Invoice < ApplicationRecord
     rows.sum(&:gross)
   end
 
+  def tax_year
+    if tax_date.month > 4 || (tax_date.month == 4 && tax_date.day > 4)
+      "#{tax_date.year}/#{tax_date.year + 1}"
+    else
+      "#{tax_date.year - 1}/#{tax_date.year}"
+    end
+  end
+
   def locked_after_generation
     if generated_at
       if (changed - %w{updated_at deleted generated_at sent_at}).any?

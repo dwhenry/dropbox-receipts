@@ -24,11 +24,12 @@
           <th>Reference</th>
           <th>Client</th>
           <th>Issue date</th>
+          <th>Net</th>
           <th>Gross</th>
           <th></th>
         </tr>
       </thead>
-      <tobody>
+      <tbody>
         <% invoices.each do |invoice| %>
           <tr>
             <td><%= link_to(invoice.number, invoice_path(invoice)) %></td>
@@ -36,6 +37,7 @@
             <td><%= invoice.reference %></td>
             <td title="<%= invoice.to_address %>"><%= truncate(invoice.to_address.split("\n").join(', ')) %></td>
             <td><%= invoice.tax_date.strftime('%d %b %Y') %></td>
+            <td class="text-right"><%= number_to_currency(invoice.net, unit: '£') %></td>
             <td class="text-right"><%= number_to_currency(invoice.gross, unit: '£') %></td>
             <td style="padding: 2px">
               <%= link_to('Preview', invoice_path(invoice), class: 'btn btn-primary') %>
@@ -44,6 +46,30 @@
           </tr>
         <% end %>
       </tobody>
+      <tfoot>
+        <tr>
+          <td>Totals</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td class="text-right"><%= number_to_currency(invoices.sum(&:net), unit: '£') %></td>
+          <td class="text-right"><%= number_to_currency(invoice.sum(&:gross), unit: '£') %></td>
+          <td></td>
+        </tr>
+        <% invoices.group_by(&:tax_year).each do |year, invoices_for_year| %>
+          <tr>
+            <td>Totals for <%= year %> with estimated tax</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="text-right"><%= number_to_currency(invoices_for_year.sum(&:net), unit: '£') %></td>
+            <td class="text-right"><%= number_to_currency(invoices_for_year.sum(&:gross), unit: '£') %></td>
+            <td class="text-right"><%= number_to_currency(invoices_for_year.sum(&:net) * 0.19, unit: '£') %></td>
+          </tr>
+        <% end %>
+      </tfoot>
     </table>
   </div>
 <% end %>

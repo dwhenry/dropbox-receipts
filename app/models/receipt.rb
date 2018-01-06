@@ -18,4 +18,8 @@ class Receipt < ApplicationRecord
       ].join('.')
     ].compact.join('/')
   end
+
+  def month
+    "#{purchase_date.month}-#{purchase_date.year}"
+  end
 end

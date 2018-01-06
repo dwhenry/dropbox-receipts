@@ -26,17 +26,27 @@
         </tr>
       </thead>
       <tobody>
-        <% receipts.each do |receipt| %>
-          <tr>
-            <td><%= receipt.purchase_date&.strftime('%d %b %Y') || '-' %></td>
-            <td><%= receipt.company || '-' %></td>
-            <td><%= receipt.payer || '-' %></td>
-            <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
-            <td><%= receipt.amount || '-' %></td>
-            <td>
-              <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-secondary') %>
-            </td>
-          </tr>
+        <% receipts.group_by(&:month).each do |month, month_receipts| %>
+          <% month_receipts.each do |receipt| %>
+            <tr>
+              <td><%= receipt.purchase_date&.strftime('%d %b %Y') || '-' %></td>
+              <td><%= receipt.company || '-' %></td>
+              <td><%= receipt.payer || '-' %></td>
+              <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
+              <td class="text-right"><%= receipt.amount ? number_to_currency(receipt.amount, unit: '£') : '-' %></td>
+              <td>
+                <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-secondary') %>
+              </td>
+            </tr>
+            <tr>
+              <td>Total for <%= month %></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td class="text-right"><%= month_receipt.sum { |r| r.amount || 0 }, unit: '£') : '-' %></td>
+              <td></td>
+            </tr>
+          <% end %>
         <% end %>
       </tobody>
     </table>

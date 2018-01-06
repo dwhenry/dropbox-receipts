@@ -54,7 +54,7 @@
           <td></td>
           <td></td>
           <td class="text-right"><%= number_to_currency(invoices.sum(&:net), unit: '£') %></td>
-          <td class="text-right"><%= number_to_currency(invoice.sum(&:gross), unit: '£') %></td>
+          <td class="text-right"><%= number_to_currency(invoices.sum(&:gross), unit: '£') %></td>
           <td></td>
         </tr>
         <% invoices.group_by(&:tax_year).each do |year, invoices_for_year| %>

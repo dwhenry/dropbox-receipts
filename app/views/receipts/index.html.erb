@@ -44,7 +44,7 @@
             <td></td>
             <td></td>
             <td></td>
-            <td class="text-right"><%= month_receipts.sum { |r| r.amount || 0 }, unit: '£') %></td>
+            <td class="text-right"><%= number_to_currency(month_receipts.sum { |r| r.amount || 0 }, unit: '£') %></td>
             <td></td>
           </tr>
         <% end %>

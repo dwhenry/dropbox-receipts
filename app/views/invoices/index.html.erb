@@ -20,8 +20,6 @@
       <thead>
         <tr>
           <th>Invoice number</th>
-          <th>PO number</th>
-          <th>Reference</th>
           <th>Client</th>
           <th>Issue date</th>
           <th>Net</th>
@@ -33,8 +31,6 @@
         <% invoices.each do |invoice| %>
           <tr>
             <td><%= link_to(invoice.number, invoice_path(invoice)) %></td>
-            <td><%= invoice.po_number %></td>
-            <td><%= invoice.reference %></td>
             <td title="<%= invoice.to_address %>"><%= truncate(invoice.to_address.split("\n").join(', ')) %></td>
             <td><%= invoice.tax_date.strftime('%d %b %Y') %></td>
             <td class="text-right"><%= number_to_currency(invoice.net, unit: '£') %></td>
@@ -51,22 +47,25 @@
           <td>Totals</td>
           <td></td>
           <td></td>
-          <td></td>
-          <td></td>
           <td class="text-right"><%= number_to_currency(invoices.sum(&:net), unit: '£') %></td>
           <td class="text-right"><%= number_to_currency(invoices.sum(&:gross), unit: '£') %></td>
           <td></td>
         </tr>
         <% invoices.group_by(&:tax_year).each do |year, invoices_for_year| %>
           <tr>
-            <td>Totals for <%= year %> with estimated tax</td>
-            <td></td>
-            <td></td>
+            <td>Totals for <%= year %></td>
             <td></td>
             <td></td>
             <td class="text-right"><%= number_to_currency(invoices_for_year.sum(&:net), unit: '£') %></td>
             <td class="text-right"><%= number_to_currency(invoices_for_year.sum(&:gross), unit: '£') %></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>&nbsp;&nbsp;Tax Requirements:</td>
+            <td></td>
+            <td></td>
             <td class="text-right"><%= number_to_currency(invoices_for_year.sum(&:net) * 0.19, unit: '£') %></td>
+            <td class="text-right"><%= number_to_currency(invoices_for_year.sum(&:net) * 0.39, unit: '£') %></td>
           </tr>
         <% end %>
       </tfoot>

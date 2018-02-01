@@ -16,6 +16,7 @@ source 'https://rubygems.org' do
   gem 'coffee-rails', '~> 4.2'
   gem 'dropbox-sdk'
   gem 'dropbox-sdk-v2'
+  gem 'platform-api'
   gem 'jbuilder', '~> 2.5'
   gem 'jquery-rails'
   gem 'kaminari'

@@ -1,0 +1,17 @@
+<div class="col-md-12">
+  <h1>Edit invoice</h1>
+</div>
+
+<div class="col-md-12">
+  <%= render 'shared/error_messages', :target => @dividend %>
+</div>
+
+<%= form_for @dividend do |f| %>
+  <%= render 'dividends/fields', f: f %>
+
+  <div class="col-md-12" >
+    <div class="form_group" style="display: inline-block;">
+      <%= f.submit 'Update', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

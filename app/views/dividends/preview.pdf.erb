@@ -1,0 +1,15 @@
+<%= render 'dividend' %>
+<% unless @skip_overlay %>
+  <div class="preview-overlay" style="
+    position: fixed;
+    top: -30px;
+    margin: 35% -180px 75%;
+    font-size: 280px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.1);
+    transform: rotate(60deg);
+    -webkit-transform: rotate(60deg);
+  ">
+    Preview
+  </div>
+<% end %>

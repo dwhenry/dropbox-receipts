@@ -1,0 +1,83 @@
+<div class="col-md-12 multi-colums" >
+
+  <div class="form_group">
+    <%= f.label :company_name do  %>
+      Company name
+      <%= link_to('(toggle details)', '#', onclick: '$(".company-details").toggle(); return false', style: 'font-size: 10px; vertical-align: top;') %>
+    <% end %>
+    <%= f.text_field :company_name, class: 'form-control' %>
+  </div>
+
+  <div class="company-details" style="display: <%= @dividend.company_name ? 'none' : 'block' %>;">
+    <div class="form_group">
+      <%= f.label :company_reg, 'Company registration number:' %>
+      <%= f.text_field :company_reg, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form_group">
+    <%= f.label :dividend_date, 'Dividend date' %>
+    <%= f.date_field :dividend_date, class: 'form-control' %>
+  </div>
+
+  <div class="form_group">
+    <%= f.label :recipients %>
+    <%= f.text_area :recipients, class: 'form-control', rows: 5, 'aria-describedby': 'recipient_help' %>
+    <small id="recipient_help" class="text-muted">
+      One email address per line
+    </small>
+  </div>
+</div>
+
+<div class="col-md-12" >
+  <table class="table table-bordered table-responsive invoice-table">
+    <thead>
+      <tr>
+        <th>Shareholder</th>
+        <th>Shares</th>
+        <th>Amount</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% f.object.rows.each_with_index do |row, i| %>
+        <%= f.fields_for :data_rows, row, index: nil do |r| %>
+          <tr>
+            <td style="padding: 0"><%= r.text_field :shareholder, class: 'form-control' %></td>
+            <td style="padding: 0"><%= r.text_field :shares, class: 'form-control' %></td>
+            <td style="padding: 0"><%= r.number_field :amount, class: 'form-control currency', step: 0.01 %></td>
+            <td style="padding: 0;">
+              <%= link_to 'Remove', '#', class: 'btn btn-warning', onclick: 'return removeRow(this)', style: 'margin-bottom: 0;' %>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <%= render 'shared/error_messages', :target => row, skip_header: true %>
+            </td>
+          </tr>
+    <% end %>
+    <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="4" style="padding: 0;">
+          <%= link_to 'Add', '#', class: 'btn btn-success', onclick: 'return addRow()' %>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <script>
+    function addRow(event) {
+      var row = $('table tbody tr');
+      var table = $('table tbody');
+      table.append(row[0].outerHTML);
+      return false;
+    }
+
+    function removeRow(row) {
+      $(row).parents('tr').remove();
+      return false;
+    }
+  </script>
+</div>

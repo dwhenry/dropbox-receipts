@@ -1,0 +1,19 @@
+
+<div class="col-md-12">
+  <%= button_to 'Generate and send', generate_dividend_path(@dividend), confirm: 'This will disable editing to this invoice', class: 'btn btn-primary inline', form_class: 'form-inline' %>
+  <%= link_to 'PDF preview', dividend_path(@dividend, format: :pdf), class: 'btn btn-secondary' %>
+  <%= link_to 'Edit', edit_dividend_path(@dividend), class: 'btn btn-secondary' %>
+</div>
+
+<div class="col-md-12" style="margin-top: 40px; margin-bottom: 40px;">
+  <b>Recipients:</b><br>
+  <% @dividend.split_lines(:recipients) do |line| %>
+    <%= line %><br />
+  <% end %>
+</div>
+
+<div class="col-md-12">
+  <div style="border: solid 1px black; padding: 20px;">
+    <%= render 'dividend' %>
+  </div>
+</div>

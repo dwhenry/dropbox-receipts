@@ -38,7 +38,7 @@ class DividendProcessor
 
   def get_pdf(dividend)
     html = DividendsController.render(
-      template: 'dividend/preview',
+      template: 'dividends/preview',
       layout: 'pdf',
       assigns: {
         invoice: dividend,

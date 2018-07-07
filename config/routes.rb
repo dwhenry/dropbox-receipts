@@ -18,11 +18,14 @@ Rails.application.routes.draw do
 
   get '/auth/logout' => 'auth#logout', as: :signout
 
-  resources :receipts do
-    collection { get :gallery }
+  resources :dividends do
+    member { post :generate }
   end
   resources :invoices do
     member { post :generate }
+  end
+  resources :receipts do
+    collection { get :gallery }
   end
   resources :users, only: [:index, :update]
   root 'home#page'

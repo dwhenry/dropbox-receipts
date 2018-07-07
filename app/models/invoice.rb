@@ -5,6 +5,7 @@ class Invoice < ApplicationRecord
   validates_presence_of :tax_date
   validates_presence_of :terms
   validate :locked_after_generation
+  validates :number, uniqueness: { scope: :user_id }
 
   default_scope { where(deleted: false) }
 

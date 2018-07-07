@@ -1,0 +1,67 @@
+<div class="col-md-12">
+  <h1>Invoices</h1>
+</div>
+
+<div class="col-md-12">
+  <%= link_to('New', new_dividend_path, class: 'btn btn-success') %>
+  <%= paginate @dividends %>
+</div>
+
+<% @dividends.group_by(&:user).each do |user, dividends| %>
+
+  <% if current_user.is_accountant? %>
+    <div class="col-md-12">
+      <h2><%= user.company_name || user.name %></h2>
+    </div>
+  <% end %>
+
+  <div class="col-md-12">
+    <table class="table-responsive table">
+      <thead>
+        <tr>
+          <th>Invoice number</th>
+          <th>Client</th>
+          <th>Issue date</th>
+          <th>Details</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% dividends.each do |dividend| %>
+          <tr>
+            <td><%= dividend.dividend_date.strftime('%d %b %Y') %></td>
+            <td class="text-right"><%= number_to_currency(dividend.total_amount, unit: '£') %></td>
+            <td>
+              <% dividend.rows.each do |row| %>
+                <p>
+                  <b><%= row.shareholder %>:</b> <%= number_to_currency(row.amount, unit: '£') %>
+                </p>
+              <% end %>
+            </td>
+            <td style="padding: 2px">
+              <%= link_to('Preview', dividend_path(dividend), class: 'btn btn-primary') %>
+              <%= link_to('Edit', edit_dividend_path(dividend), class: 'btn btn-secondary') unless dividend.generated_at %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Totals</td>
+          <td class="text-right"><%= number_to_currency(dividends.sum(&:total_amount), unit: '£') %></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <% dividends.group_by(&:tax_year).each do |year, dividends_for_year| %>
+          <tr>
+            <td>Totals for <%= year %></td>
+            <td class="text-right"><%= number_to_currency(dividends_for_year.sum(&:total_amount), unit: '£') %></td>
+            <td></td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tfoot>
+    </table>
+  </div>
+<% end %>
+

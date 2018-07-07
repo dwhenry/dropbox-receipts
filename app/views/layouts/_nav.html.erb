@@ -31,6 +31,18 @@
         Invoices
       </a>
     </li>
+    <li class="<%= 'active' if current_page?(new_dividend_path) %>">
+      <a href="<%= new_dividend_path %>">
+        <i class="<%= "fa fa-arrow" %>"></i>
+        Create dividend
+      </a>
+    </li>
+    <li class="<%= 'active' if current_page?(dividends_path) %>">
+      <a href="<%= dividends_path %>">
+        <i class="<%= "fa fa-arrow" %>"></i>
+        Dividends
+      </a>
+    </li>
     <% if current_user.is_accountant? %>
       <li class="<%= 'active' if current_page?(users_path) %>">
         <a href="<%= users_path %>">

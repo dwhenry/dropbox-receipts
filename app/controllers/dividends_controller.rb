@@ -48,7 +48,7 @@ class DividendsController < ApplicationController
 
   def generate
     dividend = dividends.find(params[:id])
-    DividendProcessor.perform_async(dividend.id, dividend_url(dividend, format: 'pdf', skip_overlay: true))
+    DividendProcessor.perform_async(dividend.id)
     redirect_to dividends_path
   end
 

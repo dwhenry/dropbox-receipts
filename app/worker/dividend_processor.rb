@@ -1,11 +1,11 @@
 require 'dropbox'
 require 'open-uri'
 
-class InvoiceProcessor
+class DividendProcessor
   include Sidekiq::Worker
   class GetFailed < StandardError; end
 
-  def perform(dividend_id, _ = nil)
+  def perform(dividend_id)
     dividend = Divdend.find(dividend_id)
 
     path = dividend.build_path

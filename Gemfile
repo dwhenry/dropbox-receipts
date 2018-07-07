@@ -6,12 +6,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-source 'https://rails-assets.org' do
-  gem 'rails-assets-tether', '>= 1.1.0'
-end
-
 source 'https://rubygems.org' do
-
+  gem 'rails-assets-tether', '>= 1.1.0'
   gem 'bootstrap', '~> 4.0.0.alpha5'
   gem 'coffee-rails', '~> 4.2'
   gem 'dropbox-sdk'

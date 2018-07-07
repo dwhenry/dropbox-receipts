@@ -6,7 +6,7 @@ class DividendProcessor
   class GetFailed < StandardError; end
 
   def perform(dividend_id)
-    dividend = Divdend.find(dividend_id)
+    dividend = Dividend.find(dividend_id)
 
     path = dividend.build_path
     client = Dropbox::Client.new(dividend.user.token)

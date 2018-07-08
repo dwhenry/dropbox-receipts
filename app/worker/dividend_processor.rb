@@ -41,7 +41,7 @@ class DividendProcessor
       template: 'dividends/preview',
       layout: 'pdf',
       assigns: {
-        invoice: dividend,
+        dividend: dividend,
         skip_overlay: true,
       },
     )

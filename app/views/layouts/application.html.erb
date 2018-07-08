@@ -73,7 +73,7 @@
     </aside>
     <div class="sidebar-overlay" id="sidebar-overlay"></div>
     <article class="content dashboard-page">
-      <% if flash.any? %>
+      <% if (flash.keys & %w(notice warning danger info)).any? %>
         <section id="flash">
           <div class="row sameheight-container">
             <% flash.each do |level, msg| %>

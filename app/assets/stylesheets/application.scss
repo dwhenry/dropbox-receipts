@@ -28,6 +28,15 @@
   content: "" !important;
 }
 
+.custom-file-control.no-browse::before {
+  content: "" !important;
+  display: none;
+}
+
+.custom-file-control.no-browse {
+  margin-top: -8px;
+}
+
 .text-right {
   text-align: right;
 }

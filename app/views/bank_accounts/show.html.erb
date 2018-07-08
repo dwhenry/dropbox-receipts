@@ -1,0 +1,62 @@
+<div class="col-md-9">
+  <h1>Bank Account Details</h1>
+</div>
+
+<div class="col-md-12">
+  <%= paginate @bank_lines %>
+</div>
+
+<div class="col-md-12">
+  <% bank_info = @bank_lines.first %>
+  <table class="table-responsive table">
+    <tr>
+      <th>Name</th>
+      <td><%= bank_info.name %></td>
+    </tr>
+    <tr>
+      <th>A/C #</th>
+      <td><%= bank_info.account_num %></td>
+    </tr>
+    <tr>
+      <th>Sort Code</th>
+      <td><%= bank_info.sort_code %></td>
+    </tr>
+    <tr>
+      <th>Balance</th>
+      <td><%= number_to_currency(bank_info.current_balance, unit: '£') %></td>
+    </tr>
+  </table>
+</div>
+
+<div class="col-md-12">
+  <table class="table-responsive table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Amount</th>
+        <th>Balance</th>
+        <th>Linked</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bank_lines.each do |bank_line| %>
+        <tr>
+          <td><%= bank_line.transaction_date.strftime('%d %b %Y') %></td>
+          <td><%= bank_line.transaction_type %></td>
+          <td><%= bank_line.description %></td>
+          <td><%= bank_line.transaction_type %></td>
+          <td class="text-right"><%= number_to_currency(bank_line.amount, unit: '£') %></td>
+          <td class="text-right"><%= number_to_currency(bank_line.balance, unit: '£') %></td>
+
+          <td style="padding: 2px">
+            <%= link_to('Edit', '', class: 'btn btn-primary') %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+

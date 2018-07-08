@@ -1,0 +1,69 @@
+<div class="col-md-9">
+  <h1>Invoices</h1>
+</div>
+
+<div class="col-md-3">
+  <%= link_to('Import New Account', new_bank_account_path, class: 'btn btn-primary') %>
+</div>
+
+<% @bank_accounts.group_by(&:user).each do |user, bank_accounts| %>
+
+  <% if current_user.is_accountant? %>
+    <div class="col-md-12">
+      <h2><%= user.company_name || user.name %></h2>
+    </div>
+  <% end %>
+
+  <div class="col-md-12">
+    <table class="table-responsive table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>A/C #</th>
+          <th>Sort Code</th>
+          <th>Balance</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bank_accounts.each do |bank_account| %>
+          <tr id="account-<%= bank_account.name %>">
+            <td><%= bank_account.name %></td>
+            <td><%= bank_account.account_num %></td>
+            <td><%= bank_account.sort_code %></td>
+            <td class="text-right"><%= number_to_currency(bank_account.current_balance, unit: '£') %></td>
+            <td style="padding: 2px">
+              <%= link_to('View', bank_account_path(bank_account.name), class: 'btn btn-primary') %>
+              <%= form_tag(import_bank_accounts_path, style: 'display: inline;', multipart: true) do %>
+                <%= hidden_field_tag :account_name, bank_account.name %>
+                <label class="custom-file">
+                  <%= file_field_tag 'file', class: 'custom-file-input image-input', accept: '.csv' %>
+                  <span class="custom-file-control no-browse"></span>
+                </label>
+
+                <%= submit_tag('Import', class: 'btn btn-secondary') %>
+              <% end %>
+            </td>
+          </tr>
+          <% if flash[bank_account.name] %>
+            <tr>
+              <td colspan="5" style="color: red">
+                <%= flash[bank_account.name].flatten.join('<br>').html_safe %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Totals</td>
+          <td></td>
+          <td></td>
+          <td class="text-right"><%= number_to_currency(bank_accounts.sum(&:current_balance), unit: '£') %></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+<% end %>
+

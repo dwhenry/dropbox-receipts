@@ -18,6 +18,9 @@ Rails.application.routes.draw do
 
   get '/auth/logout' => 'auth#logout', as: :signout
 
+  resources :bank_accounts do
+    collection { post :import }
+  end
   resources :dividends do
     member { post :generate }
   end

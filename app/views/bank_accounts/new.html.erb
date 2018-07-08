@@ -1,0 +1,68 @@
+<div class="col-md-12">
+  <h1>New Account Upload</h1>
+</div>
+
+<div class="col-md-12">
+  <%= render 'shared/error_messages', :target => @bank_line %>
+</div>
+
+<%= form_for @bank_line, url: bank_accounts_path, html: { multipart: true } do |f| %>
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form_group">
+          <%= f.label :name %>
+          <%= f.text_field :name, class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form_group">
+          <%= f.label :account_num, 'A\C #' %>
+          <%= f.text_field :account_num, class: 'form-control' %>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form_group">
+          <%= f.label :sort_code %>
+          <%= f.text_field :sort_code, class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form_group">
+          <%= f.label :transaction_date, 'Opening date' %>
+          <%= f.date_field :transaction_date, class: 'form-control' %>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form_group">
+          <%= f.label :balance, 'Opening balance' %>
+          <%= f.number_field :balance, step: 0.01, class: 'form-control currency' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="form_group">
+      <label for="file">
+        Bank Statement (CSV file)
+      </label>
+      <div class="camera--capture">
+        <label class="custom-file">
+          <%= file_field_tag 'file', class: 'custom-file-input image-input', accept: '.csv' %>
+          <span class="custom-file-control"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 camera-actions">
+    <div class="form_group" style="display: inline-block;">
+      <%= f.submit 'Create', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

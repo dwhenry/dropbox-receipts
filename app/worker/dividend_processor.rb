@@ -23,7 +23,7 @@ class DividendProcessor
       end
     end
 
-    unless dividend.sent_at && dividend.recipients.present?
+    unless dividend.sent_at || dividend.recipients.blank?
       dividend.update!(sent_at: Time.now)
       begin
         pdf ||= client.download(path)

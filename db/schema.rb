@@ -10,10 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180707204235) do
+ActiveRecord::Schema.define(version: 20180708164926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bank_lines", force: :cascade do |t|
+    t.string   "name"
+    t.string   "account_num"
+    t.string   "sort_code"
+    t.integer  "previous_id"
+    t.integer  "user_id"
+    t.decimal  "amount",           precision: 8, scale: 2
+    t.decimal  "balance",          precision: 8, scale: 2
+    t.date     "transaction_date"
+    t.string   "description"
+    t.string   "transaction_type"
+    t.integer  "source_id"
+    t.string   "source_type"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+    t.index ["account_num"], name: "index_bank_lines_on_account_num", using: :btree
+    t.index ["name"], name: "index_bank_lines_on_name", using: :btree
+    t.index ["previous_id"], name: "index_bank_lines_on_previous_id", using: :btree
+    t.index ["sort_code"], name: "index_bank_lines_on_sort_code", using: :btree
+    t.index ["source_id"], name: "index_bank_lines_on_source_id", using: :btree
+    t.index ["source_type"], name: "index_bank_lines_on_source_type", using: :btree
+    t.index ["user_id"], name: "index_bank_lines_on_user_id", using: :btree
+  end
 
   create_table "dividends", force: :cascade do |t|
     t.integer  "user_id"
@@ -21,6 +45,7 @@ ActiveRecord::Schema.define(version: 20180707204235) do
     t.decimal  "total_amount",  precision: 8, scale: 2
     t.jsonb    "data_rows"
     t.datetime "generated_at"
+    t.datetime "sent_at"
     t.text     "recipients"
     t.string   "company_name"
     t.string   "company_reg"
@@ -83,6 +108,7 @@ ActiveRecord::Schema.define(version: 20180707204235) do
     t.boolean  "is_accountant"
   end
 
+  add_foreign_key "bank_lines", "users"
   add_foreign_key "dividends", "users"
   add_foreign_key "invoices", "users"
   add_foreign_key "receipts", "users"

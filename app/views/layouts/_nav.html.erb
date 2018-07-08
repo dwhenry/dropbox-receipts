@@ -43,6 +43,12 @@
         Dividends
       </a>
     </li>
+    <li class="<%= 'active' if current_page?(bank_accounts_path) %>">
+      <a href="<%= bank_accounts_path %>">
+        <i class="<%= "fa fa-arrow" %>"></i>
+        Bank Accounts
+      </a>
+    </li>
     <% if current_user.is_accountant? %>
       <li class="<%= 'active' if current_page?(users_path) %>">
         <a href="<%= users_path %>">

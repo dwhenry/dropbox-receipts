@@ -98,14 +98,10 @@ class BankAccountsController < ApplicationController
         raise ActiveRecord::Rollback if @errors.any?
       end
 
-      # do matching in the background
-      # processed
-
       @errors << "Skipped #{skipped} lines" if skipped > 0
 
-      if @errors.any?
-        BankStmtLookup.perform_now(processed)
-      end
+      # do matching in the background
+      BankStmtLookup.perform_async(processed) if @errors.empty?
     end
 
     def current

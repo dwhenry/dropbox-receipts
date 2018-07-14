@@ -7,13 +7,14 @@ class BankAccountsController < ApplicationController
 
   def create
     # build opening balance
-    @bank_line = BankLine.new(new_bank_line_params)
-    if @bank_line.save
+    bank_line = BankLine.new(new_bank_line_params)
+    if bank_line.save
       # import the csv
       importer = CsvImporter.new(user: current_user, account_name: @bank_line.name)
       importer.import(params[:file]&.read || '')
       redirect_to bank_accounts_path(anchor: "account-#{@bank_line.name}"), flash: { @bank_line.name => importer.errors }
     else
+      @bank_lines = bank_lines.where(name: params[:id]).order(:created_at, :previous_id).page(params[:page])
       render :new
     end
   end
@@ -76,16 +77,17 @@ class BankAccountsController < ApplicationController
 
     def import(io)
       skip = false
-      skipped = 0
+      skipped = []
       processed = []
       ApplicationRecord.transaction do
         CSV.parse(io, headers: true).each do |line|
           if skip
-            skipped += 1
+            skipped << line['Description']
             next
           end
 
           next_line = current.initialize_next(line)
+
           if next_line.save
             @current = next_line
             processed << next_line.id
@@ -98,7 +100,7 @@ class BankAccountsController < ApplicationController
         raise ActiveRecord::Rollback if @errors.any?
       end
 
-      @errors << "Skipped #{skipped} lines" if skipped > 0
+      @errors << "Skipped #{skipped.count} lines: (#{skipped.join(', ')})" if skipped.any?
 
       # do matching in the background
       BankStmtLookup.perform_async(processed) if @errors.empty?

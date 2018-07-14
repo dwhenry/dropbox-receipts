@@ -1,4 +1,9 @@
 class BankLine < ApplicationRecord
+
+  def formatted
+    @formatted ||= Formatted.new(self)
+  end
+
   has_one :next, required: false, class_name: 'BankLine', foreign_key: 'previous_id'
   belongs_to :previous, required: false, class_name: 'BankLine'
   belongs_to :user
@@ -9,7 +14,9 @@ class BankLine < ApplicationRecord
   validates :balance,
     inclusion: {
       in: ->(line) { [(line.previous&.balance || 0) + (line.amount || 0)] },
-      message: 'does not match expectation. (previous balance + change)'
+      message: ->(line, _) do
+        "does not match expectation. (#{line.description}: #{line.formatted.prev_balance} + #{line.formatted.amount} <> #{line.formatted.balance})"
+      end
     }
   validates :name, presence: true
   validates :account_num, presence: true
@@ -32,6 +39,7 @@ class BankLine < ApplicationRecord
   end
 
   def initialize_next(data)
+    amount = (data['Paid out'].to_d * -1) + data['Paid in'].to_d
     self.class.new(
       name: name,
       account_num: account_num,
@@ -41,8 +49,28 @@ class BankLine < ApplicationRecord
       transaction_date: data['Date'],
       transaction_type: data['Type'],
       description: data['Description'],
-      amount: (data['Paid out'].to_d * -1) + data['Paid in'].to_d,
-      balance: data['Balance']
+      amount: amount,
+      balance: data['Balance'].presence || balance + amount # balance is blank when multiple transaction on one day
     )
+  end
+
+  class Formatted
+    include ActionView::Helpers::NumberHelper
+
+    def initialize(base)
+      @base = base
+    end
+
+    def prev_balance
+      number_to_currency(@base.previous.balance, unit: '£')
+    end
+
+    def amount
+      number_to_currency(@base.amount, unit: '£')
+    end
+
+    def balance
+      number_to_currency(@base.balance, unit: '£')
+    end
   end
 end

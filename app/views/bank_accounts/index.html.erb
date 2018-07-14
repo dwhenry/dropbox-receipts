@@ -35,6 +35,7 @@
             <td style="padding: 2px">
               <%= link_to('View', bank_account_path(bank_account.name), class: 'btn btn-primary') %>
               <%= form_tag(import_bank_accounts_path, style: 'display: inline;', multipart: true) do %>
+                <%= hidden_field_tag :page, params[:page] %>
                 <%= hidden_field_tag :account_name, bank_account.name %>
                 <label class="custom-file">
                   <%= file_field_tag 'file', class: 'custom-file-input image-input', accept: '.csv' %>

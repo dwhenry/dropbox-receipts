@@ -21,6 +21,10 @@ class Dividend < ApplicationRecord
     end
   end
 
+  def desc
+    "Dividend: #{dividend_date}"
+  end
+
   def rows
     @rows ||= (data_rows || [{}]).map { |row| Row.new(row.symbolize_keys) }
   end

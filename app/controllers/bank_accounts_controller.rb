@@ -29,8 +29,18 @@ class BankAccountsController < ApplicationController
   def import
     importer = CsvImporter.new(user: current_user, account_name: params[:account_name])
     importer.import(params[:file]&.read || '')
+
     redirect_to bank_accounts_path(anchor: "account-#{params[:account_name]}"), flash: { params[:account_name] => importer.errors }
   end
+
+  def destroy
+    lines = bank_lines.where(name: params[:id])
+    lines.delete_all
+
+    redirect_to bank_accounts_path
+  end
+
+  private
 
   def bank_lines
     current_user.is_accountant? ? BankLine : current_user.bank_lines
@@ -39,8 +49,6 @@ class BankAccountsController < ApplicationController
   def bank_accounts
     bank_lines.select(:name, :account_num, :sort_code, :user_id).includes(:user).distinct
   end
-
-  private
 
   def new_bank_line_params
     params.require(:bank_line).permit(
@@ -70,26 +78,34 @@ class BankAccountsController < ApplicationController
       skip = false
       skipped = 0
       processed = []
-      CSV.parse(io, headers: true).each do |line|
-        if skip
-          skipped += 1
-          next
+      ApplicationRecord.transaction do
+        CSV.parse(io, headers: true).each do |line|
+          if skip
+            skipped += 1
+            next
+          end
+
+          next_line = current.initialize_next(line)
+          if next_line.save
+            @current = next_line
+            processed << next_line.id
+          else
+            @errors += next_line.errors.full_messages
+            skip = true
+          end
         end
 
-        next_line = current.initialize_next(line)
-        if next_line.save
-          @current = next_line
-          processed << next_line.id
-        else
-          @errors += next_line.errors.full_messages
-          skip = true
-        end
+        raise ActiveRecord::Rollback if @errors.any?
       end
 
       # do matching in the background
       # processed
 
       @errors << "Skipped #{skipped} lines" if skipped > 0
+
+      if @errors.any?
+        BankStmtLookup.perform_now(processed)
+      end
     end
 
     def current

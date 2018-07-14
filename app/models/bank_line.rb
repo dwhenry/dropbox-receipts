@@ -2,6 +2,7 @@ class BankLine < ApplicationRecord
   has_one :next, required: false, class_name: 'BankLine', foreign_key: 'previous_id'
   belongs_to :previous, required: false, class_name: 'BankLine'
   belongs_to :user
+  belongs_to :source, polymorphic: true, required: false
 
   validates :previous, presence: true, unless: ->(line) { line.description == 'Opening Balance' }
   validates :user, presence: true
@@ -22,7 +23,9 @@ class BankLine < ApplicationRecord
     },
     presence: true
   validates :transaction_type, presence: true
-  # validates :transaction_date, numericality: { greater_than_or_equal_to: ->(line) { line.previous.transaction_date } }
+  validate do |line|
+    !line.previous || line.transaction_date >= line.previous.transaction_date
+  end
 
   def current_balance
     BankLine.left_joins(:next).find_by!(user_id: user_id, name: name, nexts_bank_lines: { id: nil }).balance

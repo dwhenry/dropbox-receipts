@@ -1,5 +1,7 @@
 class Invoice < ApplicationRecord
   belongs_to :user
+  has_many :bank_lines, as: :source
+
   validates_presence_of :user
   validates_presence_of :company_name
   validates_presence_of :tax_date
@@ -33,6 +35,10 @@ class Invoice < ApplicationRecord
     else
       new(tax_date: Date.today)
     end
+  end
+
+  def desc
+    "Invoice: #{number}"
   end
 
   def split_lines(field)

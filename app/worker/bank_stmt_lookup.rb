@@ -16,9 +16,9 @@ class BankStmtLookup
     case line.transaction_type
     when 'CR'
       find_invoice(line)
-    when 'BP'
+    when 'BP', 'SO'
       find_dividend(line) || find_wage(line) || find_tax(line)
-    when 'DR'
+    when 'DR', 'VIS', 'DD', ')))'
       find_receipt(line)
     else
       raise "Unknown type: #{line.transaction_type}"

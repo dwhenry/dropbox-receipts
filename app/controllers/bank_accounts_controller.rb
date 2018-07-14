@@ -44,11 +44,11 @@ class BankAccountsController < ApplicationController
   private
 
   def bank_lines
-    current_user.is_accountant? ? BankLine : current_user.bank_lines
+    current_user.is_accountant? ? BankLine.order(id: :desc) : current_user.bank_lines.order(id: :desc)
   end
 
   def bank_accounts
-    bank_lines.select(:name, :account_num, :sort_code, :user_id).includes(:user).distinct
+    bank_lines.select(:name, :account_num, :sort_code, :user_id).includes(:user).reorder(:name).distinct
   end
 
   def new_bank_line_params

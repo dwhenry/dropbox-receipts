@@ -43,6 +43,7 @@
 
                 <%= submit_tag('Import', class: 'btn btn-secondary') %>
               <% end %>
+              <%= link_to('X', bank_account_path(bank_account.name), class: 'btn btn-danger', method: :delete, 'data-confirm': "Are you sure?") %>
             </td>
           </tr>
           <% if flash[bank_account.name] %>

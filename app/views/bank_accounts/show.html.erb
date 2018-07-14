@@ -35,7 +35,8 @@
         <th>Date</th>
         <th>Type</th>
         <th>Description</th>
-        <th>Amount</th>
+        <th>Paid In</th>
+        <th>Paid Out</th>
         <th>Balance</th>
         <th>Linked</th>
         <th></th>
@@ -47,10 +48,10 @@
           <td><%= bank_line.transaction_date.strftime('%d %b %Y') %></td>
           <td><%= bank_line.transaction_type %></td>
           <td><%= bank_line.description %></td>
-          <td><%= bank_line.transaction_type %></td>
-          <td class="text-right"><%= number_to_currency(bank_line.amount, unit: '£') %></td>
+          <td class="text-right"><%= bank_line.amount > 0 ? number_to_currency(bank_line.amount, unit: '£') : nil %></td>
+          <td class="text-right"><%= bank_line.amount < 0 ? number_to_currency(bank_line.amount.abs, unit: '£') : nil %></td>
           <td class="text-right"><%= number_to_currency(bank_line.balance, unit: '£') %></td>
-
+          <td><%= bank_line.source&.desc %></td>
           <td style="padding: 2px">
             <%= link_to('Edit', '', class: 'btn btn-primary') %>
           </td>

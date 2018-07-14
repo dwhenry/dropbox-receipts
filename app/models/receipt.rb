@@ -4,6 +4,10 @@ class Receipt < ApplicationRecord
 
   default_scope { where(deleted: false) }
 
+  def desc
+    "Receipt: #{code}-#{created_at.strftime('%Y-%m')}"
+  end
+
   def build_path
     '/' + [
       Rails.env.production? ? nil : Rails.env,

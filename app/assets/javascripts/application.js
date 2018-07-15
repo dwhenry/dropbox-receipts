@@ -26,3 +26,9 @@
 $(".enhanced-select").select2({
   theme: "bootstrap"
 });
+
+$(".new-link").click(function(e) {
+  e.preventDefault();
+  window.location = $(this).data('href');
+  return false;
+});

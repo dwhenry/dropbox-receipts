@@ -1,58 +1,39 @@
 <nav class="menu">
   <ul class="nav metismenu" id="sidebar-menu">
-    <li class="<%= 'active no-iphone' if current_page?(new_receipt_path) %>">
-      <a href="<%= new_receipt_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
-        Add receipt (with preview)
-      </a>
-    </li>
-    <li class="<%= 'active' if current_page?(gallery_receipts_path) %>">
-      <a href="<%= gallery_receipts_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
-        <span class="on-iphone">Add receipt (iphone or gallery)</span>
-        <span class="no-iphone">Add receipt (gallery)</span>
-      </a>
-    </li>
-    <li class="<%= 'active' if current_page?(receipts_path) %>">
+    <li class="<%= 'active' if current_location?(receipts_path) %>">
       <a href="<%= receipts_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
         Receipts
+        (
+          <div class="no-iphone">
+            <span class="new-link" data-href="<%= new_receipt_path %>">New</span> |
+          </div>
+          <span class="new-link" data-href="<%= gallery_receipts_path %>">
+            <div class="on-iphone">New</div>
+            <div class="no-iphone">From gallery</div>
+          </span>
+        )
       </a>
     </li>
-    <li class="<%= 'active' if current_page?(new_invoice_path) %>">
-      <a href="<%= new_invoice_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
-        Create invoice
-      </a>
-    </li>
-    <li class="<%= 'active' if current_page?(invoices_path) %>">
+    <li class="<%= 'active' if current_location?(invoices_path) %>">
       <a href="<%= invoices_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
         Invoices
+        (<span class="new-link" data-href="<%= new_invoice_path %>">New</span>)
       </a>
     </li>
-    <li class="<%= 'active' if current_page?(new_dividend_path) %>">
-      <a href="<%= new_dividend_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
-        Create dividend
-      </a>
-    </li>
-    <li class="<%= 'active' if current_page?(dividends_path) %>">
+    <li class="<%= 'active' if current_location?(dividends_path) %>">
       <a href="<%= dividends_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
         Dividends
+        (<span class="new-link" data-href="<%= new_dividend_path %>">New</span>)
       </a>
     </li>
-    <li class="<%= 'active' if current_page?(bank_accounts_path) %>">
+    <li class="<%= 'active' if current_location?(bank_accounts_path) %>">
       <a href="<%= bank_accounts_path %>">
-        <i class="<%= "fa fa-arrow" %>"></i>
         Bank Accounts
       </a>
     </li>
     <% if current_user.is_accountant? %>
-      <li class="<%= 'active' if current_page?(users_path) %>">
+      <li class="<%= 'active' if current_location?(users_path) %>">
         <a href="<%= users_path %>">
-          <i class="<%= "fa fa-arrow" %>"></i>
           Users
         </a>
       </li>

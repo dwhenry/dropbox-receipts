@@ -12,8 +12,12 @@
   display: none;
 }
 
+.no-iphone {
+  display: inline;
+}
+
 .browser-ios .on-iphone {
-  display: block;
+  display: inline;
 }
 
 .browser-ios .no-iphone {
@@ -51,4 +55,17 @@
   &.negative {
     color: red;
   }
+}
+
+.sidebar .nav li a .new-link {
+  color: #4f5f6f;
+}
+
+.sidebar .nav li a:hover .new-link {
+  color: darken(#52BCD3, 20%);
+}
+
+.sidebar .nav li a:hover .new-link:hover {
+  color: lighten(#52BCD3, 20%);
+  font-weight: bolder;
 }

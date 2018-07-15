@@ -43,6 +43,10 @@ class Invoice < ApplicationRecord
     "Invoice: #{number}"
   end
 
+  def link_action
+    'show'
+  end
+
   def split_lines(field)
     (self[field] || 'N/A').split("\n").each do |line|
       yield line

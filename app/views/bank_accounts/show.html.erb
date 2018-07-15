@@ -51,7 +51,13 @@
           <td class="text-right"><%= bank_line.amount > 0 ? number_to_currency(bank_line.amount, unit: '£') : nil %></td>
           <td class="text-right"><%= bank_line.amount < 0 ? number_to_currency(bank_line.amount.abs, unit: '£') : nil %></td>
           <td class="text-right"><%= number_to_currency(bank_line.balance, unit: '£') %></td>
-          <td><%= bank_line.source&.desc %></td>
+          <td>
+            <% if bank_line.source&.desc && bank_line.source&.link_action %>
+              <% link_to bank_line.source.desc, { controller: bank_line.source_type.underscore.pluralize, action: bank_line.source.link_action, id: bank_line.source_id } %>
+            <% else %>
+              <%= bank_line.source&.desc %>
+            <% end %>
+          </td>
           <td style="padding: 2px">
             <%= link_to('Match', edit_bank_line_path(bank_line), class: 'btn btn-primary') %>
           </td>

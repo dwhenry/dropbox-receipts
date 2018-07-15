@@ -11,6 +11,10 @@ class Receipt < ApplicationRecord
     "Receipt: #{code}"
   end
 
+  def link_action
+    'edit'
+  end
+
   def build_path
     '/' + [
       Rails.env.production? ? nil : Rails.env,

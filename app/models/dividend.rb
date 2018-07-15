@@ -29,6 +29,10 @@ class Dividend < ApplicationRecord
     "Dividend: #{dividend_date}"
   end
 
+  def link_action
+    'show'
+  end
+
   def rows
     @rows ||= (data_rows || [{}]).map { |row| Row.new(row.symbolize_keys) }
   end

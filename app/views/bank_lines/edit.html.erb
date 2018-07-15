@@ -1,184 +1,74 @@
 <div class="col-md-12">
-  <h1>Match bank entry</h1>
+  <h1>Bank entry</h1>
 </div>
 
 <div class="col-md-12">
   <%= render 'shared/error_messages', :target => @bank_line %>
 </div>
 
-<%= form_for @bank_line, url: bank_accounts_path, html: { multipart: true } do |f| %>
-  <div class="col-md-12">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form_group">
-          <%= f.label :name, 'Account name' %>
-          <%= f.text_field :name, class: 'form-control', readonly: true %>
-        </div>
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form_group">
+        <%= label_tag :name, 'Account name' %>
+        <%= text_field_tag :name, @bank_line.name, class: 'form-control', readonly: true %>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form_group">
-          <%= f.label :account_num, 'Account #' %>
-          <%= f.text_field :account_num, class: 'form-control', readonly: true %>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form_group">
-          <%= f.label :sort_code %>
-          <%= f.text_field :sort_code, class: 'form-control', readonly: true %>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form_group">
+        <%= label_tag :account_num, 'Account #' %>
+        <%= text_field_tag :account_num, @bank_line.account_num, class: 'form-control', readonly: true %>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form_group">
-          <%= f.label :transaction_date, 'Transaction date' %>
-          <%= f.date_field :transaction_date, class: 'form-control', readonly: true %>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form_group">
-          <%= f.label :transaction_type, 'Transaction type' %>
-          <%= f.text_field :transaction_type, class: 'form-control', readonly: true %>
-        </div>
+    <div class="col-md-6">
+      <div class="form_group">
+        <%= label_tag :sort_code %>
+        <%= text_field_tag :sort_code, @bank_line.sort_code, class: 'form-control', readonly: true %>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="form_group">
-          <%= f.label :description %>
-          <%= f.text_field :description, class: 'form-control currency', readonly: true %>
-        </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form_group">
+        <%= label_tag :transaction_date, 'Transaction date' %>
+        <%= date_field_tag :transaction_date, @bank_line.transaction_date, class: 'form-control', readonly: true %>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form_group">
-          <%= label_tag :amount %>
-          <%= text_field_tag :amount, number_to_currency(@bank_line.amount.abs), class: "form-control money #{'negative' if @bank_line.amount < 0}", readonly: true %>
-        </div>
+    <div class="col-md-6">
+      <div class="form_group">
+        <%= label_tag :transaction_type, 'Transaction type' %>
+        <%= text_field_tag :transaction_type, @bank_line.transaction_type, class: 'form-control', readonly: true %>
       </div>
-      <div class="col-md-6">
-        <div class="form_group">
-          <%= label_tag :balance %>
-          <%= text_field_tag :balance, number_to_currency(@bank_line.balance.abs), class: "form-control money #{'negative' if @bank_line.balance < 0}", readonly: true %>
-        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form_group">
+        <%= label_tag :description %>
+        <%= text_field_tag :description, @bank_line.description, class: 'form-control currency', readonly: true %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form_group">
+        <%= label_tag :amount %>
+        <%= text_field_tag :amount, number_to_currency(@bank_line.amount.abs), class: "form-control money #{'negative' if @bank_line.amount < 0}", readonly: true %>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form_group">
+        <%= label_tag :balance %>
+        <%= text_field_tag :balance, number_to_currency(@bank_line.balance.abs), class: "form-control money #{'negative' if @bank_line.balance < 0}", readonly: true %>
       </div>
     </div>
   </div>
 
-  <div class="col-md-12">
-    <div id="accordion">
-      <div class="card">
-        <div class="card-header" id="invoices">
-            <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseInvoices" aria-expanded="false" aria-controls="collapseOne">
-              Invoices
-            </a>
-        </div>
-
-        <div id="collapseInvoices" class="collapse show" aria-labelledby="invoices" data-parent="#accordion">
-          <div class="card-body row">
-            <div class="col-md-12">
-              <table class="table-responsive table">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Company</th>
-                    <th>Amount</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% Invoice.without_source.limit(10).order(due_date: :desc).each do |invoice| %>
-                    <tr>
-                      <td><%= invoice.due_date.strftime('%d-%b-%Y') %></td>
-                      <td><%= invoice.company_name %></td>
-                      <td class="align-right"><%= number_to_currency(invoice.gross, unit: '£') %></td>
-                      <td><%= link_to 'Match', '', class: 'btn btn-primary' %></td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" id="dividends">
-            <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseDividends" aria-expanded="false" aria-controls="collapseOne">
-              Dividends
-            </a>
-          </div>
-
-          <div id="collapseDividends" class="collapse show" aria-labelledby="dividends" data-parent="#accordion">
-            <div class="card-body row">
-              <div class="col-md-12">
-                <table class="table-responsive table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Share class</th>
-                      <th>Amount</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% Dividend.without_source.limit(10).order(dividend_date: :desc).each do |dividend| %>
-                      <% dividend.rows.each_with_index do |row, i| %>
-                        <tr>
-                          <% if i.zero? %>
-                            <td rowspan="<%= dividend.rows.count %>"><%= dividend.dividend_date.strftime('%d-%b-%Y') %></td>
-                          <% end %>
-                          <td><%= row.shares %></td>
-                          <td><%= number_to_currency(row.amount, unit: '£') %></td>
-                          <td><%= link_to 'Match', '', class: 'btn btn-primary' %></td>
-                        </tr>
-                      <% end %>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header" id="receipts">
-            <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseReceipts" aria-expanded="false" aria-controls="collapseOne">
-              Receipts
-            </a>
-          </div>
-
-          <div id="collapseReceipts" class="collapse show" aria-labelledby="receipts" data-parent="#accordion">
-            <div class="card-body row">
-              <div class="col-md-12">
-                <table class="table-responsive table">
-                  <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Type</th>
-                    <th>Company</th>
-                    <th>Amount</th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <% Receipt.without_source.limit(10).order(purchase_date: :desc).each do |receipt| %>
-                    <tr>
-                      <td><%= receipt.purchase_date.strftime('%d-%b-%Y') %></td>
-                      <td><%= receipt.code %></td>
-                      <td><%= receipt.company %></td>
-                      <td><%= number_to_currency(receipt.amount, unit: '£') %></td>
-                      <td><%= link_to 'Match', '', class: 'btn btn-primary' %></td>
-                    </tr>
-                  <% end %>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-<% end %>
+  <% if @bank_line.source %>
+    <%= render @bank_line.source_type %>
+  <% else %>
+    <%= render 'match_accordion' %>
+  <% end %>
+</div>

@@ -59,7 +59,7 @@
             <% end %>
           </td>
           <td style="padding: 2px">
-            <%= link_to('Match', edit_bank_line_path(bank_line), class: 'btn btn-primary') %>
+            <%= link_to(bank_line.source ? 'Review' : 'Match', edit_bank_line_path(bank_line), class: 'btn btn-primary') %>
           </td>
         </tr>
       <% end %>

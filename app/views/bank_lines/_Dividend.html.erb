@@ -1,0 +1,73 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3>Dividend: <%= @bank_line.source.company_name %></h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form_group">
+      <%= label_tag :company_reg, 'Company Reg' %>
+      <%= text_field_tag :company_reg, @bank_line.source.company_reg, class: 'form-control', readonly: true %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form_group">
+      <%= label_tag :dividend_date, 'Dividend date' %>
+      <%= text_field_tag :name, @bank_line.source.dividend_date&.strftime('%d %b %Y'), class: 'form-control', readonly: true %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table-responsive table">
+      <thead>
+        <tr>
+          <th>Shareholder</th>
+          <th>Shares</th>
+          <th>Amount</th>
+          <th>Bank description</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% lines = @bank_line.source.lines.pluck(:id, :amount, :description) %>
+        <% @bank_line.source.rows.each do |row| %>
+          <tr>
+            <%
+              line = lines.detect { |_, amount| amount == @bank_line.amount }
+              lines -= [line]
+            %>
+            <td><%= row.shareholder %></td>
+            <td><%= row.shares %></td>
+            <td class="text-right"><%= number_to_currency(row.amount, unit: '£') %></td>
+            <td><%= line[2] %></td>
+            <td>
+              <% if line[0] != @bank_line.id %>
+                <%= link_to line[2], bank_line_path(line[0]) %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+        <% lines.each do |id, amount, description| %>
+          <tr style="color: red">
+            <td colspan="2">!!! Missing Dividend entry</td>
+            <td class="text-right"><%= number_to_currency(amount, unit: '£') %></td>
+            <td><%= description %></td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="form_group" style="display: inline-block;">
+      <%= link_to 'Statement', bank_account_path(@bank_line.name), class: 'btn btn-primary' %>
+      <%= button_to 'Remove Match', bank_line_path(@bank_line), form_class: 'form-inline', class: 'btn btn-danger', method: "delete", remote: true, data: { confirm: 'Are you sure?' } %>
+    </div>
+  </div>
+</div>

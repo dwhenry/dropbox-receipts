@@ -54,6 +54,17 @@ class BankLine < ApplicationRecord
     )
   end
 
+  def force_match(params)
+    # TODO: we should do some sort additional checks here
+    # maybe something about ensuring no duplicate matches, etc..
+    return false unless params[:source_id].present? && params[:source_type].present?
+    update(params)
+  end
+
+  def clear_match
+    update(source_type: nil, source_id: nil)
+  end
+
   class Formatted
     include ActionView::Helpers::NumberHelper
 

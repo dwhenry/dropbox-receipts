@@ -12,7 +12,7 @@ class Invoice < ApplicationRecord
   validates :number, uniqueness: { scope: :user_id }
 
   default_scope { where(deleted: false) }
-  scope :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }
+  scope   :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }
 
   CLONE_ATTR = %w{
     to_address

@@ -1,0 +1,121 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3>Manually match:</h3>
+    <div id="accordion">
+      <div class="card">
+        <div class="card-header" id="invoices">
+          <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseInvoices" aria-expanded="false" aria-controls="collapseOne">
+            Invoices
+          </a>
+        </div>
+
+        <div id="collapseInvoices" class="collapse show" aria-labelledby="invoices" data-parent="#accordion">
+          <div class="card-body row">
+            <div class="col-md-12">
+              <table class="table-responsive table">
+                <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Company</th>
+                  <th>Amount</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% Invoice.without_source.limit(10).order(due_date: :desc).each do |invoice| %>
+                  <tr>
+                    <td><%= invoice.due_date.strftime('%d-%b-%Y') %></td>
+                    <td><%= invoice.company_name %></td>
+                    <td class="align-right"><%= number_to_currency(invoice.gross, unit: '£') %></td>
+                    <td>
+                      <%= button_to 'Match', bank_line_path(@bank_line, source_id: invoice.id, source_type: 'Invoice'), class: 'btn btn-primary', method: "put", remote: true %>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="dividends">
+            <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseDividends" aria-expanded="false" aria-controls="collapseOne">
+              Dividends
+            </a>
+          </div>
+
+          <div id="collapseDividends" class="collapse show" aria-labelledby="dividends" data-parent="#accordion">
+            <div class="card-body row">
+              <div class="col-md-12">
+                <table class="table-responsive table">
+                  <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Share class</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% Dividend.without_source.limit(10).order(dividend_date: :desc).each do |dividend| %>
+                    <% dividend.rows.each_with_index do |row, i| %>
+                      <tr>
+                        <% if i.zero? %>
+                          <td rowspan="<%= dividend.rows.count %>"><%= dividend.dividend_date.strftime('%d-%b-%Y') %></td>
+                        <% end %>
+                        <td><%= row.shares %></td>
+                        <td><%= number_to_currency(row.amount, unit: '£') %></td>
+                        <td>
+                          <%= button_to 'Match', bank_line_path(@bank_line, source_id: dividend.id, source_type: 'Dividend'), class: 'btn btn-primary', method: "put", remote: true %>
+                        </td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="receipts">
+            <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseReceipts" aria-expanded="false" aria-controls="collapseOne">
+              Receipts
+            </a>
+          </div>
+
+          <div id="collapseReceipts" class="collapse show" aria-labelledby="receipts" data-parent="#accordion">
+            <div class="card-body row">
+              <div class="col-md-12">
+                <table class="table-responsive table">
+                  <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Company</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% Receipt.without_source.limit(10).order(purchase_date: :desc).each do |receipt| %>
+                    <tr>
+                      <td><%= receipt.purchase_date.strftime('%d-%b-%Y') %></td>
+                      <td><%= receipt.code %></td>
+                      <td><%= receipt.company %></td>
+                      <td><%= number_to_currency(receipt.amount, unit: '£') %></td>
+                      <td>
+                        <%= button_to 'Match', bank_line_path(@bank_line, source_id: receipt.id, source_type: 'Receipt'), class: 'btn btn-primary', method: "put", remote: true %>
+                      </td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

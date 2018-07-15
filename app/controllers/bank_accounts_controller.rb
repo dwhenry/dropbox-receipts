@@ -20,7 +20,14 @@ class BankAccountsController < ApplicationController
   end
 
   def show
-    @bank_lines = bank_lines.where(name: params[:id]).order(:created_at, :previous_id).page(params[:page])
+    lines = bank_lines.where(name: params[:id])
+
+    case params[:filter]
+    when 'unlinked'
+      lines = lines.where(source_id: nil)
+    end
+
+    @bank_lines = lines.order(:created_at, :previous_id).page(params[:page])
   end
 
   def index

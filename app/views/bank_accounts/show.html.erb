@@ -1,6 +1,13 @@
 <div class="col-md-9">
   <h1>Bank Account Details</h1>
 </div>
+<div class="col-md-3">
+  <% if params[:filter] %>
+    <%= link_to "Show all", bank_account_path(params[:id]), class: 'btn btn-warning' %>
+  <% else %>
+    <%= link_to 'Filter to unmatched', bank_account_path(params[:id], filter: 'unlinked'), class: 'btn btn-warning' %>
+  <% end %>
+</div>
 
 <div class="col-md-12">
   <%= paginate @bank_lines %>

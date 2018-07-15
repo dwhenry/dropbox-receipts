@@ -40,3 +40,15 @@
 .text-right {
   text-align: right;
 }
+
+.text-left {
+  text-align: left;
+}
+
+.money {
+  text-align: right;
+
+  &.negative {
+    color: red;
+  }
+}

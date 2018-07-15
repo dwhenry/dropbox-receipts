@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :bank_accounts do
     collection { post :import }
   end
+  resources :bank_lines
   resources :dividends do
     member { post :generate }
   end

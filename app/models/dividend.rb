@@ -1,10 +1,14 @@
 class Dividend < ApplicationRecord
   belongs_to :user
+  has_many :lines, -> { where(source_type: 'Dividend') }, class_name: "BankLine", foreign_key: :source_id
+
   validates :dividend_date, presence: true
   validates :company_name, presence: true
   validates :company_reg, presence: true
   before_save :set_total_amount
   validate :valid_rows
+
+  scope :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }
 
   CLONE_ATTR = %w{
     company_name

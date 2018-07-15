@@ -10,11 +10,11 @@
   <% bank_info = @bank_lines.first %>
   <table class="table-responsive table">
     <tr>
-      <th>Name</th>
+      <th>Account name</th>
       <td><%= bank_info.name %></td>
     </tr>
     <tr>
-      <th>A/C #</th>
+      <th>Account #</th>
       <td><%= bank_info.account_num %></td>
     </tr>
     <tr>
@@ -53,7 +53,7 @@
           <td class="text-right"><%= number_to_currency(bank_line.balance, unit: '£') %></td>
           <td><%= bank_line.source&.desc %></td>
           <td style="padding: 2px">
-            <%= link_to('Edit', '', class: 'btn btn-primary') %>
+            <%= link_to('Match', edit_bank_line_path(bank_line), class: 'btn btn-primary') %>
           </td>
         </tr>
       <% end %>

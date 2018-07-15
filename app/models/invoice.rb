@@ -1,6 +1,7 @@
 class Invoice < ApplicationRecord
   belongs_to :user
   has_many :bank_lines, as: :source
+  has_many :lines, -> { where(source_type: 'Invoice') }, class_name: "BankLine", foreign_key: :source_id
 
   validates_presence_of :user
   validates_presence_of :company_name
@@ -10,6 +11,7 @@ class Invoice < ApplicationRecord
   validates :number, uniqueness: { scope: :user_id }
 
   default_scope { where(deleted: false) }
+  scope :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }
 
   CLONE_ATTR = %w{
     to_address

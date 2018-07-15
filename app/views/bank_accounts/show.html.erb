@@ -53,7 +53,7 @@
           <td class="text-right"><%= number_to_currency(bank_line.balance, unit: '£') %></td>
           <td>
             <% if bank_line.source&.desc && bank_line.source&.link_action %>
-              <% link_to bank_line.source.desc, { controller: bank_line.source_type.underscore.pluralize, action: bank_line.source.link_action, id: bank_line.source_id } %>
+              <%= link_to bank_line.source.desc, { controller: bank_line.source_type.underscore.pluralize, action: bank_line.source.link_action, id: bank_line.source_id } %>
             <% else %>
               <%= bank_line.source&.desc %>
             <% end %>

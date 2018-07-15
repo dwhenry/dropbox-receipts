@@ -42,7 +42,8 @@ class ReceiptsController < ApplicationController
   end
 
   def index
-    @receipts = receipts.includes(:line).order(created_at: :desc).page(params[:page])
+    @receipts = receipts.order(created_at: :desc).page(params[:page])
+    @receipts = @receipts.left_joins(:line).where(bank_lines: { id: nil }) if params[:filter] == 'unlinked'
   end
 
   def destroy

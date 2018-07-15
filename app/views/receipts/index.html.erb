@@ -1,5 +1,12 @@
-<div class="col-md-12">
+<div class="col-md-9">
   <h1>Receipts</h1>
+</div>
+<div class="col-md-3">
+  <% if params[:filter] %>
+    <%= link_to "Show all", receipts_path, class: 'btn btn-warning' %>
+  <% else %>
+    <%= link_to 'Filter to unmatched', receipts_path(filter: 'unlinked'), class: 'btn btn-warning' %>
+  <% end %>
 </div>
 
 <div class="col-md-12">

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-12">
-    <h3>Dividend: <%= @bank_line.source.company_name %></h3>
+    <h3><%= link_to "Dividend: #{@bank_line.source.company_name}", edit_dividend_path(@bank_line.source) %></h3>
   </div>
 </div>
 

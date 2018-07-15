@@ -60,7 +60,7 @@ class BankStmtLookup
   def find_receipt(line)
     receipt = Receipt.where(
       purchase_date: (line.transaction_date-4..line.transaction_date),
-      amount: line.amount,
+      amount: line.amount.abs,
     ).where.not(
       id: BankLine.where(source_type: 'Receipt').pluck(:source_id)
     ).first

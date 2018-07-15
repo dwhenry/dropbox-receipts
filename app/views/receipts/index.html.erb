@@ -36,7 +36,9 @@
               <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
               <td class="text-right"><%= receipt.amount ? number_to_currency(receipt.amount, unit: '£') : '-' %></td>
               <td>
-                <%= receipt.line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount.abs, unit: '£') %>
+                <% if (line = receipt.line) %>
+                  <% line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount.abs, unit: '£') %>
+                <% end %>
               </td>
               <td>
                 <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-primary') %>

@@ -1,7 +1,7 @@
 class Receipt < ApplicationRecord
   belongs_to :user
-  has_many :lines, -> { where(source_type: 'Dividend') }, class_name: "BankLine", foreign_key: :source_id
-  has_one :lines, -> { where(source_type: 'Dividend') }, class_name: "BankLine", foreign_key: :source_id
+  has_many :lines, -> { where(source_type: 'Receipt') }, class_name: "BankLine", foreign_key: :source_id
+  has_one :line, -> { where(source_type: 'Receipt') }, class_name: "BankLine", foreign_key: :source_id
   validates_presence_of :user
 
   default_scope { where(deleted: false) }

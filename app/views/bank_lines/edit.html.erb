@@ -33,7 +33,7 @@
     <div class="col-md-6">
       <div class="form_group">
         <%= label_tag :transaction_date, 'Transaction date' %>
-        <%= date_field_tag :transaction_date, @bank_line.transaction_date, class: 'form-control', readonly: true %>
+        <%= text_field_tag :transaction_date, @bank_line.transaction_date&.strftime('%d %b %Y'), class: 'form-control', readonly: true %>
       </div>
     </div>
     <div class="col-md-6">

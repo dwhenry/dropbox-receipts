@@ -6,7 +6,7 @@ class Receipt < ApplicationRecord
 
   default_scope { where(deleted: false) }
   scope :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }
-  scope :before_date, ->(date) { without_source.where(purchase_date: @bank_line.date-30..date).order(purchase_date: :desc) }
+  scope :before_date, ->(date) { without_source.where(purchase_date: date-30..date).order(purchase_date: :desc) }
 
   def desc
     "Receipt: #{code}"

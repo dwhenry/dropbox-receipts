@@ -24,6 +24,7 @@
           <th>Issue date</th>
           <th>Net</th>
           <th>Gross</th>
+          <th>Paid</th>
           <th></th>
         </tr>
       </thead>
@@ -35,6 +36,11 @@
             <td><%= invoice.tax_date.strftime('%d %b %Y') %></td>
             <td class="text-right"><%= number_to_currency(invoice.net, unit: '£') %></td>
             <td class="text-right"><%= number_to_currency(invoice.gross, unit: '£') %></td>
+            <td>
+              <% if (line = invoice.line) %>
+                <% line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount.abs, unit: '£') %>
+              <% end %>
+            </td>
             <td style="padding: 2px">
               <%= link_to('Preview', invoice_path(invoice), class: 'btn btn-primary') %>
               <%= link_to('Edit', edit_invoice_path(invoice), class: 'btn btn-secondary') unless invoice.generated_at %>

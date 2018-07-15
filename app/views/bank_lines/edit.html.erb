@@ -124,7 +124,7 @@
                   </thead>
                   <tbody>
                     <% Dividend.without_source.limit(10).order(dividend_date: :desc).each do |dividend| %>
-                      <%= dividend.rows.each_with_index do |row, i| %>
+                      <% dividend.rows.each_with_index do |row, i| %>
                         <tr>
                           <% if i.zero? %>
                             <td rowspan="<%= dividend.rows.count %>"><%= dividend.dividend_date.strftime('%d-%b-%Y') %></td>

@@ -22,6 +22,7 @@
           <th>Payer</th>
           <th>Expence type</th>
           <th>Amount</th>
+          <th>Matched</th>
           <th></th>
         </tr>
       </thead>
@@ -35,7 +36,10 @@
               <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
               <td class="text-right"><%= receipt.amount ? number_to_currency(receipt.amount, unit: '£') : '-' %></td>
               <td>
-                <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-secondary') %>
+                <%= receipt.line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount.abs, unit: '£') %>
+              </td>
+              <td>
+                <%= link_to('Edit', edit_receipt_path(receipt), class: 'btn btn-primary') %>
               </td>
             </tr>
           <% end %>

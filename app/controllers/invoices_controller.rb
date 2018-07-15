@@ -43,7 +43,7 @@ class InvoicesController < ApplicationController
   end
 
   def index
-    @invoices = invoices.order(created_at: :desc).page(params[:page])
+    @invoices = invoices.includes(:lines).order(created_at: :desc).page(params[:page])
   end
 
   def generate

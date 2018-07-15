@@ -42,7 +42,7 @@ class ReceiptsController < ApplicationController
   end
 
   def index
-    @receipts = receipts.order(created_at: :desc).page(params[:page])
+    @receipts = receipts.includes(:line).order(created_at: :desc).page(params[:page])
   end
 
   def destroy

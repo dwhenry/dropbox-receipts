@@ -41,7 +41,7 @@
             <td>
               <% dividend.lines.each do |line| %>
                 <p>
-                  <%= line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount, unit: '£') %>
+                  <%= line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount.abs, unit: '£') %>
                 </p>
               <% end %>
             </td>

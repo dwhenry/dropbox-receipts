@@ -98,7 +98,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <% Receipt.without_source.limit(10).order(purchase_date: :desc).each do |receipt| %>
+                  <% Receipt.before_date(@bank_line.transaction_date).limit(20).each do |receipt| %>
                     <tr>
                       <td><%= receipt.purchase_date.strftime('%d-%b-%Y') %></td>
                       <td><%= receipt.code %></td>

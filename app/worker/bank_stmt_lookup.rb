@@ -29,7 +29,7 @@ class BankStmtLookup
 
   def find_invoice(line)
     invoice = Invoice.where(
-      due_date: line.transaction_date,
+      due_date: (line.transaction_date-11..line.transaction_date),
     ).where.not(
       id: BankLine.where(source_type: 'Invoice').pluck(:source_id)
     ).detect { |row| row.gross == line.amount }
@@ -59,7 +59,7 @@ class BankStmtLookup
 
   def find_receipt(line)
     receipt = Receipt.where(
-      purchase_date: line.transaction_date,
+      purchase_date: (line.transaction_date-4..line.transaction_date),
       amount: line.amount,
     ).where.not(
       id: BankLine.where(source_type: 'Receipt').pluck(:source_id)

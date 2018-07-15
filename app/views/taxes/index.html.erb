@@ -1,0 +1,71 @@
+<div class="col-md-12">
+  <h1>Tax's</h1>
+</div>
+
+<div class="col-md-12">
+  <%= link_to('New', new_tax_path, class: 'btn btn-success') %>
+  <%= paginate @taxes %>
+</div>
+
+<% @taxes.group_by(&:user).each do |user, taxes| %>
+
+  <% if current_user.is_accountant? %>
+    <div class="col-md-12">
+      <h2><%= user.company_name || user.name %></h2>
+    </div>
+  <% end %>
+
+  <div class="col-md-12">
+    <table class="table-responsive table">
+      <thead>
+        <tr>
+          <th>Tax Type</th>
+          <th>Period End</th>
+          <th>Amount</th>
+          <th>Paid</th>
+          <th>Remaining</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% taxes.each do |tax| %>
+          <tr>
+            <td><%= tax.tax_type %></td>
+            <td><%= tax.period_end.strftime('%d %b %Y') %></td>
+            <td class="text-right"><%= number_to_currency(tax.amount, unit: '£') %></td>
+            <td>
+              <% tax.lines.each do |line| %>
+                <p>
+                  <%= line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount.abs, unit: '£') %>
+                </p>
+              <% end %>
+            </td>
+            <td><%= number_to_currency(tax.amount - tax.lines.sum(:amount).abs, unit: '£') %></td>
+            <td style="padding: 2px">
+              <%= link_to('Edit', edit_tax_path(tax), class: 'btn btn-secondary') %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">Totals</td>
+          <td class="text-right"><%= number_to_currency(taxes.sum(&:amount), unit: '£') %></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <% taxes.group_by(&:tax_type).each do |type, taxes_for_year| %>
+          <tr>
+            <td colspan="2">Totals for <%= type %></td>
+            <td class="text-right"><%= number_to_currency(taxes_for_year.sum(&:amount), unit: '£') %></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tfoot>
+    </table>
+  </div>
+<% end %>
+

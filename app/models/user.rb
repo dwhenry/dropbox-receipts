@@ -3,6 +3,7 @@ class User < ApplicationRecord
   has_many :invoices
   has_many :dividends
   has_many :bank_lines
+  has_many :taxes
 
   def self.from_oauth(args)
     uid = args['info']['uid']

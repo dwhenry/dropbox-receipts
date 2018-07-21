@@ -1,6 +1,6 @@
 class CreateTaxes < ActiveRecord::Migration[5.0]
   def change
-    create_table :taxes do |t|
+    create_table :manual_matches do |t|
       t.references :user
       t.date :period_end, index: true
       t.string :tax_type

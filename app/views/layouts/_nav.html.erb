@@ -20,16 +20,10 @@
         (<span class="new-link" data-href="<%= new_invoice_path %>">New</span>)
       </a>
     </li>
-    <li class="<%= 'active' if current_location?(taxes_path) %>">
-      <a href="<%= taxes_path %>">
-        Tax
-        (<span class="new-link" data-href="<%= new_tax_path %>">New</span>)
-      </a>
-    </li>
-    <li class="<%= 'active' if current_location?(wages_path) %>">
-      <a href="<%= taxes_path %>">
-        Wages
-        (<span class="new-link" data-href="<%= new_wage_path %>">New</span>)
+    <li class="<%= 'active' if current_location?(manual_matches_path) %>">
+      <a href="<%= manual_matches_path %>">
+        Manual match
+        (<span class="new-link" data-href="<%= new_manual_match_path %>">New</span>)
       </a>
     </li>
     <li class="<%= 'active' if current_location?(dividends_path) %>">

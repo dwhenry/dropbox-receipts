@@ -115,6 +115,44 @@
             </div>
           </div>
         </div>
+        <div class="card">
+          <div class="card-header" id="manual_match">
+            <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseManual" aria-expanded="false" aria-controls="collapseOne">
+              Manual match
+            </a>
+          </div>
+
+          <div id="collapseManual" class="collapse show" aria-labelledby="manual_match" data-parent="#accordion">
+            <div class="card-body row">
+              <div class="col-md-12">
+                <table class="table-responsive table">
+                  <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Subtype</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% ManualMatch.without_source.limit(20).each do |manual| %>
+                    <tr>
+                      <td><%= manual.date.strftime('%d-%b-%Y') %></td>
+                      <td><%= manual.payment_type %></td>
+                      <td><%= manual.payment_subtype %></td>
+                      <td><%= number_to_currency(manual.amount, unit: '£') %></td>
+                      <td>
+                        <%= button_to 'Match', bank_line_path(@bank_line, source_id: manual.id, source_type: 'ManualMatch'), class: 'btn btn-primary', method: "put", remote: true %>
+                      </td>
+                    </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -124,6 +162,7 @@
   <div class="col-md-12">
     <div class="form_group" style="display: inline-block;">
       <%= link_to 'Statement', bank_account_path(@bank_line.name), class: 'btn btn-primary' %>
+      <%= link_to 'Create manual match', new_manual_match_path(bank_line_id: @bank_line.id, manual_match: { amount: @bank_line.amount.abs, date: @bank_line.date }), form_class: 'form-inline', class: 'btn btn-danger' %>
     </div>
   </div>
 </div>

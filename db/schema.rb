@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180715231303) do
+ActiveRecord::Schema.define(version: 20180721204943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,18 @@ ActiveRecord::Schema.define(version: 20180715231303) do
     t.index ["user_id"], name: "index_invoices_on_user_id", using: :btree
   end
 
+  create_table "manual_matches", force: :cascade do |t|
+    t.integer  "user_id"
+    t.date     "date"
+    t.string   "payment_type"
+    t.decimal  "amount",          precision: 8, scale: 2
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.string   "payment_subtype"
+    t.index ["date"], name: "index_manual_matches_on_date", using: :btree
+    t.index ["user_id"], name: "index_manual_matches_on_user_id", using: :btree
+  end
+
   create_table "receipts", force: :cascade do |t|
     t.integer  "user_id"
     t.binary   "image"
@@ -94,17 +106,6 @@ ActiveRecord::Schema.define(version: 20180715231303) do
     t.boolean  "deleted",                                           default: false
     t.string   "payer"
     t.index ["user_id"], name: "index_receipts_on_user_id", using: :btree
-  end
-
-  create_table "taxes", force: :cascade do |t|
-    t.integer  "user_id"
-    t.date     "period_end"
-    t.string   "tax_type"
-    t.decimal  "amount",     precision: 8, scale: 2
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.index ["period_end"], name: "index_taxes_on_period_end", using: :btree
-    t.index ["user_id"], name: "index_taxes_on_user_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|

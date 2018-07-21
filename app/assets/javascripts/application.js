@@ -20,11 +20,15 @@
 //= require ./components/currency
 //= require ./components/file_uploader
 //= require ./components/jpeg_camera.js
-//= require select2
-
+//= require select2-full
 
 $(".enhanced-select").select2({
   theme: "bootstrap"
+});
+
+$(".enhanced-combo").select2({
+  theme: "bootstrap",
+  tags: true
 });
 
 $(".new-link").click(function(e) {

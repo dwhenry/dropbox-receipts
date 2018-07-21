@@ -1,13 +1,13 @@
 <div class="col-md-9">
-  <h1>Tax's</h1>
+  <h1>Manual matches</h1>
 </div>
 
 <div class="col-md-3">
-  <%= link_to('New', new_tax_path, class: 'btn btn-success') %>
-  <%= paginate @taxes %>
+  <%= link_to('New', new_manual_match_path, class: 'btn btn-success') %>
+  <%= paginate @manual_matches %>
 </div>
 
-<% @taxes.group_by(&:user).each do |user, taxes| %>
+<% @manual_matches.group_by(&:user).each do |user, manual_matches| %>
 
   <% if current_user.is_accountant? %>
     <div class="col-md-12">
@@ -19,7 +19,8 @@
     <table class="table-responsive table">
       <thead>
         <tr>
-          <th>Tax Type</th>
+          <th>Payment Type</th>
+          <th>Payment Subtype</th>
           <th>Period End</th>
           <th>Amount</th>
           <th>Paid</th>
@@ -28,21 +29,22 @@
         </tr>
       </thead>
       <tbody>
-        <% taxes.each do |tax| %>
+        <% manual_matches.each do |manual_match| %>
           <tr>
-            <td><%= tax.tax_type %></td>
-            <td><%= tax.period_end.strftime('%d %b %Y') %></td>
-            <td class="text-right"><%= number_to_currency(tax.amount, unit: '£') %></td>
+            <td><%= manual_match.payment_type %></td>
+            <td><%= manual_match.payment_subtype %></td>
+            <td><%= manual_match.date.strftime('%d %b %Y') %></td>
+            <td class="text-right"><%= number_to_currency(manual_match.amount, unit: '£') %></td>
             <td>
-              <% tax.lines.each do |line| %>
+              <% manual_match.lines.each do |line| %>
                 <p>
                   <%= line.description %> (<%= line.transaction_date.strftime('%d %b %Y') %>): <%= number_to_currency(line.amount.abs, unit: '£') %>
                 </p>
               <% end %>
             </td>
-            <td><%= number_to_currency(tax.amount - tax.lines.sum(:amount).abs, unit: '£') %></td>
+            <td><%= number_to_currency(manual_match.amount - manual_match.lines.sum(:amount).abs, unit: '£') %></td>
             <td style="padding: 2px">
-              <%= link_to('Edit', edit_tax_path(tax), class: 'btn btn-secondary') %>
+              <%= link_to('Edit', edit_manual_match_path(manual_match), class: 'btn btn-secondary') %>
             </td>
           </tr>
         <% end %>
@@ -50,15 +52,15 @@
       <tfoot>
         <tr>
           <td colspan="2">Totals</td>
-          <td class="text-right"><%= number_to_currency(taxes.sum(&:amount), unit: '£') %></td>
+          <td class="text-right"><%= number_to_currency(manual_matches.sum(&:amount), unit: '£') %></td>
           <td></td>
           <td></td>
           <td></td>
         </tr>
-        <% taxes.group_by(&:tax_type).each do |type, taxes_for_year| %>
+        <% manual_matches.group_by(&:payment_type).each do |type, manual_matches_for_year| %>
           <tr>
             <td colspan="2">Totals for <%= type %></td>
-            <td class="text-right"><%= number_to_currency(taxes_for_year.sum(&:amount), unit: '£') %></td>
+            <td class="text-right"><%= number_to_currency(manual_matches_for_year.sum(&:amount), unit: '£') %></td>
             <td></td>
             <td></td>
             <td></td>

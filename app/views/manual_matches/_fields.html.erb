@@ -1,0 +1,23 @@
+<div class="col-md-12 multi-colums" >
+  <%= hidden_field_tag :bank_line_id, params[:bank_line_id] %>
+
+  <div class="form_group">
+    <%= f.label :payment_type, 'Payment type' %>
+    <%= f.select :payment_type, ManualMatch.distinct.pluck(:payment_type), {}, class: 'form-control enhanced-combo' %>
+  </div>
+
+  <div class="form_group">
+    <%= f.label :payment_subtype, 'Payment subtype' %>
+    <%= f.select :payment_type, ManualMatch.distinct.pluck("concat(payment_subtype, ' (', payment_type, ')')", :payment_subtype), {}, class: 'form-control enhanced-combo' %>
+  </div>
+
+  <div class="form_group">
+    <%= f.label :date, 'Date' %>
+    <%= f.date_field :date, class: 'form-control' %>
+  </div>
+
+  <div class="form_group">
+    <%= f.label :amount %>
+    <%= f.number_field :amount, class: 'form-control currency', step: 0.01 %>
+  </div>
+</div>

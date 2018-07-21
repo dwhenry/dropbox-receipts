@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   resources :receipts do
     collection { get :gallery }
   end
-  resources :taxes
+  resources :manual_matches
   resources :wages
   resources :users, only: [:index, :update]
   root 'home#page'

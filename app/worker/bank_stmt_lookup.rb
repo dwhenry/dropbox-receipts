@@ -17,7 +17,7 @@ class BankStmtLookup
     when 'CR'
       find_invoice(line)
     when 'BP', 'SO'
-      find_dividend(line) || find_wage(line) || find_tax(line)
+      find_dividend(line)
     when 'DR', 'VIS', 'DD', ')))'
       find_receipt(line)
     else
@@ -47,14 +47,6 @@ class BankStmtLookup
     end
 
     line.source = selected
-  end
-
-  def find_wage(line)
-
-  end
-
-  def find_tax(line)
-
   end
 
   def find_receipt(line)

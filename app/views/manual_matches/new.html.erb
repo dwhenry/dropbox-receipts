@@ -1,13 +1,13 @@
 <div class="col-md-12">
-  <h1>New Tax Record</h1>
+  <h1>New Manual Match Record</h1>
 </div>
 
 <div class="col-md-12">
-  <%= render 'shared/error_messages', :target => @tax %>
+  <%= render 'shared/error_messages', :target => @manual_match %>
 </div>
 
-<%= form_for @tax do |f| %>
-  <%= render 'taxes/fields', f: f %>
+<%= form_for @manual_match do |f| %>
+  <%= render 'manual_matches/fields', f: f %>
 
   <div class="col-md-12" >
     <div class="form_group" style="display: inline-block;">
@@ -15,3 +15,4 @@
     </div>
   </div>
 <% end %>
+

@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3><%= link_to "Manual match: #{@bank_line.source.payment_type}", edit_manual_match_path(@bank_line.source) %></h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form_group">
+      <%= label_tag :subtype, 'Payment subtype' %>
+      <%= text_field_tag :subtype, @bank_line.source.payment_subtype, class: 'form-control', readonly: true %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form_group">
+      <%= label_tag :date, 'Date' %>
+      <%= text_field_tag :date, @bank_line.source.date&.strftime('%d %b %Y'), class: 'form-control', readonly: true %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form_group">
+      <%= label_tag :amount, 'Amount' %>
+      <%= text_field_tag :amount, number_to_currency(@bank_line.source.amount, unit: '£'), class: 'form-control', readonly: true %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="form_group" style="display: inline-block;">
+      <%= link_to 'Statement', bank_account_path(@bank_line.name), class: 'btn btn-primary' %>
+      <%= button_to 'Remove Match', bank_line_path(@bank_line), form_class: 'form-inline', class: 'btn btn-danger', method: "delete", remote: true, data: { confirm: 'Are you sure?' } %>
+    </div>
+  </div>
+</div>

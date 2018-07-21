@@ -1,0 +1,17 @@
+<div class="col-md-12">
+  <h1>Edit manual match</h1>
+</div>
+
+<div class="col-md-12">
+  <%= render 'shared/error_messages', :target => @manual_match %>
+</div>
+
+<%= form_for @manual_match do |f| %>
+  <%= render 'manual_matches/fields', f: f %>
+
+  <div class="col-md-12" >
+    <div class="form_group" style="display: inline-block;">
+      <%= f.submit 'Update', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

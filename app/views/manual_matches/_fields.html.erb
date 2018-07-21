@@ -8,7 +8,7 @@
 
   <div class="form_group">
     <%= f.label :payment_subtype, 'Payment subtype' %>
-    <%= f.select :payment_type, ManualMatch.distinct.pluck("concat(payment_subtype, ' (', payment_type, ')')", :payment_subtype), {}, class: 'form-control enhanced-combo' %>
+    <%= f.select :payment_subtype, ManualMatch.distinct.pluck("concat(payment_subtype, ' (', payment_type, ')')", :payment_subtype), {}, class: 'form-control enhanced-combo' %>
   </div>
 
   <div class="form_group">

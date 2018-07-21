@@ -9,7 +9,7 @@ class ManualMatch < ApplicationRecord
   validates :payment_subtype, presence: true
 
   def desc
-    "Manual: #{payment_type}:#{payment_subtype}"
+    "Manual: #{payment_type}: #{payment_subtype}"
   end
 
   def link_action

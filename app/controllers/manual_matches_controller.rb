@@ -12,9 +12,22 @@ class ManualMatchesController < ApplicationController
     if @manual_match.save
       if params[:bank_line_id]
         if (bank_line = bank_lines.find_by_id(params[:bank_line_id]))
-          bank_line.update(source: @manual_match)
+          bank_line.update!(source: @manual_match)
         end
       end
+      redirect_to manual_matches_path
+    else
+      render :new
+    end
+  end
+
+  def edit
+    @manual_match = manual_matches.find(params[:id])
+  end
+
+  def update
+    @manual_match = manual_matches.find(params[:id])
+    if @manual_match.update(manual_match_params)
       redirect_to manual_matches_path
     else
       render :new
@@ -24,10 +37,6 @@ class ManualMatchesController < ApplicationController
   def index
     @manual_matches = manual_matches.order(date: :desc).page(params[:page])
   end
-
-  # def edit
-  #   @tax = taxes.find(params[:id])
-  # end
 
   private
 

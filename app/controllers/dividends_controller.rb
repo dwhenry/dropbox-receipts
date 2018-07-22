@@ -43,7 +43,7 @@ class DividendsController < ApplicationController
   end
 
   def index
-    @dividends = dividends.order(created_at: :desc).page(params[:page])
+    @dividends = dividends.order(dividend_date: :desc).page(params[:page])
   end
 
   def generate

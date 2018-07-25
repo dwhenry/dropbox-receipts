@@ -42,6 +42,7 @@ class ReceiptsController < ApplicationController
   end
 
   def index
+    order_by = 'created_at'
     order_by = params[:order_by] if %w{created_at purchase_date}.include?(params[:order_by])
     @receipts = receipts.order(order_by => :desc).page(params[:page])
     @receipts = @receipts.left_joins(:line).where(payer: 'company', bank_lines: { id: nil }) if params[:filter] == 'unlinked'

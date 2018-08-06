@@ -8,7 +8,19 @@ class Dividend < ApplicationRecord
   before_save :set_total_amount
   validate :valid_rows
 
-  scope :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }
+  scope :without_source, -> do
+    left_joins(:lines).where(
+      <<~SQL
+        bank_lines.id IS NULL OR
+          dividends.total_amount NOT IN (
+            SELECT SUM(amount * -1)
+            FROM bank_lines AS bl
+            WHERE bl.source_id = dividend.id
+              AND bl.source_type = 'Dividend'
+          )
+      SQL
+    )
+  end
 
   CLONE_ATTR = %w{
     company_name

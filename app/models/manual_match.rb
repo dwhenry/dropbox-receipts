@@ -6,9 +6,9 @@ class ManualMatch < ApplicationRecord
       <<~SQL
         bank_lines.id IS NULL OR
           manual_matches.amount NOT IN (
-            SELECT SUM(amount * -1)
+            SELECT ABS(SUM(amount))
             FROM bank_lines AS bl
-            WHERE bl.source_id = manual_matches.id 
+            WHERE bl.source_id = manual_matches.id
               AND bl.source_type = 'ManualMatch'
           )
       SQL

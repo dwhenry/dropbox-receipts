@@ -13,9 +13,9 @@ class Dividend < ApplicationRecord
       <<~SQL
         bank_lines.id IS NULL OR
           dividends.total_amount NOT IN (
-            SELECT SUM(amount * -1)
+            SELECT ABS(SUM(bl.amount))
             FROM bank_lines AS bl
-            WHERE bl.source_id = dividend.id
+            WHERE bl.source_id = dividends.id
               AND bl.source_type = 'Dividend'
           )
       SQL

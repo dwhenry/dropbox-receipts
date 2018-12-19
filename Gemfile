@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.3.3"
+ruby "2.3.5"
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 source 'https://rubygems.org' do
-  gem 'rails-assets-tether', '>= 1.1.0'
+  gem 'rails-assets-tether'
   gem 'bootstrap', '~> 4.0.0.alpha5'
   gem 'coffee-rails', '~> 4.2'
   gem 'dropbox-sdk'
@@ -21,10 +21,10 @@ source 'https://rubygems.org' do
   gem 'pg'
   gem 'puma', '~> 3.0'
   gem 'rails', '~> 5.0.2'
-  gem 'sass-rails', '~> 5.0'
+  gem 'sass-rails'
   gem 'select2-rails'
   gem 'sidekiq'
-  gem 'turbolinks', '~> 5'
+  gem 'turbolinks'
   gem 'uglifier', '>= 1.3.0'
   gem 'jpeg_camera'
   gem 'wicked_pdf'

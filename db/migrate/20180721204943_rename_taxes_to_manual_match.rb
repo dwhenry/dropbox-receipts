@@ -1,6 +1,6 @@
 class RenameTaxesToManualMatch < ActiveRecord::Migration[5.0]
   def change
-    rename_table :taxes, :manual_matches
+    # rename_table :taxes, :manual_matches
 
     rename_column :manual_matches, :period_end, :date
     rename_column :manual_matches, :tax_type, :payment_type

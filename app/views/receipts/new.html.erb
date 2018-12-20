@@ -1,15 +1,71 @@
+
+
 <div class="camera-wrap col-md-3">
-  <div id="camera" class="camera-container"></div>
+  <div id="camera" class="camera-container">
+    <video autoplay="true" id="videoElement" style="width: 100%">
+    </video>
+    <canvas id="canvasElement"></canvas>
+  </div>
   <br>
 </div>
 
 <div class="col-md-6 camera-actions">
   <div class="camera--capture">
     <%= link_to 'Switch Camera', '', onclick: 'return false', class: 'next-stream btn btn-primary', style: 'display: none;' %>
-    <%= link_to 'Capture', '', onclick: 'return false', class: 'camera-capture btn btn-primary' %>
+    <%= link_to 'Capture', '', onclick: 'capture(); return false', class: 'camera-capture btn btn-primary' %>
   </div>
   <div class="camera--submit" style="display: none;">
-    <%= link_to 'Back', '', onclick: 'return false', class: 'camera-redo btn btn-primary' %>
+    <%= link_to 'Back', '', onclick: 'retake(); return false', class: 'camera-redo btn btn-primary' %>
     <%= link_to 'Submit', '', onclick: 'return false', class: 'camera-save btn btn-primary' %>
   </div>
 </div>
+
+<style>
+  #videoElement {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+</style>
+<script>
+  var video = document.querySelector("#videoElement");
+
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({video: true})
+      .then(function(stream) {
+        video.srcObject = stream;
+      })
+      .catch(function(err0r) {
+        console.log("Something went wrong!");
+      });
+  }
+
+  function capture() {
+    var canvas = $('#canvasElement')[0];
+    var video = $('#videoElement')[0];
+
+    $(canvas).show();
+    $(video).hide();
+    $('.camera--capture').hide();
+    $('.camera--submit').show();
+    video.pause();
+    if (video.paused) {
+      canvas.width = $(video).width();
+      canvas.height = $(video).height();
+      var context = canvas.getContext('2d');
+      context.translate(canvas.width, 0);
+      context.scale(-1, 1);
+      context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, $(video).width(), $(video).height());
+    }
+  }
+
+  function retake() {
+    var canvas = $('#canvasElement');
+    var video = $('#videoElement');
+
+    canvas.hide()
+    $('.camera--submit').hide();
+    video.show()
+    $('.camera--capture').show();
+    video[0].play()
+  }
+</script>

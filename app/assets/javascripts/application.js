@@ -19,7 +19,7 @@
 //= require_tree ./theme
 //= require ./components/currency
 //= require ./components/file_uploader
-//= require ./components/jpeg_camera.js
+// require ./components/jpeg_camera.js
 //= require select2-full
 
 $(".enhanced-select").select2({

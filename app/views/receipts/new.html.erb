@@ -1,5 +1,5 @@
 
-
+<div id="stream"></div>
 <div class="camera-wrap col-md-3">
   <div id="camera" class="camera-container">
     <video autoplay="true" id="videoElement" style="width: 100%">
@@ -29,28 +29,32 @@
 <script>
   var devices = [];
   var front = null;
-  navigator.mediaDevices.enumerateDevices().then(loadDevices)
-
-  function loadDevices(deviceInfos) {
-    for (var i = 0; i !== deviceInfos.length; ++i) {
-      var deviceInfo = deviceInfos[i];
-      if (deviceInfo.kind === 'videoinput') {
-        devices.push(deviceInfo);
-      }
-    }
-
-    if(devices.length > 1) {
-      $('.next-stream').show();
-      front = 'user'
-    }
-    $('.camera-container').data('camera', front);
-  }
-
   let video = document.querySelector("#videoElement");
-  nextStream();
+
+  setTimeout(function() {
+    navigator.mediaDevices.enumerateDevices().then(loadDevices)
+
+    function loadDevices(deviceInfos) {
+      for (var i = 0; i !== deviceInfos.length; ++i) {
+        var deviceInfo = deviceInfos[i];
+        if (deviceInfo.kind === 'videoinput') {
+          devices.push(deviceInfo);
+        }
+      }
+
+      if(devices.length > 1) {
+        $('.next-stream').show();
+        front = 'user'
+      }
+      $('.camera-container').data('camera', front);
+    }
+
+    nextStream();
+  }, 200);
 
   function nextStream() {
     front = (front === 'environment') ? 'user' : 'environment';
+    $('#stream').html(front);
     var get_user_media_options = {
       video: devices.length > 1 ? { facingMode: { exact: front } } : true
     };

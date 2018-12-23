@@ -11,7 +11,7 @@
 
 <div class="col-md-6 camera-actions">
   <div class="camera--capture">
-    <%= link_to 'Switch Camera', '', onclick: 'return false', class: 'next-stream btn btn-primary', style: 'display: none;' %>
+    <%= link_to 'Switch Camera', '', onclick: 'nextStream(); return false', class: 'next-stream btn btn-primary', style: 'display: none;' %>
     <%= link_to 'Capture', '', onclick: 'capture(); return false', class: 'camera-capture btn btn-primary' %>
   </div>
   <div class="camera--submit" style="display: none;">
@@ -46,8 +46,8 @@
     $('.camera-container').data('camera', front);
   }
 
-  var video = document.querySelector("#videoElement");
-  var get_user_media_options = {
+  let video = document.querySelector("#videoElement");
+  let get_user_media_options = {
     video: front ? { facingMode: { exact: front } } : true
   };
 
@@ -61,6 +61,21 @@
       });
   }
 
+  function nextStream() {
+    front = (front === 'environment') ? 'user' : 'environment';
+    get_user_media_options = {
+      video: front ? { facingMode: { exact: front } } : true
+    };
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia(get_user_media_options)
+        .then(function(stream) {
+          video.srcObject = stream;
+        })
+        .catch(function(error) {
+          console.log("Something went wrong!");
+        });
+    }
+  }
   function capture() {
     var canvas = $('#canvasElement')[0];
     var video = $('#videoElement')[0];

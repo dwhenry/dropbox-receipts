@@ -41,30 +41,18 @@
 
     if(devices.length > 1) {
       $('.next-stream').show();
-      front = 'environment'
+      front = 'user'
     }
     $('.camera-container').data('camera', front);
   }
 
   let video = document.querySelector("#videoElement");
-  let get_user_media_options = {
-    video: front ? { facingMode: { exact: front } } : true
-  };
-
-  if (navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia(get_user_media_options)
-      .then(function(stream) {
-        video.srcObject = stream;
-      })
-      .catch(function(error) {
-        console.log("Something went wrong!");
-      });
-  }
+  nextStream();
 
   function nextStream() {
     front = (front === 'environment') ? 'user' : 'environment';
-    get_user_media_options = {
-      video: front ? { facingMode: { exact: front } } : true
+    var get_user_media_options = {
+      video: devices.length > 1 ? { facingMode: { exact: front } } : true
     };
     if (navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia(get_user_media_options)

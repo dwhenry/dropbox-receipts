@@ -40,14 +40,14 @@
     }
 
     if(devices.length > 1) {
-      // $('.next-stream').show();
+      $('.next-stream').show();
       front = 'environment'
     }
     $('.camera-container').data('camera', front);
   }
 
   var video = document.querySelector("#videoElement");
-  get_user_media_options = {
+  var get_user_media_options = {
     video: front ? { facingMode: { exact: front } } : true
   };
 

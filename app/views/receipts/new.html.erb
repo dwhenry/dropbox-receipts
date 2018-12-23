@@ -52,11 +52,11 @@
   };
 
   if (navigator.mediaDevices.getUserMedia) {
-    navigator.mediaDevices.getUserMedia({video: true})
+    navigator.mediaDevices.getUserMedia(get_user_media_options)
       .then(function(stream) {
         video.srcObject = stream;
       })
-      .catch(function(err0r) {
+      .catch(function(error) {
         console.log("Something went wrong!");
       });
   }

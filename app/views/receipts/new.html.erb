@@ -16,7 +16,7 @@
   </div>
   <div class="camera--submit" style="display: none;">
     <%= link_to 'Back', '', onclick: 'retake(); return false', class: 'camera-redo btn btn-primary' %>
-    <%= link_to 'Submit', '', onclick: 'return false', class: 'camera-save btn btn-primary' %>
+    <%= link_to 'Submit', '', onclick: 'save(); return false', class: 'camera-save btn btn-primary' %>
   </div>
 </div>
 
@@ -27,7 +27,29 @@
   }
 </style>
 <script>
+  var devices = [];
+  var front = null;
+  navigator.mediaDevices.enumerateDevices().then(loadDevices)
+
+  function loadDevices(deviceInfos) {
+    for (var i = 0; i !== deviceInfos.length; ++i) {
+      var deviceInfo = deviceInfos[i];
+      if (deviceInfo.kind === 'videoinput') {
+        devices.push(deviceInfo);
+      }
+    }
+
+    if(devices.length > 1) {
+      // $('.next-stream').show();
+      front = 'environment'
+    }
+    $('.camera-container').data('camera', front);
+  }
+
   var video = document.querySelector("#videoElement");
+  get_user_media_options = {
+    video: front ? { facingMode: { exact: front } } : true
+  };
 
   if (navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({video: true})
@@ -52,8 +74,10 @@
       canvas.width = $(video).width();
       canvas.height = $(video).height();
       var context = canvas.getContext('2d');
-      context.translate(canvas.width, 0);
-      context.scale(-1, 1);
+      if(front === 'environment') {
+        context.translate(canvas.width, 0);
+        context.scale(-1, 1);
+      }
       context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, $(video).width(), $(video).height());
     }
   }
@@ -68,4 +92,64 @@
     $('.camera--capture').show();
     video[0].play()
   }
+
+  function save() {
+    var canvas = document.getElementById('canvasElement');
+
+    var canvasData = canvas.toDataURL("image/jpeg");
+
+    var headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+    var csrf_token = $('meta[name="csrf-token"]').attr("content");
+    if (csrf_token) { headers["X-CSRF-Token"] = csrf_token; }
+
+    $.ajax({
+      type: 'POST',
+      url: '/receipts',
+      headers: headers,
+      data: {
+        img_data: canvasData
+      }
+    }).done(function(response) {
+      $('.camera-actions').html(response);
+
+      $('canvas').width($('canvas').width() / 2)
+        .height($('canvas').height() / 2)
+        .css({'position': 'static'});
+
+      $('.camera-wrap').html($('canvas')).css({'padding-bottom': 'inherit'})
+    }).fail(function(status_code, error_message, response) {
+      alert("Upload failed with status " + status_code);
+      $('.camera-redo').click();
+    });
+
+
+
+    // var ajax = new XMLHttpRequest();
+    // ajax.open('POST', '/receipts');
+    // ajax.timeout = 0;
+    // var csrf_token = $('meta[name="csrf-token"]').attr("content");
+    // if (csrf_token) {
+    //   ajax.setRequestHeader("X-CSRF-Token", csrf_token);
+    // }
+    // ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // ajax.onload = function(response) {
+    //   debugger
+    //   $('.camera-actions').html(response);
+    //
+    //   $('video').parent().html('');
+    //
+    //   $('canvas').width($('canvas').width() / 2)
+    //     .height($('canvas').height() / 2)
+    //     .css({'position': 'static'});
+    //   $('.camera-wrap').html($('canvas')).css({'padding-bottom': 'inherit'})
+    // };
+    //
+    // ajax.onerror = function(status_code, error_message, response) {
+    //   alert("Upload failed with status " + status_code);
+    //   $('.camera-redo').click();
+    // };
+    //
+    // ajax.send("img_data="+canvasData);
+  }
+
 </script>

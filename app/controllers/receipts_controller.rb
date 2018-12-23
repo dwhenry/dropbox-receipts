@@ -13,7 +13,7 @@ class ReceiptsController < ApplicationController
     respond_to do |format|
       format.js do
         @types = ExpenseType.all
-        render :edit, layout: false
+        render :edit, layout: false, format: 'html', content_type: 'application/html'
       end
       format.html_safe? { redirect_to edit_path(@receipt) }
     end

@@ -1,5 +1,5 @@
 
-<div id="stream"></div>
+<div id="stream" style="<%= 'display: none' unless ENV['SHOW_DEBUG'] %>"></div>
 <div class="camera-wrap col-md-3">
   <div id="camera" class="camera-container">
     <video autoplay="true" id="videoElement" style="width: 100%">
@@ -47,9 +47,9 @@
         front = 'other'
       }
       $('.camera-container').data('camera', front);
-    }
 
-    nextStream();
+      nextStream();
+    }
   }, 200);
 
   function nextStream() {

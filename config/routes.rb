@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       ActiveSupport::SecurityUtils.secure_compare(::Digest::SHA256.hexdigest(password), ::Digest::SHA256.hexdigest(ENV["SIDEKIQ_PASSWORD"]))
   end if Rails.env.production?
   mount Sidekiq::Web, at: "/sidekiq"
+  mount Blazer::Engine, at: "/blazer"
 
   get '/auth/:provider/callback' => 'auth#success'
   get '/auth/failure' => 'auth#failure'

@@ -7,6 +7,7 @@ git_source(:github) do |repo_name|
 end
 
 source 'https://rubygems.org' do
+  gem 'blazer'
   gem 'rails-assets-tether'
   gem 'bootstrap', '~> 4.0.0.alpha5'
   gem 'coffee-rails', '~> 4.2'

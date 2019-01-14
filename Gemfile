@@ -30,6 +30,10 @@ source 'https://rubygems.org' do
   gem 'wicked_pdf'
   #gem 'wkhtmltopdf-heroku'
 
+  gem 'rubyzip', '>= 1.2.1'
+  gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+  gem 'axlsx_rails'
+
   group :development, :test do
     gem 'dotenv-rails', require: 'dotenv/rails-now'
     gem 'pry-byebug', platform: :mri

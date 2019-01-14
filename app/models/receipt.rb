@@ -36,6 +36,10 @@ class Receipt < ApplicationRecord
     ].compact.join('/')
   end
 
+  def code_name
+    ExpenseType.lookup(code)
+  end
+
   def month
     "#{purchase_date.month}-#{purchase_date.year}"
   end

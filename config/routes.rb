@@ -31,6 +31,11 @@ Rails.application.routes.draw do
   resources :receipts do
     collection { get :gallery }
   end
+  resources :reports, only: :index do
+    collection do
+      get :personal
+    end
+  end
   resources :manual_matches
   resources :wages
   resources :users, only: [:index, :update]

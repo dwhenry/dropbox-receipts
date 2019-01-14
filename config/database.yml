@@ -5,7 +5,7 @@ default: &default
 
 development:
   <<: *default
-  database: dropbox-receipts_development
+  database: <%= ENV.fetch('DATABASE', 'dropbox-receipts_development') %>
   port: <%= ENV.fetch('DATABASE_PORT', 5432) %>
 
 test:

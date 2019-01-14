@@ -1,0 +1,147 @@
+wb = xlsx_package.workbook
+
+header_xf = wb.styles.add_style bg_color: "00", fg_color: "FF", alignment: { horizontal: :center }, bold: true
+
+partial_summary_xf = wb.styles.add_style bg_color: "DD", fg_color: "00", bold: true
+
+full_summary_xf = wb.styles.add_style bg_color: "AA", fg_color: "00", bold: true
+
+date_xf = wb.styles.add_style num_fmt: 15
+
+receipts = ReceiptReport.new(year: 2017, filter_date: 'purchase_date', source: Receipt)
+
+summary_sheet = wb.add_worksheet(name: 'Summary')
+
+number_xf = wb.styles.add_style format_code: '\£#,##0.00'
+
+row_styles = {}
+#######
+
+summary_sheet.add_row ['Expenses', '', 'Total', *ReceiptReport.months], style: header_xf
+row_styles[summary_sheet.rows.count] = header_xf
+
+{ company: 'Company receipts', individual: 'Personal receipts' }.each do |key, name|
+  sheet = wb.add_worksheet(name: name)
+
+  sheet.add_row ['Company', 'Type', 'Date', 'Recorded date', 'Amount']
+
+  receipts.for(key).each do |receipt|
+    sheet.add_row [receipt.company, receipt.code_name, receipt.created_at, receipt.purchase_date, receipt.amount]
+  end
+
+  sheet.col_style 2, date_xf
+  sheet.col_style 3, date_xf
+  sheet.row_style 0, header_xf
+
+
+  receipts.for(key).by(:code) do |code, summary|
+    summary_sheet.add_row [name, ExpenseType.lookup(code), summary.total, *summary.by_month]
+  end
+
+  summary = receipts.for(key)
+  summary_sheet.add_row [name, 'Total', summary.total, *summary.by_month], style: partial_summary_xf
+  row_styles[summary_sheet.rows.count] = partial_summary_xf
+end
+
+# add missing
+manuals = ReceiptReport.new(
+  year: 2017,
+  filter_date: 'lines.date',
+  source: ManualMatch
+            .where('manual_matches.amount > 0')
+            .joins('join (select source_id, min(transaction_date) as date from bank_lines group by source_id) as lines on lines.source_id = manual_matches.id')
+            .order('lines.date')
+)
+sheet = wb.add_worksheet(name: 'Other')
+
+sheet.add_row ['Type', 'Sub type', 'Date', 'Recorded date', 'Amount']
+
+manuals.each do |manual|
+  sheet.add_row [manual.payment_type, manual.payment_subtype, manual.lines.first.transaction_date, manual.created_at, manual.amount]
+end
+
+sheet.col_style 2, date_xf
+sheet.col_style 3, date_xf
+sheet.row_style 0, header_xf
+
+manuals.extract(field: :payment_type).each do |name|
+  filtered = manuals.for({ :payment_type => name }, )
+  summary_sheet.add_row ['Other', name, filtered.total, *filtered.by_month]
+end
+
+summary_sheet.add_row ['Other', 'Total', manuals.total, *manuals.by_month], style: partial_summary_xf
+row_styles[summary_sheet.rows.count] = partial_summary_xf
+
+# receipt summary
+# TODO: add misssing into this..
+summary_sheet.add_row ['All receipts', 'Total', receipts.total, *receipts.by_month], style: full_summary_xf
+row_styles[summary_sheet.rows.count] = full_summary_xf
+
+########
+
+summary_sheet.add_row []
+summary_sheet.add_row ['Dividend', '', 'Total', *ReceiptReport.months], style: header_xf
+row_styles[summary_sheet.rows.count] = header_xf
+
+dividends = ReceiptReport.new(
+  year: 2017,
+  filter_date: 'dividends.dividend_date',
+  source: Dividend
+)
+
+dividends.extract(field: :data_rows, filter_on: 'shareholder').each do |shareholder|
+  summary_sheet.add_row [
+    '',
+    shareholder,
+    dividends.total(field: :data_rows, filter_on: 'shareholder', filter_value: shareholder, sum_value: 'amount'),
+    *dividends.by_month(field: :data_rows, filter_on: 'shareholder', filter_value: shareholder, sum_value: 'amount')
+  ]
+end
+summary_sheet.add_row ['Dividends', '', dividends.total(field: :total_amount), *dividends.by_month(field: :total_amount)], style: full_summary_xf
+row_styles[summary_sheet.rows.count] = full_summary_xf
+
+sheet = wb.add_worksheet(name: 'Dividends')
+
+sheet.add_row ['Shareholder', 'Dividend date', 'Payment date', 'Amount']
+
+dividends.each do |dividend|
+  dividend.rows.each do |row|
+    sheet.add_row [row.shareholder, dividend.dividend_date, dividend.lines.first.transaction_date, row.amount]
+  end
+end
+
+sheet.col_style 1, date_xf
+sheet.col_style 2, date_xf
+sheet.row_style 0, header_xf
+
+######
+
+summary_sheet.add_row []
+summary_sheet.add_row ['Invoices', '', 'Total', *ReceiptReport.months], style: header_xf
+row_styles[summary_sheet.rows.count] = header_xf
+
+invoices = ReceiptReport.new(
+  year: 2017,
+  filter_date: 'bank_lines.transaction_date',
+  source: Invoice.left_joins(:lines)
+)
+
+summary_sheet.add_row ['Invoices', '', invoices.total, *invoices.by_month]
+
+sheet = wb.add_worksheet(name: 'Invoices')
+
+sheet.add_row ['Company', 'Dividend date', 'Payment date', 'Amount']
+sheet.row_style 0, header_xf
+
+# dividends.each do |dividend|
+#   invoices.lines.each do |line|
+#     sheet.add_row [dividend.company_name, '', dividend.dividend_date, line.transaction_date, line.amount]
+#   end
+# end
+
+(2..14).each do |col|
+  summary_sheet.col_style col, number_xf
+end
+row_styles.each do |row, style|
+  summary_sheet.row_style row - 1, style
+end

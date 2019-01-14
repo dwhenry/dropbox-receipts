@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.3.5"
+ruby "2.4.2"
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -29,6 +29,10 @@ source 'https://rubygems.org' do
   gem 'jpeg_camera'
   gem 'wicked_pdf'
   #gem 'wkhtmltopdf-heroku'
+
+  gem 'rubyzip', '>= 1.2.1'
+  gem 'axlsx', git: 'https://github.com/randym/axlsx.git', ref: 'c8ac844'
+  gem 'axlsx_rails'
 
   group :development, :test do
     gem 'dotenv-rails', require: 'dotenv/rails-now'

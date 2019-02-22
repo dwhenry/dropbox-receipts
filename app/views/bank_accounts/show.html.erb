@@ -7,6 +7,8 @@
   <% else %>
     <%= link_to 'Filter to unmatched', bank_account_path(params[:id], filter: 'unlinked'), class: 'btn btn-warning' %>
   <% end %>
+  <br>
+  <%= link_to 'Export', export_bank_account_path(params[:id]), class: 'btn btn-warning' %>
 </div>
 
 <div class="col-md-12">

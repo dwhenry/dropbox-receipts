@@ -5,6 +5,14 @@ class BankAccountsController < ApplicationController
     @bank_line = BankLine.new
   end
 
+  def export
+    BankAccountExporter.perform_later(params[:id], current_user.id)
+
+    session[:flash] = "Bank Statement will be emailed shortly"
+
+    redirect_to bank_account_path(params[:id])
+  end
+
   def create
     # build opening balance
     bank_line = BankLine.new(new_bank_line_params)

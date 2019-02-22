@@ -2,6 +2,7 @@ require 'dropbox'
 
 class BankAccountExporter
   include Sidekiq::Worker
+  include ActionView::Helpers::NumberHelper
 
   def perform(bank_account_name, user_id)
     @user_id = user_id

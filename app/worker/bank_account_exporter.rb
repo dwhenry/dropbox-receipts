@@ -28,13 +28,13 @@ class BankAccountExporter
 
     data = lines.map do |line|
       [
-        bank_line.transaction_date.strftime('%d %b %Y'),
-        bank_line.transaction_type,
-        bank_line.amount > 0 ? number_to_currency(bank_line.amount, unit: '£') : nil,
-        bank_line.amount < 0 ? number_to_currency(bank_line.amount.abs, unit: '£') : nil,
-        number_to_currency(bank_line.balance, unit: '£'),
-        bank_line.source&.desc,
-        bank_line.source.try(:build_path)
+        line.transaction_date.strftime('%d %b %Y'),
+        line.transaction_type,
+        line.amount > 0 ? number_to_currency(line.amount, unit: '£') : nil,
+        line.amount < 0 ? number_to_currency(line.amount.abs, unit: '£') : nil,
+        number_to_currency(line.balance, unit: '£'),
+        line.source&.desc,
+        line.source.try(:build_path)
       ].join(",")
     end
 

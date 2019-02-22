@@ -6,7 +6,7 @@ class BankAccountsController < ApplicationController
   end
 
   def export
-    BankAccountExporter.perform_later(params[:id], current_user.id)
+    BankAccountExporter.perform_async(params[:id], current_user.id)
 
     session[:flash] = "Bank Statement will be emailed shortly"
 

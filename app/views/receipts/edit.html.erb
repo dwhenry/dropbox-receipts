@@ -37,6 +37,11 @@
       <%= f.select :payer, %w(company individual), { include_blank: true }, class: 'form-control' %>
     </div>
 
+    <div class="form_group">
+      <%= label_tag :similar %>
+      <%= check_box_tag :similar, '1', params[:similar], class: 'form-control' %>
+    </div>
+
     <div class="form_group" style="display: inline-block;">
       <%= f.submit 'Update', class: 'btn btn-primary' %>
     </div>

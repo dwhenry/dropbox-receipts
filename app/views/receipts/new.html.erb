@@ -9,6 +9,8 @@
   <br>
 </div>
 
+<% hidden_field_tag :similar_to, params[:similar_to] %>
+
 <div class="col-md-6 camera-actions">
   <div class="camera--capture">
     <%= link_to 'Switch Camera', '', onclick: 'nextStream(); return false', class: 'next-stream btn btn-primary', style: 'display: none;' %>
@@ -83,7 +85,7 @@
       canvas.width = $(video).width();
       canvas.height = $(video).height();
       var context = canvas.getContext('2d');
-      if(front !== 'environment') {
+      if(front === 'environment') {
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
       }
@@ -116,7 +118,8 @@
       url: '/receipts',
       headers: headers,
       data: {
-        img_data: canvasData
+        img_data: canvasData,
+        simialr_to: '<%= params[:similar_to] %>'
       }
     }).done(function(response) {
       $('.camera-actions').html(response);

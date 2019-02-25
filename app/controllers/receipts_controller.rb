@@ -6,7 +6,13 @@ class ReceiptsController < ApplicationController
   end
 
   def create
-    @receipt = Receipt.create!(user: current_user, image: params['img_data'], purchase_date: Date.today)
+    shared = { user: current_user, image: params['img_data'], purchase_date: Date.today }
+    @receipt = if params[:similar_to]
+                 prev = Receipt.find(params[:similar_to].to_i)
+                 Receipt.create!(prev.attributes.slice(:company, :code, :purchase_date, :payer).merge(shared))
+               else
+                 Receipt.create!(shared)
+               end
 
     DropboxSaver.perform_async(@receipt.id)
 
@@ -38,7 +44,11 @@ class ReceiptsController < ApplicationController
     DropboxMover.perform_async(receipt.id)
 
     session[:flash] = "Receipt succcessfully uploaded!"
-    redirect_to receipts_path
+    if params[:similar]
+      redirect_to new_receipt_path(similar_to: receipt.id)
+    else
+      redirect_to receipts_path
+    end
   end
 
   def index

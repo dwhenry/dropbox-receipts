@@ -83,7 +83,7 @@
       canvas.width = $(video).width();
       canvas.height = $(video).height();
       var context = canvas.getContext('2d');
-      if(front === 'user') {
+      if(front !== 'environment') {
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
       }

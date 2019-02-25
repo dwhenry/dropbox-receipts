@@ -23,7 +23,7 @@
 </div>
 
 <style>
-  #videoElement {
+  #videoElement.user {
     -webkit-transform: scaleX(-1);
     transform: scaleX(-1);
   }
@@ -56,7 +56,9 @@
 
   function nextStream() {
     var s = 'From: ' + front;
+    $(video).removeClass(front);
     front = (front === 'environment') ? 'user' : 'environment';
+    $(video).addClass(front);
     s = s + ' To: ' + front;
     $('#stream').html(s);
     var get_user_media_options = {
@@ -85,7 +87,7 @@
       canvas.width = $(video).width();
       canvas.height = $(video).height();
       var context = canvas.getContext('2d');
-      if(front === 'environment') {
+      if(front !== 'environment') {
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
       }

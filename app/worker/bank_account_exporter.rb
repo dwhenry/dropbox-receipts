@@ -39,7 +39,12 @@ class BankAccountExporter
       ].join(",")
     end
 
-    BankAccountMailer.business_statement_email(user, bank_account_name, year, [title, *data].join("\n")).deliver
+    BankAccountMailer.business_statement_email(
+      user,
+      bank_account_name,
+      year,
+      [titles, *data].join("\n")
+    ).deliver
   end
 
   def bank_lines

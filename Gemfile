@@ -22,7 +22,7 @@ source 'https://rubygems.org' do
   gem 'pg'
   gem 'puma', '~> 3.0'
   gem 'rails', '~> 5.0.2'
-  gem 'sass-rails'
+  gem 'sassc-rails'
   gem 'select2-rails'
   gem 'sidekiq'
   gem 'turbolinks'

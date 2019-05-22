@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190521152102) do
+ActiveRecord::Schema.define(version: 20190522151617) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,9 +184,9 @@ ActiveRecord::Schema.define(version: 20190521152102) do
     t.boolean  "is_accountant"
   end
 
-  add_foreign_key "bank_lines", "users", column: "company_id"
+  add_foreign_key "bank_lines", "companies"
   add_foreign_key "companies", "users"
-  add_foreign_key "dividends", "users", column: "company_id"
-  add_foreign_key "invoices", "users", column: "company_id"
-  add_foreign_key "receipts", "users", column: "company_id"
+  add_foreign_key "dividends", "companies"
+  add_foreign_key "invoices", "companies"
+  add_foreign_key "receipts", "companies"
 end

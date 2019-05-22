@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require tether
+//= require ./vendor/popper
 //= require bootstrap
 
 //= require_tree ./theme

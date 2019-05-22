@@ -37,12 +37,10 @@
         Bank Accounts
       </a>
     </li>
-    <% if current_user.is_accountant? %>
-      <li class="<%= 'active' if current_location?(users_path) %>">
-        <a href="<%= users_path %>">
-          Users
-        </a>
-      </li>
-    <% end %>
+    <li class="<%= 'active' if current_location?(users_path) %>">
+      <a href="<%= users_path %>">
+        Users
+      </a>
+    </li>
   </ul>
 </nav>

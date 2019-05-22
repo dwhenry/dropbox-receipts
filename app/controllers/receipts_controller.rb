@@ -6,10 +6,10 @@ class ReceiptsController < ApplicationController
   end
 
   def create
-    shared = { user: current_user, image: params['img_data'], purchase_date: Date.today }
+    shared = { company: current_company, image: params['img_data'], purchase_date: Date.today }
     @receipt = if params[:similar_to]
                  prev = Receipt.find(params[:similar_to].to_i)
-                 Receipt.create!(prev.attributes.slice(:company, :code, :purchase_date, :payer).merge(shared))
+                 Receipt.create!(prev.attributes.slice(:company_name, :code, :purchase_date, :payer).merge(shared))
                else
                  Receipt.create!(shared)
                end
@@ -68,10 +68,10 @@ class ReceiptsController < ApplicationController
   private
 
   def receipt_params
-    params.require(:receipt).permit(:company, :code, :amount, :purchase_date, :payer)
+    params.require(:receipt).permit(:company_name, :code, :amount, :purchase_date, :payer)
   end
 
   def receipts
-    current_user.is_accountant? ? Receipt : current_user.receipts
+    current_user.is_accountant? ? Receipt : current_company.receipts
   end
 end

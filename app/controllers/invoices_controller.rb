@@ -4,7 +4,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = Invoice.new(invoice_params.merge(user: current_user))
+    @invoice = Invoice.new(invoice_params.merge(company: current_company))
     if @invoice.save
       redirect_to invoices_path
     else
@@ -77,6 +77,6 @@ class InvoicesController < ApplicationController
   end
 
   def invoices
-    current_user.is_accountant? ? Invoice : current_user.invoices
+    current_user.is_accountant? ? Invoice : current_company.invoices
   end
 end

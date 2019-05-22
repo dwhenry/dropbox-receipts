@@ -27,7 +27,7 @@ class BankLinesController < ApplicationController
   private
 
   def bank_lines
-    current_user.is_accountant? ? BankLine.order(id: :desc) : current_user.bank_lines.order(id: :desc)
+    current_user.is_accountant? ? BankLine.order(id: :desc) : current_company.bank_lines.order(id: :desc)
   end
 
 

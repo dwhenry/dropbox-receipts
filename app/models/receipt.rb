@@ -1,8 +1,9 @@
 class Receipt < ApplicationRecord
-  belongs_to :user
+  belongs_to :company
+  # delegate :user, to: :company
   has_many :lines, -> { where(source_type: 'Receipt') }, class_name: "BankLine", foreign_key: :source_id
   has_one :line, -> { where(source_type: 'Receipt') }, class_name: "BankLine", foreign_key: :source_id
-  validates_presence_of :user
+  validates_presence_of :company
 
   default_scope { where(deleted: false) }
   scope :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }

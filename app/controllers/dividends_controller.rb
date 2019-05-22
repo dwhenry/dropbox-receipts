@@ -4,7 +4,7 @@ class DividendsController < ApplicationController
   end
 
   def create
-    @dividend = Dividend.new(dividend_params.merge(user: current_user))
+    @dividend = Dividend.new(dividend_params.merge(company: current_company))
     if @dividend.save
       redirect_to dividends_path
     else
@@ -64,6 +64,6 @@ class DividendsController < ApplicationController
   end
 
   def dividends
-    current_user.is_accountant? ? Dividend : current_user.dividends
+    current_user.is_accountant? ? Dividend : current_company.dividends
   end
 end

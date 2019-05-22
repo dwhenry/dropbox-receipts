@@ -13,10 +13,13 @@
   <%= paginate @receipts %>
 </div>
 
-<% @receipts.group_by(&:user).each do |user, receipts| %>
+<% @receipts.group_by(&:company).each do |company, receipts| %>
   <% if current_user.is_accountant? %>
     <div class="col-md-12">
-      <h2><%= user.company_name || user.name %></h2>
+      <h2>
+        <%= company.user.name %>:
+        <%= company.name || '-' %>
+      </h2>
     </div>
   <% end %>
 
@@ -38,7 +41,7 @@
           <% month_receipts.each do |receipt| %>
             <tr>
               <td><%= receipt.purchase_date&.strftime('%d %b %Y') || '-' %></td>
-              <td><%= receipt.company || '-' %></td>
+              <td><%= receipt.company_name || '-' %></td>
               <td><%= receipt.payer || '-' %></td>
               <td><%= ExpenseType.lookup(receipt.code) || '-' %></td>
               <td class="text-right"><%= receipt.amount ? number_to_currency(receipt.amount, unit: '£') : '-' %></td>

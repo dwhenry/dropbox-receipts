@@ -6,12 +6,14 @@
   <%= link_to('Import New Account', new_bank_account_path, class: 'btn btn-primary') %>
 </div>
 
-<% @bank_accounts.group_by(&:user).each do |user, bank_accounts| %>
+<% @bank_accounts.group_by(&:company).each do |company, bank_accounts| %>
 
   <% if current_user.is_accountant? %>
     <div class="col-md-12">
-      <h2><%= user.company_name || user.name %></h2>
-    </div>
+      <h2>
+        <%= company.user.name %>:
+        <%= company.name || '-' %>
+      </h2>    </div>
   <% end %>
 
   <div class="col-md-12">

@@ -1,9 +1,10 @@
 class User < ApplicationRecord
-  has_many :receipts
-  has_many :invoices
-  has_many :dividends
-  has_many :bank_lines
-  has_many :manual_matches
+  has_many :companies
+  # has_many :receipts, through: :companies
+  # has_many :invoices, through: :companies
+  # has_many :dividends, through: :companies
+  # has_many :bank_lines, through: :companies
+  # has_many :manual_matches, through: :companies
 
   def self.from_oauth(args)
     uid = args['info']['uid']

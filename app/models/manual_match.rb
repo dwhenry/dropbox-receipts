@@ -1,5 +1,6 @@
 class ManualMatch < ApplicationRecord
-  belongs_to :user
+  belongs_to :company
+  # delegate :user, to: :company
   has_many :lines, -> { where(source_type: 'ManualMatch') }, class_name: "BankLine", foreign_key: :source_id
   scope :without_source, -> do
     left_joins(:lines).where(

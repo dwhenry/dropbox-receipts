@@ -18,7 +18,7 @@ class BankAccountsController < ApplicationController
     bank_line = BankLine.new(new_bank_line_params)
     if bank_line.save
       # import the csv
-      importer = CsvImporter.new(user: current_user, account_name: @bank_line.name)
+      importer = CsvImporter.new(company: current_company, account_name: @bank_line.name)
       importer.import(params[:file]&.read || '')
       redirect_to bank_accounts_path(anchor: "account-#{@bank_line.name}"), flash: { @bank_line.name => importer.errors }
     else
@@ -43,7 +43,7 @@ class BankAccountsController < ApplicationController
   end
 
   def import
-    importer = CsvImporter.new(user: current_user, account_name: params[:account_name])
+    importer = CsvImporter.new(company: current_company, account_name: params[:account_name])
     importer.import(params[:file]&.read || '')
 
     redirect_to bank_accounts_path(anchor: "account-#{params[:account_name]}"), flash: { params[:account_name] => importer.errors }
@@ -59,11 +59,11 @@ class BankAccountsController < ApplicationController
   private
 
   def bank_lines
-    current_user.is_accountant? ? BankLine.order(id: :desc) : current_user.bank_lines.order(id: :desc)
+    current_user.is_accountant? ? BankLine.order(id: :desc) : current_company.bank_lines.order(id: :desc)
   end
 
   def bank_accounts
-    bank_lines.select(:name, :account_num, :sort_code, :user_id).includes(:user).reorder(:name).distinct
+    bank_lines.select(:name, :account_num, :sort_code, :company_id).includes(:company).reorder(:name).distinct
   end
 
   def new_bank_line_params
@@ -84,8 +84,8 @@ class BankAccountsController < ApplicationController
   class CsvImporter
     attr_reader :errors
 
-    def initialize(user:, account_name:)
-      @user = user
+    def initialize(company:, account_name:)
+      @company = company
       @account_name = account_name
       @errors = []
     end
@@ -122,7 +122,7 @@ class BankAccountsController < ApplicationController
     end
 
     def current
-      @current ||= @user.bank_lines
+      @current ||= @company.bank_lines
         .where(name: @account_name)
         .left_joins(:next).where(nexts_bank_lines: { id: nil })
         .first

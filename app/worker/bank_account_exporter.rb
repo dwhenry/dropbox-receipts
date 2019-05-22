@@ -4,8 +4,8 @@ class BankAccountExporter
   include Sidekiq::Worker
   include ActionView::Helpers::NumberHelper
 
-  def perform(bank_account_name, user_id)
-    @user_id = user_id
+  def perform(bank_account_name, company_id)
+    @company_id = company_id
 
     year = Date.today.year
     year -= 1 if Date.parse("#{year}-06-30") > Date.today
@@ -49,10 +49,10 @@ class BankAccountExporter
   end
 
   def bank_lines
-    user.is_accountant? ? BankLine.order(id: :desc) : user.bank_lines.order(id: :desc)
+    user.is_accountant? ? BankLine.order(id: :desc) : company.bank_lines.order(id: :desc)
   end
 
   def user
-    @user ||= User.find(@user_id)
+    @user ||= Company.find(@company_id).user
   end
 end

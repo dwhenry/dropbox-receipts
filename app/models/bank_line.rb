@@ -6,7 +6,8 @@ class BankLine < ApplicationRecord
 
   has_one :next, required: false, class_name: 'BankLine', foreign_key: 'previous_id'
   belongs_to :previous, required: false, class_name: 'BankLine'
-  belongs_to :user
+  belongs_to :company
+  # delegate :user, to: :company
   belongs_to :source, polymorphic: true, required: false
 
   validates :previous, presence: true, unless: ->(line) { line.description == 'Opening Balance' }
@@ -24,7 +25,7 @@ class BankLine < ApplicationRecord
   validates :transaction_date, presence: true
   validates :description,
     uniqueness: {
-      scope: [:user_id, :name],
+      scope: [:company_id, :name],
       message: 'can only be opened once',
       if: ->(line) { line.description == 'Opening Balance' }
     },
@@ -35,7 +36,7 @@ class BankLine < ApplicationRecord
   end
 
   def current_balance
-    BankLine.left_joins(:next).find_by!(user_id: user_id, name: name, nexts_bank_lines: { id: nil }).balance
+    BankLine.left_joins(:next).find_by!(company_id: company_id, name: name, nexts_bank_lines: { id: nil }).balance
   end
 
   def initialize_next(data)

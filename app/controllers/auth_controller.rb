@@ -16,4 +16,9 @@ class AuthController < ApplicationController
   def failure
     render text: "did not work:\n#{params.inspect}"
   end
+
+  def company
+    session[:company_id] = params[:company_id]
+    redirect_to request.referrer
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190114115547) do
+ActiveRecord::Schema.define(version: 20190521152102) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20190114115547) do
     t.string   "account_num"
     t.string   "sort_code"
     t.integer  "previous_id"
-    t.integer  "user_id"
+    t.integer  "company_id"
     t.decimal  "amount",           precision: 8, scale: 2
     t.decimal  "balance",          precision: 8, scale: 2
     t.date     "transaction_date"
@@ -31,12 +31,12 @@ ActiveRecord::Schema.define(version: 20190114115547) do
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.index ["account_num"], name: "index_bank_lines_on_account_num", using: :btree
+    t.index ["company_id"], name: "index_bank_lines_on_company_id", using: :btree
     t.index ["name"], name: "index_bank_lines_on_name", using: :btree
     t.index ["previous_id"], name: "index_bank_lines_on_previous_id", using: :btree
     t.index ["sort_code"], name: "index_bank_lines_on_sort_code", using: :btree
     t.index ["source_id"], name: "index_bank_lines_on_source_id", using: :btree
     t.index ["source_type"], name: "index_bank_lines_on_source_type", using: :btree
-    t.index ["user_id"], name: "index_bank_lines_on_user_id", using: :btree
   end
 
   create_table "blazer_audits", force: :cascade do |t|
@@ -94,8 +94,17 @@ ActiveRecord::Schema.define(version: 20190114115547) do
     t.index ["creator_id"], name: "index_blazer_queries_on_creator_id", using: :btree
   end
 
-  create_table "dividends", force: :cascade do |t|
+  create_table "companies", force: :cascade do |t|
     t.integer  "user_id"
+    t.string   "name"
+    t.boolean  "primary"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_companies_on_user_id", using: :btree
+  end
+
+  create_table "dividends", force: :cascade do |t|
+    t.integer  "company_id"
     t.date     "dividend_date"
     t.decimal  "total_amount",  precision: 8, scale: 2
     t.jsonb    "data_rows"
@@ -106,11 +115,11 @@ ActiveRecord::Schema.define(version: 20190114115547) do
     t.string   "company_reg"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
-    t.index ["user_id"], name: "index_dividends_on_user_id", using: :btree
+    t.index ["company_id"], name: "index_dividends_on_company_id", using: :btree
   end
 
   create_table "invoices", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "company_id"
     t.text     "to_address"
     t.string   "company_name"
     t.text     "company_address"
@@ -133,23 +142,23 @@ ActiveRecord::Schema.define(version: 20190114115547) do
     t.string   "account_sort"
     t.text     "recipients"
     t.text     "notes"
-    t.index ["user_id"], name: "index_invoices_on_user_id", using: :btree
+    t.index ["company_id"], name: "index_invoices_on_company_id", using: :btree
   end
 
   create_table "manual_matches", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "company_id"
     t.date     "date"
     t.string   "payment_type"
     t.decimal  "amount",          precision: 8, scale: 2
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
     t.string   "payment_subtype"
+    t.index ["company_id"], name: "index_manual_matches_on_company_id", using: :btree
     t.index ["date"], name: "index_manual_matches_on_date", using: :btree
-    t.index ["user_id"], name: "index_manual_matches_on_user_id", using: :btree
   end
 
   create_table "receipts", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "company_id"
     t.binary   "image"
     t.date     "purchase_date"
     t.string   "code"
@@ -157,10 +166,10 @@ ActiveRecord::Schema.define(version: 20190114115547) do
     t.datetime "created_at",                                                        null: false
     t.datetime "updated_at",                                                        null: false
     t.string   "path",          limit: 511
-    t.string   "company"
+    t.string   "company_name"
     t.boolean  "deleted",                                           default: false
     t.string   "payer"
-    t.index ["user_id"], name: "index_receipts_on_user_id", using: :btree
+    t.index ["company_id"], name: "index_receipts_on_company_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -175,8 +184,9 @@ ActiveRecord::Schema.define(version: 20190114115547) do
     t.boolean  "is_accountant"
   end
 
-  add_foreign_key "bank_lines", "users"
-  add_foreign_key "dividends", "users"
-  add_foreign_key "invoices", "users"
-  add_foreign_key "receipts", "users"
+  add_foreign_key "bank_lines", "users", column: "company_id"
+  add_foreign_key "companies", "users"
+  add_foreign_key "dividends", "users", column: "company_id"
+  add_foreign_key "invoices", "users", column: "company_id"
+  add_foreign_key "receipts", "users", column: "company_id"
 end

@@ -1,5 +1,6 @@
 class Dividend < ApplicationRecord
-  belongs_to :user
+  belongs_to :company
+  # delegate :user, to: :company
   has_many :lines, -> { where(source_type: 'Dividend') }, class_name: "BankLine", foreign_key: :source_id
 
   validates :dividend_date, presence: true

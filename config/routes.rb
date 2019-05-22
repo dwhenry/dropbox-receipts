@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get '/auth/failure' => 'auth#failure'
 
   get '/auth/logout' => 'auth#logout', as: :signout
+  get '/auth/company' => 'auth#company', as: :company_select
 
   resources :bank_accounts do
     collection { post :import }

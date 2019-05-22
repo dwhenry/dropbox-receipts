@@ -7,11 +7,14 @@
   <%= paginate @invoices %>
 </div>
 
-<% @invoices.group_by(&:user).each do |user, invoices| %>
+<% @invoices.group_by(&:company).each do |company, invoices| %>
 
   <% if current_user.is_accountant? %>
     <div class="col-md-12">
-      <h2><%= user.company_name || user.name %></h2>
+      <h2>
+        <%= company.user.name %>:
+        <%= company.name || '-' %>
+      </h2>
     </div>
   <% end %>
 

@@ -1,5 +1,6 @@
 class Invoice < ApplicationRecord
-  belongs_to :user
+  belongs_to :company
+  # delegate :user, to: :company
   has_many :bank_lines, as: :source
   has_many :lines, -> { where(source_type: 'Invoice') }, class_name: "BankLine", foreign_key: :source_id
   has_one :line, -> { where(source_type: 'Invoice') }, class_name: "BankLine", foreign_key: :source_id
@@ -9,7 +10,7 @@ class Invoice < ApplicationRecord
   validates_presence_of :tax_date
   validates_presence_of :terms
   validate :locked_after_generation
-  validates :number, uniqueness: { scope: :user_id }
+  validates :number, uniqueness: { scope: :company_id }
 
   default_scope { where(deleted: false) }
   scope   :without_source, -> { left_joins(:lines).where(bank_lines: { id: nil }) }

@@ -29,8 +29,8 @@ class Dividend < ApplicationRecord
     data_rows
   }.freeze
 
-  def self.new_for(user)
-    last_dividend = user.dividends.order(created_at: :desc).first
+  def self.new_for(company)
+    last_dividend = company.dividends.order(created_at: :desc).first
     if last_dividend
       new(last_dividend.attributes.slice(*CLONE_ATTR).merge(dividend_date: Date.today))
     else

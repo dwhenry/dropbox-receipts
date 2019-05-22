@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   def new
-    @invoice = Invoice.new_for(current_user)
+    @invoice = Invoice.new_for(current_company)
   end
 
   def create

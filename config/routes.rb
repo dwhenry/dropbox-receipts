@@ -42,5 +42,6 @@ Rails.application.routes.draw do
   resources :manual_matches
   resources :wages
   resources :users, only: [:index, :update]
+  resources :companies, only: [:create]
   root 'home#page'
 end

@@ -6,7 +6,7 @@ class BankAccountsController < ApplicationController
   end
 
   def export
-    BankAccountExporter.perform_async(params[:id], current_user.id)
+    BankAccountExporter.perform_async(params[:id], current_company.id)
 
     session[:flash] = "Bank Statement will be emailed shortly"
 
@@ -77,7 +77,7 @@ class BankAccountsController < ApplicationController
       p[:amount] = p[:balance]
       p[:description] = 'Opening Balance'
       p[:transaction_type] = 'OPN'
-      p[:user] = current_user
+      p[:company] = current_company
     end
   end
 

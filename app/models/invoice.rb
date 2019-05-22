@@ -32,8 +32,8 @@ class Invoice < ApplicationRecord
     notes
   }.freeze
 
-  def self.new_for(user)
-    last_invoice = user.invoices.order(created_at: :desc).first
+  def self.new_for(company)
+    last_invoice = company.invoices.order(created_at: :desc).first
     if last_invoice
       new(last_invoice.attributes.slice(*CLONE_ATTR).merge(tax_date: Date.today))
     else

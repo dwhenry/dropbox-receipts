@@ -1,6 +1,6 @@
 class DividendsController < ApplicationController
   def new
-    @dividend = Dividend.new_for(current_user)
+    @dividend = Dividend.new_for(current_company)
   end
 
   def create

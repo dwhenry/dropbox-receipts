@@ -21,10 +21,17 @@
         <tr>
           <td><%= user.name %></td>
           <td>
-            <%= user.companies.map { |company| "#{company.name}#{company.primary? ? ' (Primary)' : ''}" }.join(', ')  %>
+            <% user.companies.map do |company| %>
+              <%= "#{company.name}#{company.primary? ? ' (Primary)' : ''}" %>
+              <br>
+            <% end %>
           </td>
           <td><%= user.is_accountant? ? 'YES' : '' %></td>
           <td style="padding: 2px">
+            <%= form_for Company.new, class: 'inline' do |f| %>
+              <%= f.submit 'Add Company', class: 'btn btn-primary' %>
+              <%= f.text_field :name,placeholder: 'Name' %>
+            <% end %>
             <%= button_to("Make #{user.is_accountant? ? 'user' : 'accoutant'}", user_path(user), method: 'put', class: 'btn btn-secondary')  %>
           </td>
         </tr>

@@ -13,8 +13,5 @@ class DropboxSaver
     client.upload(path, file) # should hopefully raise an error if it fails..
 
     receipt.update!(path: path)
-  rescue => e
-    require 'pry'
-    binding.pry
   end
 end

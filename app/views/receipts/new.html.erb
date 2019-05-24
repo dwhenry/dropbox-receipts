@@ -121,7 +121,7 @@
       headers: headers,
       data: {
         img_data: canvasData,
-        simialr_to: '<%= params[:similar_to] %>'
+        similar_to: '<%= params[:similar_to] %>'
       }
     }).done(function(response) {
       $('.camera-actions').html(response);

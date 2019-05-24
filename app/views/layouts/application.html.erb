@@ -39,8 +39,12 @@
           <% if current_user %>
             <li class="profile dropdown">
               <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="name">
-                  <%= current_user.name %> | <%= current_company.name || '<Missing Company>' %>
+                <span class="username">
+                  <%= current_user.name %>
+                  |
+                </span>
+                <span class="companyname">
+                  <%= current_company.name || '<Missing Company>' %>
                 </span>
               </a>
               <div class="dropdown-menu profile-dropdown-menu" aria-labelledby="dropdownMenu1">

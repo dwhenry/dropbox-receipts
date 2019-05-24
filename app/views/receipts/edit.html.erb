@@ -39,7 +39,7 @@
 
     <div class="form_group">
       <%= label_tag :similar %>
-      <%= check_box_tag :similar, '1', params[:similar], class: 'form-control' %>
+      <%= check_box_tag :similar, '1', params[:similar_to].present?, class: 'form-control' %>
     </div>
 
     <div class="form_group" style="display: inline-block;">

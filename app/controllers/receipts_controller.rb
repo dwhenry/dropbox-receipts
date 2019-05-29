@@ -7,8 +7,8 @@ class ReceiptsController < ApplicationController
 
   def create
     shared = { company: current_company, image: params['img_data'], purchase_date: Date.today }
-    @receipt = if params[:similar_to]
-                 prev = current_company.receipt.find(params[:similar_to].to_i)
+    @receipt = if params[:similar_to].present?
+                 prev = current_company.receipts.find(params[:similar_to].to_i)
                  Receipt.create!(prev.attributes.slice(:company_name, :code, :purchase_date, :payer).merge(shared))
                else
                  Receipt.create!(shared)

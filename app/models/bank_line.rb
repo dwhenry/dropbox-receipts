@@ -40,18 +40,17 @@ class BankLine < ApplicationRecord
   end
 
   def initialize_next(data)
-    amount = (data['Paid out'].to_d * -1) + data['Paid in'].to_d
     self.class.new(
       name: name,
       account_num: account_num,
       sort_code: sort_code,
       user: user,
       previous: self,
-      transaction_date: data['Date'],
-      transaction_type: data['Type'],
-      description: data['Description'],
-      amount: amount,
-      balance: data['Balance'].presence || balance + amount # balance is blank when multiple transaction on one day
+      transaction_date: data.date,
+      transaction_type: data.type,
+      description: data.description,
+      amount: data.amount,
+      balance: data.balance.presence || balance + data.amount # balance is blank when multiple transaction on one day
     )
   end
 

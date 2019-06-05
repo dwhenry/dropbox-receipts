@@ -81,12 +81,69 @@ class BankAccountsController < ApplicationController
     end
   end
 
-  class CsvImporter
-    attr_reader :errors
+  class HsbcPresenter
+    attr_reader :line
 
-    def initialize(company:, account_name:)
+    def initialize(line)
+      @line = line
+    end
+
+    def description
+      line['Description']
+    end
+
+    def date
+      line['Date']
+    end
+
+    def type
+      line['Type']
+    end
+
+    def balance
+      line['Balance']
+    end
+
+    def amount
+      (data['Paid out'].to_d * -1) + data['Paid in'].to_d
+    end
+  end
+
+  class TidePresenter
+    attr_reader :line
+
+    def initialize(line)
+      @line = line
+    end
+
+    def description
+      line['Transaction description']
+    end
+
+    def date
+      line['Date']
+    end
+
+    def type
+      line['Transaction type']
+    end
+
+    def balance
+      nil
+    end
+
+    def amount
+      line['Amount']
+    end
+  end
+
+  class CsvImporter
+    attr_reader :errors, :presenter
+
+    def initialize(company:, account_name:, presenter: TidePresenter)
       @company = company
       @account_name = account_name
+      @presenter = presenter
       @errors = []
     end
 
@@ -96,12 +153,13 @@ class BankAccountsController < ApplicationController
       processed = []
       ApplicationRecord.transaction do
         CSV.parse(io, headers: true).each do |line|
+          pline = presenter.new(line)
           if skip
-            skipped << line['Description']
+            skipped << pline.description
             next
           end
 
-          next_line = current.initialize_next(line)
+          next_line = current.initialize_next(pline)
 
           if next_line.save
             @current = next_line

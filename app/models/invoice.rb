@@ -1,11 +1,10 @@
 class Invoice < ApplicationRecord
   belongs_to :company
-  # delegate :user, to: :company
   has_many :bank_lines, as: :source
   has_many :lines, -> { where(source_type: 'Invoice') }, class_name: "BankLine", foreign_key: :source_id
   has_one :line, -> { where(source_type: 'Invoice') }, class_name: "BankLine", foreign_key: :source_id
 
-  validates_presence_of :user
+  validates_presence_of :company
   validates_presence_of :company_name
   validates_presence_of :tax_date
   validates_presence_of :terms

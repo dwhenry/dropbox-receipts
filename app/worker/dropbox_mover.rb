@@ -10,7 +10,7 @@ class DropboxMover
 
     return if new_path == old_path
 
-    client = Dropbox::Client.new(receipt.user.token)
+    client = Dropbox::Client.new(receipt.company.user.token)
 
     begin
       client.move(old_path, new_path) # should hopefully raise an error if it fails..

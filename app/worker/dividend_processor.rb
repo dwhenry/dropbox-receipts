@@ -9,7 +9,7 @@ class DividendProcessor
     dividend = Dividend.find(dividend_id)
 
     path = dividend.build_path
-    client = Dropbox::Client.new(dividend.user.token)
+    client = Dropbox::Client.new(dividend.company.user.token)
 
     unless dividend.generated_at
       dividend.update!(generated_at: Time.now)

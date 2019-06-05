@@ -10,6 +10,11 @@ class DropboxMover
 
     return if new_path == old_path
 
+    if old_path.nil?
+      DropboxSaver.perform_async(receipt_id)
+      return
+    end
+
     client = Dropbox::Client.new(receipt.company.user.token)
 
     begin

@@ -11,7 +11,8 @@ class BankLine < ApplicationRecord
   belongs_to :source, polymorphic: true, required: false
 
   validates :previous, presence: true, unless: ->(line) { line.description == 'Opening Balance' }
-  validates :user, presence: true
+  # validates :user, presence: true
+  validates :company, presence: true
   validates :balance,
     inclusion: {
       in: ->(line) { [(line.previous&.balance || 0) + (line.amount || 0)] },
@@ -44,13 +45,13 @@ class BankLine < ApplicationRecord
       name: name,
       account_num: account_num,
       sort_code: sort_code,
-      user: user,
+      company: company,
       previous: self,
       transaction_date: data.date,
       transaction_type: data.type,
       description: data.description,
       amount: data.amount,
-      balance: data.balance.presence || balance + data.amount # balance is blank when multiple transaction on one day
+      balance: data.balance.presence || balance + data.amount.to_f # balance is blank when multiple transaction on one day
     )
   end
 

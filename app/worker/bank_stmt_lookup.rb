@@ -14,11 +14,11 @@ class BankStmtLookup
     line = BankLine.find(bank_line_id)
 
     case line.transaction_type
-    when 'CR'
+    when 'CR', 'Faster Payment in'
       find_invoice(line)
-    when 'BP', 'SO'
+    when 'BP', 'SO', "Faster Payment out", "Direct Debit"
       find_dividend(line)
-    when 'DR', 'VIS', 'DD', ')))'
+    when 'DR', 'VIS', 'DD', ')))', "Card payment out", 'Fee'
       find_receipt(line)
     else
       raise "Unknown type: #{line.transaction_type}"

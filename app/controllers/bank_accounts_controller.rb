@@ -15,8 +15,8 @@ class BankAccountsController < ApplicationController
 
   def create
     # build opening balance
-    bank_line = BankLine.new(new_bank_line_params)
-    if bank_line.save
+    @bank_line = BankLine.new(new_bank_line_params)
+    if @bank_line.save
       # import the csv
       importer = CsvImporter.new(company: current_company, account_name: @bank_line.name)
       importer.import(params[:file]&.read || '')
@@ -152,23 +152,26 @@ class BankAccountsController < ApplicationController
       skipped = []
       processed = []
       ApplicationRecord.transaction do
-        CSV.parse(io, headers: true).each do |line|
-          pline = presenter.new(line)
-          if skip
-            skipped << pline.description
-            next
-          end
-
-          next_line = current.initialize_next(pline)
-
-          if next_line.save
-            @current = next_line
-            processed << next_line.id
-          else
-            @errors += next_line.errors.full_messages
-            skip = true
-          end
+        CSV.parse(io, headers: true).map do |line|
+          presenter.new(line)
         end
+          .sort_by { |line| line.date }
+          .each do |pline|
+            if skip
+              skipped << pline.description
+              next
+            end
+
+            next_line = current.initialize_next(pline)
+
+            if next_line.save
+              @current = next_line
+              processed << next_line.id
+            else
+              @errors += next_line.errors.full_messages
+              skip = true
+            end
+          end
 
         raise ActiveRecord::Rollback if @errors.any?
       end

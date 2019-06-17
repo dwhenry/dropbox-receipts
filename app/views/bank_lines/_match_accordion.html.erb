@@ -103,7 +103,7 @@
                     <tr>
                       <td><%= receipt.purchase_date.strftime('%d-%b-%Y') %></td>
                       <td><%= receipt.code %></td>
-                      <td><%= receipt.company %></td>
+                      <td><%= receipt.company_name %></td>
                       <td><%= receipt.payer %></td>
                       <td><%= number_to_currency(receipt.amount, unit: '£') %></td>
                       <td>

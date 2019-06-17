@@ -21,7 +21,7 @@ class BankStmtLookup
     when 'DR', 'VIS', 'DD', ')))', "Card payment out", 'Fee'
       find_receipt(line)
     else
-      raise "Unknown type: #{line.transaction_type}"
+      # raise "Unknown type: #{line.transaction_type}"
     end
 
     line.save!

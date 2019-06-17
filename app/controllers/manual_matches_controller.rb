@@ -8,7 +8,7 @@ class ManualMatchesController < ApplicationController
   end
 
   def create
-    @manual_match = ManualMatch.new(manual_match_params.merge(copmpany: current_company))
+    @manual_match = ManualMatch.new(manual_match_params.merge(company: current_company))
     if @manual_match.save
       if params[:bank_line_id]
         if (bank_line = bank_lines.find_by_id(params[:bank_line_id]))

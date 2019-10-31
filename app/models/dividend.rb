@@ -67,6 +67,7 @@ class Dividend < ApplicationRecord
   def build_path
     '/' + [
       Rails.env.production? ? nil : Rails.env,
+      company.primary ? nil : company.name,
       'dividends',
       filename
     ].compact.join('/')

@@ -25,6 +25,7 @@ class Receipt < ApplicationRecord
   def build_path
     '/' + [
       Rails.env.production? ? nil : Rails.env,
+      company.primary ? nil : company.name,
       'receipts',
       created_at.strftime('%Y-%m'),
       [

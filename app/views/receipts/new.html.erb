@@ -126,9 +126,9 @@
     }).done(function(response) {
       $('.camera-actions').html(response);
 
-      $('canvas').width($('canvas').width() / 2)
-        .height($('canvas').height() / 2)
-        .css({'position': 'static'});
+//      $('canvas').width($('canvas').width() / 2)
+//        .height($('canvas').height() / 2)
+//        .css({'position': 'static'});
 
       $('.camera-wrap').html($('canvas')).css({'padding-bottom': 'inherit'})
     }).fail(function(status_code, error_message, response) {

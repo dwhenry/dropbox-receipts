@@ -93,6 +93,7 @@ class Invoice < ApplicationRecord
   def build_path
     '/' + [
       Rails.env.production? ? nil : Rails.env,
+      company.primary ? nil : company.name,
       'invoices',
       filename
     ].compact.join('/')

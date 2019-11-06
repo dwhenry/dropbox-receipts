@@ -8,7 +8,7 @@ end
 source 'https://rubygems.org' do
   gem 'blazer'
   gem 'rails-assets-tether'
-  gem 'bootstrap', '~> 4.0.0.alpha5'
+  gem 'bootstrap', '~> 4.3.1'
   gem 'coffee-rails', '~> 4.2'
   gem 'dropbox-sdk'
   gem 'dropbox-sdk-v2'

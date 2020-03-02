@@ -6,12 +6,12 @@ class ReceiptsController < ApplicationController
   end
 
   def create
-    shared = { company: current_company, image: params['img_data'], purchase_date: Date.today }
+    shared = { company: current_company, image: params['img_data']}
     @receipt = if params[:similar_to].present?
                  prev = current_company.receipts.find(params[:similar_to].to_i)
-                 Receipt.create!(prev.attributes.slice(:company_name, :code, :purchase_date, :payer).merge(shared))
+                 Receipt.create!(prev.attributes.slice(*%w[company_name code purchase_date payer]).merge(shared))
                else
-                 Receipt.create!(shared)
+                 Receipt.create!(shared.merge(purchase_date: Date.today))
                end
 
     DropboxSaver.perform_async(@receipt.id)

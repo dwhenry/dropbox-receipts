@@ -14,7 +14,7 @@ class BankStmtLookup
     line = BankLine.find(bank_line_id)
 
     case line.transaction_type
-    when 'CR', 'Faster Payment in', 'Card payment out', 'CardPaymentOut', 'DirectDebit'
+    when 'CR', 'Faster Payment in', 'DirectDebit'
       find_invoice(line)
     when 'BP', 'SO', "Faster Payment out", "Direct Debit", 'FasterPaymentOut'
       find_dividend(line)

@@ -5,8 +5,8 @@ class ManualProcessor
   include Sidekiq::Worker
   class GetFailed < StandardError; end
 
-  def perform(invoice_id)
-    manual = ManualMatch.find(invoice_id)
+  def perform(manual_id)
+    manual = ManualMatch.find(manual_id)
 
     path = manual.build_path
     client = Dropbox::Client.new(manual.company.user.token)
@@ -18,7 +18,7 @@ class ManualProcessor
 
         client.upload(path, pdf)
       rescue
-        invoice.update!(generated_at: nil)
+        manual.update!(generated_at: nil)
         raise
       end
     end

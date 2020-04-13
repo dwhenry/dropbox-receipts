@@ -42,10 +42,10 @@ class ManualMatch < ApplicationRecord
 
   def filename
     [
-      id,
+      date.strftime('%Y%m%d'),
       payment_type,
       payment_subtype,
-      date.strftime('%Y%m%d'),
+      id,
       'pdf'
     ].join('.')
   end

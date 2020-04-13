@@ -1,0 +1,57 @@
+wb = xlsx_package.workbook
+
+header_xf = wb.styles.add_style bg_color: "00", fg_color: "FF", alignment: { horizontal: :center }, bold: true
+
+date_xf = wb.styles.add_style num_fmt: 15
+
+number_xf = wb.styles.add_style format_code: '\£#,##0.00'
+
+ytd_sheet = wb.add_worksheet(name: 'YTD')
+added_sheet = wb.add_worksheet(name: 'Added')
+
+
+
+period = if @for > Date.new(Date.today.year, 4, 5)
+           (Date.new(@for.year, 4, 6)..Date.new(@for.year + 1, 4, 5))
+         else
+           (Date.new(@for.year - 1, 4, 6)..Date.new(@for.year, 4, 5))
+         end
+
+ytd_sheet.add_row ['Company', 'Type', 'Purchase Date', 'Date Recorded', 'Amount'], style: header_xf
+added_sheet.add_row ['Company', 'Type', 'Purchase Date', 'Date Recorded', 'Amount'], style: header_xf
+
+########
+
+receipts = (
+  Receipt.where(company_id: @company_id, purchase_date: period) +
+    ManualMatch
+      .select(
+        'bank_lines.description as company_name',
+        "'(Manual) ' || manual_matches.payment_type || ': ' || manual_matches.payment_subtype as code_name",
+        'manual_matches.created_at as created_at',
+        'bank_lines.transaction_date as purchase_date',
+        '-1 * bank_lines.amount as amount'
+      )
+      .where(company_id: @company_id, date: period)
+      .where('manual_matches.amount > 0')
+      .joins(:lines)
+).sort_by(&:purchase_date)
+
+receipts.each do |receipt|
+  ytd_sheet.add_row [receipt.company_name, receipt.code_name, receipt.purchase_date, receipt.created_at, receipt.amount]
+  if receipt.created_at >= @last_run_at
+    added_sheet.add_row [receipt.company_name, receipt.code_name, receipt.purchase_date, receipt.created_at, receipt.amount]
+  end
+end
+
+ytd_sheet.col_style 2, date_xf
+ytd_sheet.col_style 3, date_xf
+ytd_sheet.col_style 4, number_xf
+ytd_sheet.row_style 0, header_xf
+
+added_sheet.col_style 2, date_xf
+added_sheet.col_style 3, date_xf
+added_sheet.col_style 4, number_xf
+added_sheet.row_style 0, header_xf
+
+#######

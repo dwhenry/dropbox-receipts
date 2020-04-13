@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200411171045) do
+ActiveRecord::Schema.define(version: 20200413201559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -173,6 +173,18 @@ ActiveRecord::Schema.define(version: 20200411171045) do
     t.index ["company_id"], name: "index_receipts_on_company_id", using: :btree
   end
 
+  create_table "summaries", force: :cascade do |t|
+    t.date     "for"
+    t.integer  "company_id"
+    t.integer  "last_receipt_id"
+    t.integer  "last_manual_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["company_id"], name: "index_summaries_on_company_id", using: :btree
+    t.index ["last_manual_id"], name: "index_summaries_on_last_manual_id", using: :btree
+    t.index ["last_receipt_id"], name: "index_summaries_on_last_receipt_id", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "provider"
     t.string   "uid"
@@ -190,4 +202,7 @@ ActiveRecord::Schema.define(version: 20200411171045) do
   add_foreign_key "dividends", "companies"
   add_foreign_key "invoices", "companies"
   add_foreign_key "receipts", "companies"
+  add_foreign_key "summaries", "companies"
+  add_foreign_key "summaries", "manual_matches", column: "last_manual_id"
+  add_foreign_key "summaries", "receipts", column: "last_receipt_id"
 end

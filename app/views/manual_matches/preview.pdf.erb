@@ -1,0 +1,56 @@
+<div style="padding: 20px">
+<div class="row">
+  <div class="col-xs-6">
+    <h2>Manual Invoice: <%= @manual.id %></h2>
+  </div>
+</div>
+<br/>
+<div class="row">
+  <div class="col-xs-12">
+    <table class="table table-bordered invoice-table">
+      <thead>
+      <tr class="table--header">
+        <th colspan="2" class="table--header">Manual Receipt Details</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Payment type</th>
+        <td><%= @manual.payment_type %></td>
+      </tr>
+      <tr>
+        <th>Payment Subtype</th>
+        <td><%= @manual.payment_subtype%></td>
+      </tr>
+      <tr>
+        <th>Amount</th>
+        <td><%= number_to_currency(@manual.amount, unit: '£') %></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br />
+<div class="row">
+  <div class="col-xs-12">
+    <table class="table table-bordered invoice-table">
+      <thead>
+      <tr class="table--header">
+        <th class="table--header">Bank Entry</th>
+        <th class="table--header">Date</th>
+        <th class="table--header">Amount</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @manual.lines.each do |line| %>
+        <tr>
+          <td><%= line.description %></td>
+          <td><%= line.transaction_date.strftime('%d %b %Y') %></td>
+          <td class="right"><%= number_to_currency(line.amount.abs, unit: '£') %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>

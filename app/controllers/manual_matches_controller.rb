@@ -15,6 +15,7 @@ class ManualMatchesController < ApplicationController
           bank_line.update!(source: @manual_match)
         end
       end
+      ManualProcessor.perform_async(@manual_match.id)
       redirect_to manual_matches_path
     else
       render :new
@@ -28,6 +29,8 @@ class ManualMatchesController < ApplicationController
   def update
     @manual_match = manual_matches.find(params[:id])
     if @manual_match.update(manual_match_params)
+      ManualProcessor.perform_async(@manual_match.id)
+
       redirect_to manual_matches_path
     else
       render :new

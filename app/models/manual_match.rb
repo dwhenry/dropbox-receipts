@@ -28,4 +28,25 @@ class ManualMatch < ApplicationRecord
   def link_action
     'edit'
   end
+
+  def build_path
+    '/' + [
+      Rails.env.production? ? nil : Rails.env,
+      company.primary ? nil : company.name,
+      'invoices',
+      'manual',
+      created_at.strftime('%Y-%m'),
+      filename
+    ].compact.join('/')
+  end
+
+  def filename
+    [
+      id,
+      payment_type,
+      payment_subtype,
+      date.strftime('%Y%m%d'),
+      'pdf'
+    ].join('.')
+  end
 end

@@ -33,9 +33,9 @@ class ManualMatch < ApplicationRecord
     '/' + [
       Rails.env.production? ? nil : Rails.env,
       company.primary ? nil : company.name,
-      'invoices',
-      'manual',
+      'receipts',
       created_at.strftime('%Y-%m'),
+      'manual',
       filename
     ].compact.join('/')
   end

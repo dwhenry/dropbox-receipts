@@ -18,7 +18,7 @@ class BankStmtLookup
       find_invoice(line)
     when 'BP', 'SO', "Faster Payment out", "Direct Debit", 'FasterPaymentOut'
       find_dividend(line)
-    when 'DR', 'VIS', 'DD', ')))', "Card payment out", 'Fee'
+    when 'DR', 'VIS', 'DD', ')))', "Card payment out", 'Fee', 'CardPaymentOut'
       find_receipt(line)
     else
       # try this to avoid un-matched records in the system

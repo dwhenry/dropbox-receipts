@@ -15,7 +15,7 @@
   <%= paginate @bank_lines %>
 </div>
 
-<div class="col-md-12">
+<div class="col-md-3">
   <% bank_info = @bank_lines.first %>
   <table class="table-responsive table">
     <tr>
@@ -36,7 +36,29 @@
     </tr>
   </table>
 </div>
+<div class="col-md-9">
+  <%= form_tag bank_account_path(params[:id]), method: :get do %>
+    Search:
+    <%= text_field_tag :filter, params[:filter].to_s.gsub(/unlinked/, '') %>
+    <%= submit_tag 'Search' %>
+  <% end %>
+  <%= form_tag bank_account_path(params[:id]), method: :put do %>
+    <%= hidden_field_tag :filter, params[:filter] %>
+    <%= hidden_field_tag :type, 'manual' %>
+    Match Type:
+    <%= select_tag :payment_types, options_from_collection_for_select(@manual_types, :key, :name, params[:payment_types]), include_blank: true %><br />
+    New Match Type <%= text_field_tag :new_payment_types %>
 
+    <%= submit_tag 'Create Manual Matches' %>
+  <% end  %>
+  <%= form_tag bank_account_path(params[:id]), method: :put do %>
+    <%= hidden_field_tag :filter, params[:filter] %>
+    <%= hidden_field_tag :type, 'dividends' %>
+    Group Sizes: <%= text_field_tag :groups, params[:groups], placeholder: '2,2,2' %>
+
+    <%= submit_tag 'Create Dividends' %>
+  <% end  %>
+</div>
 <div class="col-md-12">
   <table class="table-responsive table">
     <thead>

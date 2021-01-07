@@ -88,7 +88,6 @@ class BankAccountsController < ApplicationController
 
               if previous.empty?
                 flash[:warning] = "Unable to find a previous dividend matching the description"
-                binding.pry
                 break
               end
 
@@ -99,7 +98,6 @@ class BankAccountsController < ApplicationController
               end
               if row.blank?
                 flash[:warning] = "Unable to find a select shareholder based on previous dividends"
-                binding.pry
                 break
               end
               {
@@ -108,7 +106,6 @@ class BankAccountsController < ApplicationController
                 amount: line.amount.abs
               }
             end
-            binding.pry
 
             dividend = Dividend.create!(
               company_name: prev_dividend.company_name,

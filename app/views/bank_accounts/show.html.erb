@@ -91,6 +91,15 @@
           </td>
           <td style="padding: 2px">
             <%= link_to(bank_line.source ? 'Review' : 'Match', edit_bank_line_path(bank_line), class: 'btn btn-primary') %>
+            <% if bank_line.source.nil? %>
+              <%= form_tag bank_account_path(params[:id]), method: :put, style: 'display: inline' do %>
+                <%= hidden_field_tag :type, 'split' %>
+                <%= hidden_field_tag :filter, params[:filter] %>
+                <%= hidden_field_tag :line_id, bank_line.id %>
+                <%= submit_tag 'Split', class: 'btn btn-secondary' %>
+                Amount: <%= text_field_tag :amount %>
+              <% end %>
+            <% end %>
           </td>
         </tr>
       <% end %>

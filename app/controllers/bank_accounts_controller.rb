@@ -51,8 +51,36 @@ class BankAccountsController < ApplicationController
   end
 
   def update
+    redirect_params = {}
     ActiveRecord::Base.transaction do
-      if params[:filter].blank? || params[:filter] == 'unlinked'
+      if params[:type] == 'split'
+        line = bank_lines.find_by(id: params[:line_id])
+        if line && params[:amount].to_f > 0
+          if line.source
+            flash[:danger] = "Can not split a bank line that has been assigned"
+          else
+            redirect_params = { filter: params[:filter] }
+            parent = line.parent || line
+            BankLine.transaction do
+                amount = params[:amount].to_f.round(2)
+
+              new_line = line.dup
+              line.update!(amount: amount, balance: line.balance - line.amount + amount)
+
+              next_line = line.next
+
+              new_line.update!(
+                parent: parent,
+                amount: new_line.amount - amount,
+                previous: line,
+                description: "#{parent.description}[#{parent.children.count + 1}]"
+              )
+
+              next_line.update!(previous: new_line)
+            end
+          end
+        end
+      elsif (params[:filter].blank? || params[:filter] == 'unlinked') &&
         flash[:danger] = "No update as missing filter"
       else
         lines = bank_lines.where(name: params[:id]).where(source_id: nil).where('bank_lines.description ilike ?', "%#{params[:filter]}%")
@@ -120,7 +148,7 @@ class BankAccountsController < ApplicationController
         end
       end
 
-      redirect_to bank_account_path(params[:id])
+      redirect_to bank_account_path(params[:id], **redirect_params)
     end
   end
 
@@ -145,7 +173,7 @@ class BankAccountsController < ApplicationController
   private
 
   def bank_lines
-    current_user.is_accountant? ? BankLine.order(id: :desc) : current_company.bank_lines.order(id: :desc)
+    (current_user.is_accountant? ? BankLine : current_company.bank_lines).order(transaction_date: :desc, id: :desc)
   end
 
   def bank_accounts

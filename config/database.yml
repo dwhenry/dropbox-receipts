@@ -5,8 +5,8 @@ default: &default
 
 development:
   <<: *default
-#  database: <%= ENV.fetch('DATABASE', 'dropbox-receipts_development') %>
-  database: <%= ENV.fetch('DATABASE', 'dropbox-dump') %>
+  database: <%= ENV.fetch('DATABASE', 'dropbox-receipts_development') %>
+#  database: <%#= ENV.fetch('DATABASE', 'dropbox-dump') %>
   port: <%= ENV.fetch('DATABASE_PORT', 5432) %>
 
 test:

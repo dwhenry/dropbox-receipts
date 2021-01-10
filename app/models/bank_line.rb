@@ -10,6 +10,8 @@ class BankLine < ApplicationRecord
   # delegate :user, to: :company
   belongs_to :source, polymorphic: true, required: false
 
+  belongs_to :parent, class_name: 'BankLine', optional: true
+  has_many :children, foreign_key: :parent_id, class_name: 'BankLine'
   validates :previous, presence: true, unless: ->(line) { line.description == 'Opening Balance' }
   # validates :user, presence: true
   validates :company, presence: true

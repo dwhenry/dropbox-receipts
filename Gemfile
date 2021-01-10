@@ -20,7 +20,7 @@ source 'https://rubygems.org' do
   gem 'omniauth'
   gem 'omniauth-dropbox-oauth2', github: 'bamorim/omniauth-dropbox-oauth2'
   gem 'pg'
-  gem 'puma', '~> 3.0'
+  gem 'puma', '~> 3.12'
   gem 'rails', '~> 5.0.7'
   gem 'sassc-rails'
   gem 'select2-rails'

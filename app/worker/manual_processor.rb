@@ -9,7 +9,7 @@ class ManualProcessor
     manual = ManualMatch.find(manual_id)
 
     path = manual.build_path
-    client = Dropbox::Client.new(manual.company.user.token)
+    client = MyDropboxClient.new(manual.company.user.token)
 
     unless manual.generated_at
       manual.update!(generated_at: Time.now)

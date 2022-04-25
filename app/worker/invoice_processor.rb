@@ -9,7 +9,7 @@ class InvoiceProcessor
     invoice = Invoice.find(invoice_id)
 
     path = invoice.build_path
-    client = Dropbox::Client.new(invoice.company.user.token)
+    client = MyDropboxClient.new(invoice.company.user.token)
 
     unless invoice.generated_at
       invoice.update!(generated_at: Time.now)

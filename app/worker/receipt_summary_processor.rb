@@ -31,7 +31,7 @@ class ReceiptSummaryProcessor
 
     tax_years = (Array(receipt_dates) + Array(manual_dates)).sort.group_by{|d| d < Date.new(d.year, 4, 6) ? d.year : d.year + 1 }.map{|a, b| [a, b.max]}
 
-    client = Dropbox::Client.new(company.user.token)
+    client = MyDropboxClient.new(company.user.token)
 
     tax_years.each do |year, last_date|
       path = '/' + [

@@ -251,10 +251,38 @@ class BankAccountsController < ApplicationController
     end
   end
 
+  class CashPlusPresenter
+    attr_reader :line
+
+    def initialize(line)
+      @line = line
+    end
+
+    def description
+      line['Description']
+    end
+
+    def date
+      line['Date']
+    end
+
+    def type
+      line['Type']
+    end
+
+    def balance
+      line['Balance']
+    end
+
+    def amount
+      line['Credit'].gsub(/^£/, '').to_d - line['Debit'].gsub(/^-?£/, '').to_d
+    end
+  end
+
   class CsvImporter
     attr_reader :errors, :presenter
 
-    def initialize(company:, account_name:, presenter: TidePresenter)
+    def initialize(company:, account_name:, presenter: CashPlusPresenter)
       @company = company
       @account_name = account_name
       @presenter = presenter

@@ -263,7 +263,7 @@ class BankAccountsController < ApplicationController
     end
 
     def date
-      line['Date']
+      Date.parse(line['Date'])
     end
 
     def type

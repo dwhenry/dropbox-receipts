@@ -271,11 +271,11 @@ class BankAccountsController < ApplicationController
     end
 
     def balance
-      line['Balance']
+      line['Balance'].force_encoding("utf-8").gsub(/^-?£/, '').to_d
     end
 
     def amount
-      line['Credit'].gsub(/^£/, '').to_d - line['Debit'].gsub(/^-?£/, '').to_d
+      line['Credit'].force_encoding("utf-8").gsub(/^£/, '').to_d - line['Debit'].force_encoding("utf-8").gsub(/^-?£/, '').to_d
     end
   end
 
@@ -294,7 +294,7 @@ class BankAccountsController < ApplicationController
       skipped = []
       processed = []
       ApplicationRecord.transaction do
-        CSV.parse(io, headers: true).map do |line|
+        CSV.parse(io, headers: true, encoding: 'utf-8').map do |line|
           presenter.new(line)
         end
           .sort_by { |line| line.date }

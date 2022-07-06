@@ -297,7 +297,8 @@ class BankAccountsController < ApplicationController
         CSV.parse(io, headers: true, encoding: 'utf-8').map do |line|
           presenter.new(line)
         end
-          .sort_by { |line| line.date }
+           .reverse
+          # .sort_by { |line| line.date }
           .each do |pline|
             if skip
               skipped << pline.description

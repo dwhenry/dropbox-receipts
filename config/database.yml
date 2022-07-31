@@ -8,6 +8,8 @@ development:
   database: <%= ENV.fetch('DATABASE', 'dropbox-receipts_development') %>
 #  database: <%#= ENV.fetch('DATABASE', 'dropbox-dump') %>
   port: <%= ENV.fetch('DATABASE_PORT', 5432) %>
+  host: localhost
+  user: postgres
 
 test:
   <<: *default

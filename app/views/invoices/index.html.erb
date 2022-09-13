@@ -32,6 +32,7 @@
         </tr>
       </thead>
       <tbody>
+        <% last = nil %>
         <% invoices.each do |invoice| %>
           <tr>
             <td><%= link_to(invoice.number, invoice_path(invoice)) %></td>
@@ -45,6 +46,8 @@
               <% end %>
             </td>
             <td style="padding: 2px">
+              <%= link_to('New From', new_invoice_path(copy_invoice_id: invoice.id), class: 'btn btn-success') if last != invoice.to_address %>
+              <% last = invoice.to_address %>
               <%= link_to('Preview', invoice_path(invoice), class: 'btn btn-primary') %>
               <%= link_to('Edit', edit_invoice_path(invoice), class: 'btn btn-secondary') unless invoice.generated_at %>
             </td>
@@ -81,4 +84,3 @@
     </table>
   </div>
 <% end %>
-

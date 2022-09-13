@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   def new
-    @invoice = Invoice.new_for(current_company)
+    @invoice = Invoice.new_for(current_company, params[:copy_invoice_id])
   end
 
   def create

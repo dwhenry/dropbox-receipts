@@ -294,7 +294,7 @@ class BankAccountsController < ApplicationController
       skipped = []
       processed = []
       ApplicationRecord.transaction do
-        CSV.parse(io, headers: true, encoding: 'utf-8').map do |line|
+        parse(io).map do |line|
           presenter.new(line)
         end
            .reverse
@@ -323,6 +323,12 @@ class BankAccountsController < ApplicationController
 
       # do matching in the background
       BankStmtLookup.perform_async(processed) if @errors.empty?
+    end
+
+    def parse(io)
+      CSV.parse(io, headers: true, encoding: 'utf-8')
+    rescue CSV::MalformedCSVError
+      CSV.parse(io.force_encoding('utf-16').encode('utf-8'), headers: true, encoding: 'utf-8')
     end
 
     def current

@@ -27,7 +27,7 @@ class Receipt < ApplicationRecord
       Rails.env.production? ? nil : Rails.env,
       company.primary ? nil : company.name,
       'receipts',
-      created_at.strftime('%Y-%m'),
+      purchase_date.strftime('%Y-%m'),
       [
         created_at.strftime('%d%b-%H%M%S'),
         code || 'PEN',
